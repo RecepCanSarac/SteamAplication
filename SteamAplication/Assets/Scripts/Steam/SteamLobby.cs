@@ -4,6 +4,7 @@ using UnityEngine;
 using Mirror;
 using Steamworks;
 using TMPro;
+using System;
 
 
 public class SteamLobby : MonoBehaviour
@@ -15,10 +16,19 @@ public class SteamLobby : MonoBehaviour
     protected Callback<GameLobbyJoinRequested_t> JoinRequest;
     protected Callback<LobbyEnter_t> LobbyEntered;
 
+    //Lobbies Callbacks
+    protected Callback<LobbyMatchList_t> LobbyList;
+    protected Callback<LobbyDataUpdate_t> LobbyDataUpdate;
+
+    public List<CSteamID> lobbyIDs = new List<CSteamID>();
+
     //Variables
     public ulong CurrentLobbyID;
     private const string HostAddresKey = "HostAddres";
     private CustomNetworkManager manager;
+
+
+    public int MaxPlayer;
 
     //GameObject
 
@@ -33,10 +43,39 @@ public class SteamLobby : MonoBehaviour
         LobbyCreated = Callback<LobbyCreated_t>.Create(OnLobbyCreated);
         JoinRequest = Callback<GameLobbyJoinRequested_t>.Create(OnJoinRequest);
         LobbyEntered = Callback<LobbyEnter_t>.Create(OnLobbyEntered);
+
+        LobbyList = Callback<LobbyMatchList_t>.Create(OnGetLobbyList);
+        LobbyDataUpdate = Callback<LobbyDataUpdate_t>.Create(OnGetLobbyData);
     }
+    public void GetLobbiesList()
+    {
+        if (lobbyIDs.Count > 0) { lobbyIDs.Clear(); }
+
+        SteamMatchmaking.AddRequestLobbyListResultCountFilter(60);
+        SteamMatchmaking.RequestLobbyList();
+    }
+    private void OnGetLobbyData(LobbyDataUpdate_t result)
+    {
+        LobbiesListManager.instance.DisplayLobbies(lobbyIDs, result);
+    }
+
+    private void OnGetLobbyList(LobbyMatchList_t result)
+    {
+        if (LobbiesListManager.instance.listOfLobbies.Count > 0) { LobbiesListManager.instance.DestroyLobbies(); }
+
+        for (int i = 0; i < result.m_nLobbiesMatching; i++)
+        {
+            CSteamID lobbyID = SteamMatchmaking.GetLobbyByIndex(i);
+            lobbyIDs.Add(lobbyID);
+
+            SteamMatchmaking.RequestLobbyData(lobbyID);
+
+        }
+    }
+
     public void HostLobby()
     {
-        SteamMatchmaking.CreateLobby(ELobbyType.k_ELobbyTypeFriendsOnly, manager.maxConnections);
+        SteamMatchmaking.CreateLobby(ELobbyType.k_ELobbyTypePublic, manager.maxConnections);
     }
 
     private void OnLobbyCreated(LobbyCreated_t callback)
@@ -57,7 +96,15 @@ public class SteamLobby : MonoBehaviour
     private void OnJoinRequest(GameLobbyJoinRequested_t callback)
     {
         Debug.Log("Request To Join Lobby");
-        SteamMatchmaking.JoinLobby(callback.m_steamIDLobby);
+        int number = SteamMatchmaking.GetNumLobbyMembers(callback.m_steamIDLobby);
+        if (number < MaxPlayer)
+        {
+            SteamMatchmaking.JoinLobby(callback.m_steamIDLobby);
+        }
+        else
+        {
+            Debug.Log("Lobby is full");
+        }
     }
 
     private void OnLobbyEntered(LobbyEnter_t callback)
@@ -75,5 +122,19 @@ public class SteamLobby : MonoBehaviour
              new CSteamID(callback.m_ulSteamIDLobby), HostAddresKey);
 
         manager.StartClient();
+    }
+
+    public void JoinLobby(CSteamID lobbyID)
+    {
+        int number = SteamMatchmaking.GetNumLobbyMembers(lobbyID);
+
+        if (number < MaxPlayer)
+        {
+            SteamMatchmaking.JoinLobby(lobbyID);
+        }
+        else
+        {
+            Debug.Log("Lobby is full");
+        }
     }
 }

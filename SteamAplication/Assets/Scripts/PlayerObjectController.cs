@@ -11,6 +11,7 @@ public class PlayerObjectController : NetworkBehaviour
     [SyncVar] public int PlayerIdNumber;
     [SyncVar] public ulong PlayerSteamID;
     [SyncVar(hook = nameof(PlayerNameUpdate))] public string PlayerName;
+    [SyncVar(hook = nameof(PlayerReadyUpdate))] public bool Ready;
 
 
     private CustomNetworkManager manager;
@@ -26,7 +27,33 @@ public class PlayerObjectController : NetworkBehaviour
             return manager = CustomNetworkManager.singleton as CustomNetworkManager;
         }
     }
-
+    private void Start()
+    {
+        DontDestroyOnLoad(this.gameObject);
+    }
+    private void PlayerReadyUpdate(bool oldValue, bool newValue)
+    {
+        if (isServer)
+        {
+            this.Ready = newValue;
+        }
+        if (isClient)
+        {
+            LobbyController.instance.UpdatePlayerList();
+        }
+    }
+    [Command]
+    private void CMdSetPlayerReady()
+    {
+        this.PlayerReadyUpdate(this.Ready, !this.Ready);
+    }
+    public void ChangeReady()
+    {
+        if (isLocalPlayer)
+        {
+            CMdSetPlayerReady();
+        }
+    }
     public override void OnStartAuthority()
     {
         CmdSetPlayername(SteamFriends.GetPersonaName().ToString());
@@ -64,5 +91,18 @@ public class PlayerObjectController : NetworkBehaviour
         {
             LobbyController.instance.UpdatePlayerList();
         }
+    }
+
+    public void CanStartGame(string SceneGame)
+    {
+        if (isLocalPlayer)
+        {
+            CmdCanStartGame(SceneGame);
+        }
+    }
+    [Command]
+    public void CmdCanStartGame(string SceneGame)
+    {
+        manager.StartGame(SceneGame);
     }
 }

@@ -14,8 +14,24 @@ public class PlayerListItem : MonoBehaviour
 
     public TextMeshProUGUI PlayerNameText;
     public RawImage PlayerIcon;
-
+    public TextMeshProUGUI PlayerReadyText;
+    public bool Ready;
     protected Callback<AvatarImageLoaded_t> ImageLoaded;
+
+    public void ChangeReadyStatus()
+    {
+        if (Ready)
+        {
+            PlayerReadyText.text = "Ready";
+            PlayerReadyText.color = Color.green;
+        }
+        else
+        {
+            PlayerReadyText.text = "Unready";
+            PlayerReadyText.color = Color.red;
+        }
+    }
+
 
     private void Start()
     {
@@ -24,6 +40,7 @@ public class PlayerListItem : MonoBehaviour
     public void SetPlayerValues()
     {
         PlayerNameText.text = PlayerName;
+        ChangeReadyStatus();
         if (!AvatarReceived) { GetPlayerIcon(); }
     }
     void GetPlayerIcon()
@@ -49,7 +66,6 @@ public class PlayerListItem : MonoBehaviour
                 texture.LoadRawTextureData(image);
                 texture.Apply();
 
-                // Flip the texture vertically
                 Color32[] pixels = texture.GetPixels32();
                 for (int y = 0; y < height / 2; y++)
                 {
