@@ -4,7 +4,6 @@ using UnityEngine;
 using Mirror;
 using Steamworks;
 using System;
-
 public class PlayerObjectController : NetworkBehaviour
 {
     [SyncVar] public int ConnectionID;
