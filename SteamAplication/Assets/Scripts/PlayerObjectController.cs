@@ -30,6 +30,12 @@ public class PlayerObjectController : NetworkBehaviour
     {
         DontDestroyOnLoad(this.gameObject);
     }
+   
+    public void InitializePlayer()
+    {
+        // Oyuncunun karakteri lobide görünür hale getirilebilir.
+        gameObject.SetActive(true);
+    }
     private void PlayerReadyUpdate(bool oldValue, bool newValue)
     {
         if (isServer)

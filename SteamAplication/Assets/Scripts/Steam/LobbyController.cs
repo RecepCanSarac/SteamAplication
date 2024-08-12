@@ -29,6 +29,9 @@ public class LobbyController : MonoBehaviour
 
     private CustomNetworkManager manager;
     public TextMeshProUGUI ReadyButtonText;
+
+    public GameObject UI;
+    private bool isActive;
     private CustomNetworkManager Manager
     {
         get
@@ -44,6 +47,33 @@ public class LobbyController : MonoBehaviour
     private void Awake()
     {
         if (instance == null) { instance = this; }
+    }
+
+    private void Start()
+    {
+        UI.SetActive(false);
+    }
+    private void Update()
+    {
+        if (LocalPlayerController.PlayerIdNumber == 1)
+        {
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                isActive = !isActive;
+                UI.SetActive(isActive);
+            }
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                ReadyPlayer();
+            }
+        }
+        else
+        {
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                ReadyPlayer();
+            }
+        }
     }
 
     public void ReadyPlayer()
@@ -112,6 +142,8 @@ public class LobbyController : MonoBehaviour
     {
         LocalPlayerObject = GameObject.Find("LocalGamePlayer");
         LocalPlayerController = LocalPlayerObject.GetComponent<PlayerObjectController>();
+
+        LocalPlayerController.InitializePlayer(); // Oyuncu karakterini baþlat
     }
     public void CreateHostPlayerItem()
     {
@@ -139,7 +171,6 @@ public class LobbyController : MonoBehaviour
 
     public void CreateClientPlayerItem()
     {
-        Debug.Log("annen");
         foreach (PlayerObjectController player in Manager.GamePlayers)
         {
             if (!PlayerListItems.Any(b => b.ConnectionID == player.ConnectionID))
