@@ -3,13 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 using UnityEngine.SceneManagement;
+
 public class PlayerMovmentController : NetworkBehaviour
 {
     public float Speed = 0.1f;
     public GameObject PlayerModel;
-
+    public Transform orientation;
+    private Rigidbody rb;
     private void Start()
     {
+        rb = GetComponent<Rigidbody>();
         PlayerModel.SetActive(false);
     }
 
@@ -37,8 +40,11 @@ public class PlayerMovmentController : NetworkBehaviour
         float xDirection = Input.GetAxis("Horizontal");
         float zDirection = Input.GetAxis("Vertical");
 
-        Vector3 moveDirection = new Vector3(xDirection, 0, zDirection);
+        Vector3 forwardDirection = new Vector3(orientation.forward.x, 0, orientation.forward.z).normalized;
+        Vector3 rightDirection = new Vector3(orientation.right.x, 0, orientation.right.z).normalized;
 
-        transform.position += moveDirection * Speed;
+        Vector3 moveDirection = forwardDirection * zDirection + rightDirection * xDirection;
+
+        rb.velocity = moveDirection * Speed * Time.deltaTime;
     }
 }

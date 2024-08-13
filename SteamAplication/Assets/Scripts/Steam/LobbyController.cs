@@ -32,6 +32,7 @@ public class LobbyController : MonoBehaviour
 
     public GameObject UI;
     private bool isActive;
+
     private CustomNetworkManager Manager
     {
         get
@@ -55,24 +56,19 @@ public class LobbyController : MonoBehaviour
     }
     private void Update()
     {
-        if (LocalPlayerController.PlayerIdNumber == 1)
+        if (Input.GetKeyDown(KeyCode.E) && LocalPlayerController.consolActivated == true)
         {
-            if (Input.GetKeyDown(KeyCode.E))
-            {
-                isActive = !isActive;
-                UI.SetActive(isActive);
-            }
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                ReadyPlayer();
-            }
+            isActive = !isActive;
+            UI.SetActive(isActive);
+            Cursor.lockState = CursorLockMode.None;
         }
-        else
+        if (!LocalPlayerController.consolActivated)
         {
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                ReadyPlayer();
-            }
+            UI.SetActive(false);
+        }
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            ReadyPlayer();
         }
     }
 
@@ -220,6 +216,7 @@ public class LobbyController : MonoBehaviour
             if (!Manager.GamePlayers.Any(b => b.ConnectionID == playerlistItem.ConnectionID))
             {
                 playerListItemToRemove.Add(playerlistItem);
+                SceneManager.LoadScene("MainMenu");
             }
         }
         if (playerListItemToRemove.Count > 0)
@@ -233,7 +230,7 @@ public class LobbyController : MonoBehaviour
                 SceneManager.LoadScene("MainMenu");
             }
         }
-        
+
     }
 
     public void StartGame(string SceneGame)

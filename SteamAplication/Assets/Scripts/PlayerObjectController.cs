@@ -4,8 +4,11 @@ using UnityEngine;
 using Mirror;
 using Steamworks;
 using System;
+using TMPro;
 public class PlayerObjectController : NetworkBehaviour
 {
+    public TextMeshProUGUI NameText;
+    public TextMeshProUGUI ReadText;
     [SyncVar] public int ConnectionID;
     [SyncVar] public int PlayerIdNumber;
     [SyncVar] public ulong PlayerSteamID;
@@ -14,7 +17,8 @@ public class PlayerObjectController : NetworkBehaviour
 
 
     private CustomNetworkManager manager;
-
+    private PlayerCollider PlayerCollider;
+    public bool consolActivated = false;
     private CustomNetworkManager Manager
     {
         get
@@ -28,12 +32,25 @@ public class PlayerObjectController : NetworkBehaviour
     }
     private void Start()
     {
+        PlayerCollider = GetComponent<PlayerCollider>();
         DontDestroyOnLoad(this.gameObject);
     }
-   
+    private void Update()
+    {
+        consolActivated = PlayerCollider.isConsolActiveted;
+        if (!Ready)
+        {
+            ReadText.text = "UnReady";
+            ReadText.color = Color.red;
+        }
+        else
+        {
+            ReadText.text = "Ready";
+            ReadText.color = Color.green;
+        }
+    }
     public void InitializePlayer()
     {
-        // Oyuncunun karakteri lobide görünür hale getirilebilir.
         gameObject.SetActive(true);
     }
     private void PlayerReadyUpdate(bool oldValue, bool newValue)
@@ -91,6 +108,7 @@ public class PlayerObjectController : NetworkBehaviour
         if (isServer)
         {
             this.PlayerName = newValue;
+            NameText.text = newValue;
         }
         if (isClient)
         {
