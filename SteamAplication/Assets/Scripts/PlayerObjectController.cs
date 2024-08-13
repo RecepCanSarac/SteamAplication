@@ -19,6 +19,11 @@ public class PlayerObjectController : NetworkBehaviour
     private CustomNetworkManager manager;
     private PlayerCollider PlayerCollider;
     public bool consolActivated = false;
+
+
+    public SOClass UserClass;
+
+
     private CustomNetworkManager Manager
     {
         get
