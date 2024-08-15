@@ -526,9 +526,9 @@ MonoBehaviour:
   autoCreatePlayer: 1
   playerSpawnMethod: 0
   spawnPrefabs:
-  - {fileID: 1695200303275747137, guid: 94d1a1b2e90a464408e351fcce05752c, type: 3}
   - {fileID: 8499932613180364625, guid: cb13e78fa63510742898c19c17e05cd7, type: 3}
-  - {fileID: 0}
+  - {fileID: 8499932613180364625, guid: d384ccef54c297143afaecc63668837d, type: 3}
+  - {fileID: 1695200303275747137, guid: 94d1a1b2e90a464408e351fcce05752c, type: 3}
   exceptionsDisconnect: 1
   snapshotSettings:
     bufferTimeMultiplier: 2

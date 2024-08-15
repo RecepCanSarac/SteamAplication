@@ -249,9 +249,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96cef455040051b42af54203b463c673, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  syncDirection: 0
-  syncMode: 0
-  syncInterval: 0
   LobbyNameText: {fileID: 765695041}
   PlayerListViewContent: {fileID: 923628385}
   PlayerListItemPrefab: {fileID: 7895292619925873723, guid: 33320fb637fbecd4692f1baee181da9c, type: 3}
@@ -1791,12 +1788,12 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0
   Content: {fileID: 1322879735}
-  classItem: {fileID: 8499932613180364625, guid: d384ccef54c297143afaecc63668837d, type: 3}
+  classItemPrefab: {fileID: 8499932613180364625, guid: d384ccef54c297143afaecc63668837d, type: 3}
   classes:
   - {fileID: 11400000, guid: 8f202abc7e267ee498dd1f548f893362, type: 2}
   - {fileID: 11400000, guid: cb83c2456f7c06f4e801619c06725c57, type: 2}
   Userclasses: []
-  Class: {fileID: 8499932613180364625, guid: cb13e78fa63510742898c19c17e05cd7, type: 3}
+  ClassPrefab: {fileID: 8499932613180364625, guid: cb13e78fa63510742898c19c17e05cd7, type: 3}
   ListContent: {fileID: 1664931627}
 --- !u!114 &1078708364
 MonoBehaviour:
