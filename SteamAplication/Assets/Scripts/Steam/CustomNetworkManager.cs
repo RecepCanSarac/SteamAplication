@@ -4,6 +4,8 @@ using UnityEngine;
 using Mirror;
 using UnityEngine.SceneManagement;
 using Steamworks;
+using Unity.VisualScripting;
+
 public class CustomNetworkManager : NetworkManager
 {
     [SerializeField] private PlayerObjectController GamePlayerPrefab;
@@ -11,6 +13,8 @@ public class CustomNetworkManager : NetworkManager
         new List<PlayerObjectController>();
     
     public List<SOClass> MangmentClass = new List<SOClass>();
+    
+    public List<ClassItem> classItems = new List<ClassItem>();
 
     public override void OnServerAddPlayer(NetworkConnectionToClient conn)
     {
@@ -23,6 +27,8 @@ public class CustomNetworkManager : NetworkManager
             GamePlayerInstance.PlayerSteamID =
                 (ulong)SteamMatchmaking.GetLobbyMemberByIndex(
                     (CSteamID)SteamLobby.instance.CurrentLobbyID, GamePlayers.Count);
+        
+            FizzyChat.Instance.Joined();
 
             NetworkServer.AddPlayerForConnection(conn, GamePlayerInstance.gameObject);
         }

@@ -143,12 +143,6 @@ public class PlayerObjectController : NetworkBehaviour
         }
     }
     
-    [Command]
-    private void CmdUpdateClassName(string className)
-    {
-        this.syncedClassName = className;
-    }
-    
     private void ClassNameUpdate(string oldValue, string newValue)
     {
         if (isServer)

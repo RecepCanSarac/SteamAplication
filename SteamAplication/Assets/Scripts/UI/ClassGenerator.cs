@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -5,13 +6,25 @@ using Mirror;
 
 public enum ClassType
 {
-    Doctor, Detective, Seer, Armored, Confessor, Thief, Trapper, Buffoon, Lookout, Killer
+    Doctor,
+    Detective,
+    Seer,
+    Armored,
+    Confessor,
+    Thief,
+    Trapper,
+    Buffoon,
+    Lookout,
+    Killer
 }
 
 public class ClassGenerator : NetworkBehaviour
 {
     public Transform Content;
     public GameObject classItemPrefab;
+
+    public GameObject currentObject;
+    
     public List<SOClass> classes = new List<SOClass>();
     public List<SOClass> Userclasses = new List<SOClass>();
     private Dictionary<ClassType, int> classStackCounts = new Dictionary<ClassType, int>();
@@ -20,39 +33,37 @@ public class ClassGenerator : NetworkBehaviour
     public GameObject ClassPrefab;
     public Transform ListContent;
 
-    public override void OnStartServer()
+    private CustomNetworkManager manager;
+    private CustomNetworkManager Manager
     {
-        if (isServer)
+        get
         {
-            for (int i = 0; i < classes.Count; i++)
+            if (manager != null)
             {
-                CreateClassItem(classes[i]);
+                return manager;
             }
+            return manager = NetworkManager.singleton as CustomNetworkManager;
         }
     }
 
-    public override void OnStartAuthority()
+    private void Start()
     {
-        if (isServer)
+        for (int i = 0; i < classes.Count; i++)
         {
-            for (int i = 0; i < classes.Count; i++)
-            {
-                CreateClassItem(classes[i]);
-            }
+            CreateClassItem(classes[i]);
         }
     }
 
-    [Server]
-    private void CreateClassItem(SOClass classData)
+    public void CreateClassItem(SOClass classData)
     {
         GameObject itemIns = Instantiate(classItemPrefab, Content);
         var classItem = itemIns.GetComponent<ClassItem>();
         classItem.Setup(classData.ClassName, classData.ClassType);
         classItem.userClass = classData;
+        Manager.classItems.Add(classItem);
         NetworkServer.Spawn(itemIns); // Spawn işlemi burada yapılmalı
     }
 
-    [Server]
     public void UpdateStackedClasses(SOClass newClass)
     {
         ClassType classType = newClass.ClassType;
@@ -63,8 +74,8 @@ public class ClassGenerator : NetworkBehaviour
 
             GameObject classIns = Instantiate(ClassPrefab, ListContent);
             var classItem = classIns.GetComponent<ClassItem>();
-            classItem.Setup(newClass.ClassName,  newClass.ClassType);
-            NetworkServer.Spawn(classIns); 
+            classItem.Setup(newClass.ClassName, newClass.ClassType);
+            NetworkServer.Spawn(classIns);
             spawnedClassItems[classType] = classIns;
         }
         else

@@ -419,8 +419,8 @@ GameObject:
   m_Component:
   - component: {fileID: 8499932613180364624}
   - component: {fileID: -506449899650026635}
-  - component: {fileID: -3760308028866284274}
   - component: {fileID: -8530086665408827671}
+  - component: {fileID: -3760308028866284274}
   m_Layer: 5
   m_Name: ClassItem
   m_TagString: Untagged
@@ -473,6 +473,23 @@ MonoBehaviour:
   type: 0
   NumberText: {fileID: 0}
   SetClassButton: {fileID: 8499932613100357293}
+--- !u!114 &-8530086665408827671
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8499932613180364625}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneId: 0
+  _assetId: 4294904353
+  serverOnly: 0
+  visibility: 0
+  hasSpawned: 0
 --- !u!114 &-3760308028866284274
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -507,23 +524,6 @@ MonoBehaviour:
   rotationSensitivity: 0.01
   positionPrecision: 0.01
   scalePrecision: 0.01
---- !u!114 &-8530086665408827671
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8499932613180364625}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sceneId: 0
-  _assetId: 4294904353
-  serverOnly: 0
-  visibility: 0
-  hasSpawned: 0
 --- !u!1 &8499932613759193928
 GameObject:
   m_ObjectHideFlags: 0
