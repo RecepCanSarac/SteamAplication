@@ -9,6 +9,7 @@ public class PlayerClass : NetworkBehaviour
     public SOClass Class;
     public string typeName;
 
+    // fixed
     public void ClassTextMethod(ClassType type)
     {
         CmdClassName();

@@ -40,6 +40,7 @@ public class CameraController : NetworkBehaviour
         if (cameraHolder == null)
             return;
 
+        // added
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             escape = !escape;

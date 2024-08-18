@@ -51,6 +51,7 @@ public class PlayerObjectController : NetworkBehaviour
             ReadText.color = Color.green;
         }
 
+        // added
         PlayerNameShow();
     }
     public void InitializePlayer()
@@ -58,11 +59,13 @@ public class PlayerObjectController : NetworkBehaviour
         gameObject.SetActive(true);
     }
 
+    // added
     public void PlayerNameShow()
     {
         CmdPlayerNameShow();
     }
     
+    // added
     [Command]
     private void CmdPlayerNameShow()
     {

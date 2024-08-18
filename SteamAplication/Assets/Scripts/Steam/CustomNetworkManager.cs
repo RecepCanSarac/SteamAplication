@@ -28,6 +28,7 @@ public class CustomNetworkManager : NetworkManager
         }
     }
     
+    // added
     public override void ServerChangeScene(string newSceneName)
     {
         if (newSceneName.StartsWith("Game"))
