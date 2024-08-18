@@ -16,6 +16,7 @@ public class PlayerObjectController : NetworkBehaviour
     [SyncVar] public ulong PlayerSteamID;
     [SyncVar(hook = nameof(PlayerNameUpdate))] public string PlayerName;
     [SyncVar(hook = nameof(PlayerReadyUpdate))] public bool Ready;
+    [SyncVar(hook = nameof(ClassNameUpdate))] public string syncedClassName;
 
     private CustomNetworkManager manager;
     private PlayerCollider PlayerCollider;
@@ -69,9 +70,16 @@ public class PlayerObjectController : NetworkBehaviour
     [Command]
     private void CmdPlayerNameShow()
     {
-        NameText.text = this.PlayerName;
-        classText.text = className;
+        RpcUpdateUI(this.PlayerName, className);
     }
+    
+    [ClientRpc]
+    private void RpcUpdateUI(string playerName, string playerClassName)
+    {
+        NameText.text = playerName;
+        classText.text = playerClassName;
+    }
+    
     private void PlayerReadyUpdate(bool oldValue, bool newValue)
     {
         if (isServer)
@@ -108,6 +116,7 @@ public class PlayerObjectController : NetworkBehaviour
         Manager.GamePlayers.Add(this);
         LobbyController.instance.UpdateLobbyName();
         LobbyController.instance.UpdatePlayerList();
+        PlayerNameShow();
     }
 
     public override void OnStopClient()
@@ -131,6 +140,24 @@ public class PlayerObjectController : NetworkBehaviour
         if (isClient)
         {
             LobbyController.instance.UpdatePlayerList();
+        }
+    }
+    
+    [Command]
+    private void CmdUpdateClassName(string className)
+    {
+        this.syncedClassName = className;
+    }
+    
+    private void ClassNameUpdate(string oldValue, string newValue)
+    {
+        if (isServer)
+        {
+            this.className = newValue;
+        }
+        if (isClient)
+        {
+            RpcUpdateUI(PlayerName, newValue);
         }
     }
 

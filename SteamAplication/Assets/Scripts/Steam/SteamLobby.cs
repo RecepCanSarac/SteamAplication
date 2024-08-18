@@ -19,6 +19,8 @@ public class SteamLobby : MonoBehaviour
     //Lobbies Callbacks
     protected Callback<LobbyMatchList_t> LobbyList;
     protected Callback<LobbyDataUpdate_t> LobbyDataUpdate;
+    
+    protected Callback<LobbyChatMsg_t> lobbyChatMsg; // added
 
     public List<CSteamID> lobbyIDs = new List<CSteamID>();
 
@@ -46,6 +48,8 @@ public class SteamLobby : MonoBehaviour
 
         LobbyList = Callback<LobbyMatchList_t>.Create(OnGetLobbyList);
         LobbyDataUpdate = Callback<LobbyDataUpdate_t>.Create(OnGetLobbyData);
+        
+        lobbyChatMsg = Callback<LobbyChatMsg_t>.Create(OnLobbyChatMessage);
     }
     public void GetLobbiesList()
     {
@@ -123,6 +127,22 @@ public class SteamLobby : MonoBehaviour
 
         manager.StartClient();
     }
+    
+    //added
+    private void OnLobbyChatMessage(LobbyChatMsg_t callback)
+    {
+        byte[] data = new byte[4096];
+
+        CSteamID steamIDUser;
+        EChatEntryType chatEntryType = EChatEntryType.k_EChatEntryTypeChatMsg;
+
+        SteamMatchmaking.GetLobbyChatEntry((CSteamID)callback.m_ulSteamIDLobby, (int)callback.m_iChatID,
+            out steamIDUser, data, data.Length, out chatEntryType);
+
+        string message = System.Text.Encoding.UTF8.GetString(data);
+
+        FizzyChat.Instance.DisplayChatMessage(SteamFriends.GetFriendPersonaName(steamIDUser), message);
+    } 
 
     public void JoinLobby(CSteamID lobbyID)
     {
