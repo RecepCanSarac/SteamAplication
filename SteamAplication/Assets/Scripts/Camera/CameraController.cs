@@ -19,7 +19,6 @@ public class CameraController : NetworkBehaviour
     {
         if (cameraHolder == null)
         {
-            Debug.LogError("CameraHolder is not assigned in the inspector.");
             return;
         }
 

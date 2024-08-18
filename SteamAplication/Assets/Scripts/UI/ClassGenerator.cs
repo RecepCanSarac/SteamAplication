@@ -20,11 +20,25 @@ public class ClassGenerator : NetworkBehaviour
     public GameObject ClassPrefab;
     public Transform ListContent;
 
-    private void Start()
+    public override void OnStartServer()
     {
-        for (int i = 0; i < classes.Count; i++)
+        if (isServer)
         {
-            CreateClassItem(classes[i]);
+            for (int i = 0; i < classes.Count; i++)
+            {
+                CreateClassItem(classes[i]);
+            }
+        }
+    }
+
+    public override void OnStartAuthority()
+    {
+        if (isServer)
+        {
+            for (int i = 0; i < classes.Count; i++)
+            {
+                CreateClassItem(classes[i]);
+            }
         }
     }
 
@@ -33,9 +47,9 @@ public class ClassGenerator : NetworkBehaviour
     {
         GameObject itemIns = Instantiate(classItemPrefab, Content);
         var classItem = itemIns.GetComponent<ClassItem>();
-        classItem.Setup(classData.ClassName, classData.ClassIcon, classData.ClassType);
+        classItem.Setup(classData.ClassName, classData.ClassType);
         classItem.userClass = classData;
-        NetworkServer.Spawn(itemIns);
+        NetworkServer.Spawn(itemIns); // Spawn iþlemi burada yapýlmalý
     }
 
     [Server]
@@ -49,7 +63,7 @@ public class ClassGenerator : NetworkBehaviour
 
             GameObject classIns = Instantiate(ClassPrefab, ListContent);
             var classItem = classIns.GetComponent<ClassItem>();
-            classItem.Setup(newClass.ClassName, newClass.ClassIcon, newClass.ClassType);
+            classItem.Setup(newClass.ClassName,  newClass.ClassType);
             NetworkServer.Spawn(classIns); 
             spawnedClassItems[classType] = classIns;
         }

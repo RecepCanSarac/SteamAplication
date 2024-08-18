@@ -7,5 +7,5 @@ public class SOClass : ScriptableObject
 {
     public ClassType ClassType;
     public string ClassName;
-    public Sprite ClassIcon;
+    //public Sprite ClassIcon;
 }

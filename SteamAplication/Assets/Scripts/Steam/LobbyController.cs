@@ -31,6 +31,8 @@ public class LobbyController : MonoBehaviour
     public TextMeshProUGUI ReadyButtonText;
 
     public GameObject UI;
+    public GameObject ContentList;
+    public GameObject ContentClass;
     private bool isActive;
 
     private CustomNetworkManager Manager
@@ -60,11 +62,15 @@ public class LobbyController : MonoBehaviour
         {
             isActive = !isActive;
             UI.SetActive(isActive);
+            ContentList.SetActive(isActive);
+            ContentClass.SetActive(isActive);
             Cursor.lockState = CursorLockMode.None;
         }
         if (!LocalPlayerController.consolActivated)
         {
             UI.SetActive(false);
+            ContentList.SetActive(false);
+            ContentClass.SetActive(false);
         }
         if (Input.GetKeyDown(KeyCode.Space))
         {
@@ -139,7 +145,7 @@ public class LobbyController : MonoBehaviour
         LocalPlayerObject = GameObject.Find("LocalGamePlayer");
         LocalPlayerController = LocalPlayerObject.GetComponent<PlayerObjectController>();
 
-        LocalPlayerController.InitializePlayer(); // Oyuncu karakterini baþlat
+        LocalPlayerController.InitializePlayer(); 
     }
     public void CreateHostPlayerItem()
     {

@@ -16,12 +16,12 @@ public class PlayerObjectController : NetworkBehaviour
     [SyncVar(hook = nameof(PlayerReadyUpdate))] public bool Ready;
 
 
+
     private CustomNetworkManager manager;
     private PlayerCollider PlayerCollider;
     public bool consolActivated = false;
 
 
-    public SOClass UserClass;
 
 
     private CustomNetworkManager Manager
@@ -57,6 +57,10 @@ public class PlayerObjectController : NetworkBehaviour
     public void InitializePlayer()
     {
         gameObject.SetActive(true);
+    }
+    private void PlayerClassUpdate()
+    {
+
     }
     private void PlayerReadyUpdate(bool oldValue, bool newValue)
     {
@@ -106,6 +110,8 @@ public class PlayerObjectController : NetworkBehaviour
     private void CmdSetPlayername(string PlayerName)
     {
         this.PlayerNameUpdate(this.PlayerName, PlayerName);
+
+        NameText.text = this.PlayerName;
     }
 
     private void PlayerNameUpdate(string OldValue, string newValue)
@@ -113,7 +119,6 @@ public class PlayerObjectController : NetworkBehaviour
         if (isServer)
         {
             this.PlayerName = newValue;
-            NameText.text = newValue;
         }
         if (isClient)
         {
@@ -134,3 +139,4 @@ public class PlayerObjectController : NetworkBehaviour
         manager.StartGame(SceneGame);
     }
 }
+
