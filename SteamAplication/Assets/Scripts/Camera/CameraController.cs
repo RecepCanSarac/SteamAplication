@@ -15,6 +15,8 @@ public class CameraController : NetworkBehaviour
     float yRotation;
     private bool isGameScene = false;
 
+    private bool escape = false;
+
     public override void OnStartLocalPlayer()
     {
         if (cameraHolder == null)
@@ -27,8 +29,6 @@ public class CameraController : NetworkBehaviour
         if (SceneManager.GetActiveScene().name == "Game" || SceneManager.GetActiveScene().name == "Lobby")
         {
             isGameScene = true;
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
         }
     }
 
@@ -39,6 +39,20 @@ public class CameraController : NetworkBehaviour
 
         if (cameraHolder == null)
             return;
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            escape = !escape;
+        }
+
+        if (escape)
+        {
+            Cursor.lockState = CursorLockMode.None;
+        }
+        else
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+        }
 
         float mouseX = Input.GetAxisRaw("Mouse X") * Time.deltaTime * senX;
         float mouseY = Input.GetAxisRaw("Mouse Y") * Time.deltaTime * senY;

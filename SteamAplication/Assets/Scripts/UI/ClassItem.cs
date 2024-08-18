@@ -13,14 +13,25 @@ public class ClassItem : NetworkBehaviour
     public Button SetClassButton;
 
     private ClassGenerator ClassGenerator;
-    ClassManagment manager;
     [SyncVar(hook = nameof(OnStackCountChanged))]
     private int stackCount;
+    
+    private CustomNetworkManager manager;
+    private CustomNetworkManager Manager
+    {
+        get
+        {
+            if (manager != null)
+            {
+                return manager;
+            }
+            return manager = CustomNetworkManager.singleton as CustomNetworkManager;
+        }
+    }
 
     private void Awake()
     {
         ClassGenerator = GameObject.Find("GUIPanel").GetComponent<ClassGenerator>();
-        manager = GameObject.Find("ClassManagment").GetComponent<ClassManagment>();
     }
 
     public void Setup(string _name, ClassType _type)
@@ -33,18 +44,18 @@ public class ClassItem : NetworkBehaviour
         {
             SetClassButton.onClick.AddListener(() =>
             {
-                FromOldListNewList(ClassGenerator, manager);
+                FromOldListNewList(ClassGenerator, Manager);
             });
         }
     }
 
-    public void FromOldListNewList(ClassGenerator _ClassGenerator, ClassManagment manager)
+    public void FromOldListNewList(ClassGenerator _ClassGenerator, CustomNetworkManager manager)
     {
         _ClassGenerator.Userclasses.Add(this.userClass);
         if (isServer)
         {
             Debug.Log("Adding class to the management list: " + this.userClass.name);
-            manager.CMDAddListClass(this.userClass);
+            manager.AddListClass(this.userClass);
         }
         _ClassGenerator.UpdateStackedClasses(this.userClass);
     }

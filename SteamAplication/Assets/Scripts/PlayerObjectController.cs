@@ -9,20 +9,17 @@ public class PlayerObjectController : NetworkBehaviour
 {
     public TextMeshProUGUI NameText;
     public TextMeshProUGUI ReadText;
+    public TextMeshProUGUI classText;
+    public string className;
     [SyncVar] public int ConnectionID;
     [SyncVar] public int PlayerIdNumber;
     [SyncVar] public ulong PlayerSteamID;
     [SyncVar(hook = nameof(PlayerNameUpdate))] public string PlayerName;
     [SyncVar(hook = nameof(PlayerReadyUpdate))] public bool Ready;
 
-
-
     private CustomNetworkManager manager;
     private PlayerCollider PlayerCollider;
     public bool consolActivated = false;
-
-
-
 
     private CustomNetworkManager Manager
     {
@@ -53,14 +50,24 @@ public class PlayerObjectController : NetworkBehaviour
             ReadText.text = "Ready";
             ReadText.color = Color.green;
         }
+
+        PlayerNameShow();
     }
     public void InitializePlayer()
     {
         gameObject.SetActive(true);
     }
-    private void PlayerClassUpdate()
-    {
 
+    public void PlayerNameShow()
+    {
+        CmdPlayerNameShow();
+    }
+    
+    [Command]
+    private void CmdPlayerNameShow()
+    {
+        NameText.text = this.PlayerName;
+        classText.text = className;
     }
     private void PlayerReadyUpdate(bool oldValue, bool newValue)
     {
@@ -110,8 +117,6 @@ public class PlayerObjectController : NetworkBehaviour
     private void CmdSetPlayername(string PlayerName)
     {
         this.PlayerNameUpdate(this.PlayerName, PlayerName);
-
-        NameText.text = this.PlayerName;
     }
 
     private void PlayerNameUpdate(string OldValue, string newValue)

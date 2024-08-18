@@ -64,9 +64,9 @@ public class LobbyController : MonoBehaviour
             UI.SetActive(isActive);
             ContentList.SetActive(isActive);
             ContentClass.SetActive(isActive);
-            Cursor.lockState = CursorLockMode.None;
         }
-        if (!LocalPlayerController.consolActivated)
+        // if not null added
+        if ( LocalPlayerController != null && !LocalPlayerController.consolActivated)
         {
             UI.SetActive(false);
             ContentList.SetActive(false);
