@@ -51,7 +51,7 @@ public class ClassItem : NetworkBehaviour
 
     public void FromOldListNewList(ClassGenerator _ClassGenerator, CustomNetworkManager manager)
     {
-        _ClassGenerator.Userclasses.Add(this.userClass);
+        //_ClassGenerator.Userclasses.Add(this.userClass.ToString());
         if (isServer)
         {
             manager.AddListClass(this.userClass);

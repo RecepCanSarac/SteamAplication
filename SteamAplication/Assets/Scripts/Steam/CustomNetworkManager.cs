@@ -14,7 +14,7 @@ public class CustomNetworkManager : NetworkManager
     
     public List<SOClass> MangmentClass = new List<SOClass>();
     
-    public List<ClassItem> classItems = new List<ClassItem>();
+    public List<string> className = new List<string>();
 
     public override void OnServerAddPlayer(NetworkConnectionToClient conn)
     {
@@ -66,11 +66,11 @@ public class CustomNetworkManager : NetworkManager
 
             PlayerClass playerClass = player.GetComponent<PlayerClass>();
 
-            playerClass.Type = MangmentClass[randomIndex].ClassType;
+            /*playerClass.Type = MangmentClass[randomIndex].ClassType;
 
             playerClass.Class = MangmentClass[randomIndex];
 
-            playerClass.ClassTextMethod(MangmentClass[randomIndex].ClassType);
+            playerClass.ClassTextMethod(MangmentClass[randomIndex].ClassType);*/
 
             player.className = MangmentClass[randomIndex].ClassType.ToString();
 
@@ -81,6 +81,11 @@ public class CustomNetworkManager : NetworkManager
     public void AddListClass(SOClass userClass)
     {
         MangmentClass.Add(userClass);
+    }
+
+    public void UpdatedClassPlayer(string _className)
+    {
+        className.Add(_className);
     }
 
     IEnumerator JoinMessage(PlayerObjectController GamePlayerInstance)

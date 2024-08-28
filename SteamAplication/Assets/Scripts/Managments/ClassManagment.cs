@@ -92,9 +92,9 @@ public class ClassManagment : NetworkBehaviour
 
             assignedIndexes.Add(randomIndex);
 
-            player.GetComponent<PlayerClass>().ClassTextMethod(MangmentClass[randomIndex].ClassType);
+            /*player.GetComponent<PlayerClass>().ClassTextMethod(MangmentClass[randomIndex].ClassType);
 
-            player.GetComponent<PlayerClass>().Class = MangmentClass[randomIndex];
+            player.GetComponent<PlayerClass>().Class = MangmentClass[randomIndex];*/
             okey = false;
         }
     }

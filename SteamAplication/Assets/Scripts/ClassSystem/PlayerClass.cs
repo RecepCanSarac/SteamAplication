@@ -1,23 +1,19 @@
+using System.Collections.Generic;
 using Mirror;
 using TMPro;
-using UnityEngine.UI;
 
 public class PlayerClass : NetworkBehaviour
 {
-    public ClassType Type;
-    public TextMeshProUGUI ClassText;
-    public SOClass Class;
-    public string typeName;
+    public TextMeshProUGUI[] texts;
 
-    // fixed
-    public void ClassTextMethod(ClassType type)
+    public List<string> className = new List<string>();
+
+    private int indeks = 0;
+
+    public void ShowClasses()
     {
-        CmdClassName();
-    }
-    
-    [Command]
-    void CmdClassName()
-    {
-        typeName = Type.ToString();
+        if(indeks > 3) return;
+        texts[indeks].text = className[indeks];
+        indeks++;
     }
 }

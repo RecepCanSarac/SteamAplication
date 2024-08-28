@@ -24,12 +24,15 @@ public class ClassGenerator : NetworkBehaviour
     public GameObject classItemPrefab;
 
     public GameObject currentObject;
-    
+
     public List<SOClass> classes = new List<SOClass>();
-    
+
     [SyncVar(hook = nameof(OnListChanged))]
-    public List<SOClass> Userclasses = new List<SOClass>();
+    public List<string> Userclasses = new List<string>();
     
+    
+    public List<string> Currentclasses = new List<string>();
+
     private Dictionary<ClassType, int> classStackCounts = new Dictionary<ClassType, int>();
     private Dictionary<ClassType, GameObject> spawnedClassItems = new Dictionary<ClassType, GameObject>();
 
@@ -37,6 +40,7 @@ public class ClassGenerator : NetworkBehaviour
     public Transform ListContent;
 
     private CustomNetworkManager manager;
+
     private CustomNetworkManager Manager
     {
         get
@@ -45,11 +49,10 @@ public class ClassGenerator : NetworkBehaviour
             {
                 return manager;
             }
+
             return manager = NetworkManager.singleton as CustomNetworkManager;
         }
     }
-
-    private ClassType classType;
 
     private void Start()
     {
@@ -70,7 +73,7 @@ public class ClassGenerator : NetworkBehaviour
 
     public void UpdateStackedClasses(SOClass newClass)
     {
-        classType = newClass.ClassType;
+        ClassType classType = newClass.ClassType;
 
         if (!classStackCounts.ContainsKey(classType))
         {
@@ -80,11 +83,15 @@ public class ClassGenerator : NetworkBehaviour
             classItem.Setup(newClass.ClassName, newClass.ClassType);
             NetworkServer.Spawn(classIns);
             spawnedClassItems[classType] = classIns;
+            Currentclasses.Add(newClass.ClassName.ToString());
+
+            SetList(Currentclasses);
+            Manager.UpdatedClassPlayer(newClass.ClassName.ToString());
         }
         else
         {
             classStackCounts[classType]++;
-        
+
             UpdateStackCount(classType);
         }
     }
@@ -108,13 +115,29 @@ public class ClassGenerator : NetworkBehaviour
             }
         }
     }
-    
-    void OnListChanged(List<SOClass> oldValue, List<SOClass> newValue)
+
+    void SetList(List<string> newValue)
     {
-        foreach (SOClass ıtem in newValue)
+        CmdSetList(newValue);
+        OnListChanged(null, newValue);
+    }
+
+    [Command]
+    void CmdSetList(List<string> newValue)
+    {
+        Userclasses = newValue;
+        OnListChanged(null, newValue);
+    }
+
+    void OnListChanged(List<string> oldValue, List<string> newValue)
+    {
+        for (int i = 0; i < Manager.GamePlayers.Count; i++)
         {
-            Instantiate(ClassPrefab, ListContent);
+            PlayerClass playerClass = Manager.GamePlayers[i].GetComponent<PlayerClass>();
+
+            playerClass.className = newValue;
+
+            playerClass.ShowClasses();
         }
-        
     }
 }
