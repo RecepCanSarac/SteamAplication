@@ -27,10 +27,10 @@ public class CustomNetworkManager : NetworkManager
             GamePlayerInstance.PlayerSteamID =
                 (ulong)SteamMatchmaking.GetLobbyMemberByIndex(
                     (CSteamID)SteamLobby.instance.CurrentLobbyID, GamePlayers.Count);
-        
-            FizzyChat.Instance.Joined();
 
             NetworkServer.AddPlayerForConnection(conn, GamePlayerInstance.gameObject);
+
+            StartCoroutine(JoinMessage(GamePlayerInstance));
         }
     }
     
@@ -81,5 +81,12 @@ public class CustomNetworkManager : NetworkManager
     public void AddListClass(SOClass userClass)
     {
         MangmentClass.Add(userClass);
+    }
+
+    IEnumerator JoinMessage(PlayerObjectController GamePlayerInstance)
+    {
+        yield return new WaitForSeconds(1);
+        
+        FizzyChat.Instance.Joined(GamePlayerInstance.PlayerName);
     }
 }

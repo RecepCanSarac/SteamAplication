@@ -149,10 +149,8 @@ public class LobbyController : MonoBehaviour
     }
     public void CreateHostPlayerItem()
     {
-        Debug.Log("CreateHostPlayerItem called");
         foreach (PlayerObjectController player in Manager.GamePlayers)
         {
-            Debug.Log($"Creating player item for: {player.PlayerName}");
             GameObject NewPlayerItem = Instantiate(PlayerListItemPrefab) as GameObject;
             PlayerListItem NewPlayerItemScript = NewPlayerItem.GetComponent<PlayerListItem>();
 
@@ -168,7 +166,6 @@ public class LobbyController : MonoBehaviour
             PlayerListItems.Add(NewPlayerItemScript);
         }
         PlayerItemCreated = true;
-        Debug.Log("CreateHostPlayerItem completed");
     }
 
     public void CreateClientPlayerItem()

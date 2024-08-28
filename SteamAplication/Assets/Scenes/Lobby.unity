@@ -1768,6 +1768,7 @@ MonoBehaviour:
   syncInterval: 0
   Content: {fileID: 1322879735}
   classItemPrefab: {fileID: 8499932613180364625, guid: d384ccef54c297143afaecc63668837d, type: 3}
+  currentObject: {fileID: 0}
   classes:
   - {fileID: 11400000, guid: 8f202abc7e267ee498dd1f548f893362, type: 2}
   - {fileID: 11400000, guid: cb83c2456f7c06f4e801619c06725c57, type: 2}

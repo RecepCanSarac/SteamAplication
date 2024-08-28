@@ -86,8 +86,6 @@ public class SteamLobby : MonoBehaviour
     {
         if (callback.m_eResult != EResult.k_EResultOK) { return; }
 
-        Debug.Log("Lobby Created Succesfully");
-
         manager.StartHost();
 
         SteamMatchmaking.SetLobbyData(
@@ -99,7 +97,6 @@ public class SteamLobby : MonoBehaviour
 
     private void OnJoinRequest(GameLobbyJoinRequested_t callback)
     {
-        Debug.Log("Request To Join Lobby");
         int number = SteamMatchmaking.GetNumLobbyMembers(callback.m_steamIDLobby);
         if (number < MaxPlayer)
         {
@@ -117,8 +114,7 @@ public class SteamLobby : MonoBehaviour
         //LobbyNameText.gameObject.SetActive(true);
         //LobbyNameText.text = SteamMatchmaking.GetLobbyData(
         //    new CSteamID(callback.m_ulSteamIDLobby), "name");
-
-
+        
         if (NetworkServer.active)
             return;
 

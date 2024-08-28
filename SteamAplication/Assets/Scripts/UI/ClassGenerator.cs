@@ -26,7 +26,10 @@ public class ClassGenerator : NetworkBehaviour
     public GameObject currentObject;
     
     public List<SOClass> classes = new List<SOClass>();
+    
+    [SyncVar(hook = nameof(OnListChanged))]
     public List<SOClass> Userclasses = new List<SOClass>();
+    
     private Dictionary<ClassType, int> classStackCounts = new Dictionary<ClassType, int>();
     private Dictionary<ClassType, GameObject> spawnedClassItems = new Dictionary<ClassType, GameObject>();
 
@@ -46,6 +49,8 @@ public class ClassGenerator : NetworkBehaviour
         }
     }
 
+    private ClassType classType;
+
     private void Start()
     {
         for (int i = 0; i < classes.Count; i++)
@@ -60,18 +65,16 @@ public class ClassGenerator : NetworkBehaviour
         var classItem = itemIns.GetComponent<ClassItem>();
         classItem.Setup(classData.ClassName, classData.ClassType);
         classItem.userClass = classData;
-        Manager.classItems.Add(classItem);
         NetworkServer.Spawn(itemIns); // Spawn işlemi burada yapılmalı
     }
 
     public void UpdateStackedClasses(SOClass newClass)
     {
-        ClassType classType = newClass.ClassType;
+        classType = newClass.ClassType;
 
         if (!classStackCounts.ContainsKey(classType))
         {
             classStackCounts[classType] = 0;
-
             GameObject classIns = Instantiate(ClassPrefab, ListContent);
             var classItem = classIns.GetComponent<ClassItem>();
             classItem.Setup(newClass.ClassName, newClass.ClassType);
@@ -81,6 +84,7 @@ public class ClassGenerator : NetworkBehaviour
         else
         {
             classStackCounts[classType]++;
+        
             UpdateStackCount(classType);
         }
     }
@@ -103,5 +107,14 @@ public class ClassGenerator : NetworkBehaviour
                 }
             }
         }
+    }
+    
+    void OnListChanged(List<SOClass> oldValue, List<SOClass> newValue)
+    {
+        foreach (SOClass ıtem in newValue)
+        {
+            Instantiate(ClassPrefab, ListContent);
+        }
+        
     }
 }

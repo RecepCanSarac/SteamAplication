@@ -7,7 +7,6 @@ using UnityEngine.SceneManagement;
 public class CameraController : NetworkBehaviour
 {
     public GameObject cameraHolder;
-    public Camera camera;
     public float senX, senY;
     public Transform oriantattion;
     public GameObject playerModel;

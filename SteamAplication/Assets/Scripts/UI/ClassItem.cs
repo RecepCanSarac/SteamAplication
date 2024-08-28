@@ -54,7 +54,6 @@ public class ClassItem : NetworkBehaviour
         _ClassGenerator.Userclasses.Add(this.userClass);
         if (isServer)
         {
-            Debug.Log("Adding class to the management list: " + this.userClass.name);
             manager.AddListClass(this.userClass);
         }
         _ClassGenerator.UpdateStackedClasses(this.userClass);

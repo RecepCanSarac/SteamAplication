@@ -37,9 +37,11 @@ public class FizzyChat : MonoBehaviour
             Debug.Log("Text is empty or null");
     }
 
-    public void Joined()
+    public void Joined(string playerName)
     {
-        byte[] chatMessageBytes = System.Text.Encoding.UTF8.GetBytes(" joined");
+        chatMessage.text = " " + playerName + " joined";
+        
+        byte[] chatMessageBytes = System.Text.Encoding.UTF8.GetBytes(chatMessage.text);
 
         CSteamID ıd = new CSteamID(SteamLobby.instance.CurrentLobbyID);
 
