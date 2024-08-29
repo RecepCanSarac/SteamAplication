@@ -1,8 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 using UnityEngine.SceneManagement;
+using Steamworks;
 
 public class CameraController : NetworkBehaviour
 {
@@ -16,7 +15,7 @@ public class CameraController : NetworkBehaviour
 
     private bool escape = false;
 
-    public override void OnStartLocalPlayer()
+    public override void OnStartAuthority()
     {
         if (cameraHolder == null)
         {
@@ -54,6 +53,11 @@ public class CameraController : NetworkBehaviour
             Cursor.lockState = CursorLockMode.Locked;
         }
 
+        Rotate();
+    }
+
+    public void Rotate()
+    {
         float mouseX = Input.GetAxisRaw("Mouse X") * Time.deltaTime * senX;
         float mouseY = Input.GetAxisRaw("Mouse Y") * Time.deltaTime * senY;
 
@@ -61,8 +65,7 @@ public class CameraController : NetworkBehaviour
         xRotation -= mouseY;
         xRotation = Mathf.Clamp(xRotation, -80, 80);
 
-        playerModel.transform.rotation = Quaternion.Euler(0,yRotation,0);
+        playerModel.transform.rotation = Quaternion.Euler(0, yRotation, 0);
         oriantattion.rotation = Quaternion.Euler(xRotation, yRotation, 0);
     }
-
 }

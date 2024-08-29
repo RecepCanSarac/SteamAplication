@@ -1,19 +1,21 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 using UnityEngine.SceneManagement;
 using Steamworks;
-using Unity.VisualScripting;
+using Random = UnityEngine.Random;
 
 public class CustomNetworkManager : NetworkManager
 {
     [SerializeField] private PlayerObjectController GamePlayerPrefab;
-    public List<PlayerObjectController> GamePlayers { get; } =
+
+    public List<PlayerObjectController> GamePlayers =
         new List<PlayerObjectController>();
-    
+
     public List<SOClass> MangmentClass = new List<SOClass>();
-    
+
     public List<string> className = new List<string>();
 
     public override void OnServerAddPlayer(NetworkConnectionToClient conn)
@@ -33,7 +35,7 @@ public class CustomNetworkManager : NetworkManager
             StartCoroutine(JoinMessage(GamePlayerInstance));
         }
     }
-    
+
     // added
     public override void ServerChangeScene(string newSceneName)
     {
@@ -41,7 +43,7 @@ public class CustomNetworkManager : NetworkManager
         {
             AssignClassesToPlayers();
         }
-            
+
         base.ServerChangeScene(newSceneName);
     }
 
@@ -49,9 +51,15 @@ public class CustomNetworkManager : NetworkManager
     {
         ServerChangeScene(SceneName);
     }
-    
+
     private void AssignClassesToPlayers()
     {
+        if (MangmentClass == null || MangmentClass.Count == 0)
+        {
+            Debug.Log("MangmentClass list is empty. Cannot assign classes to players.");
+            return;
+        }
+
         List<int> assignedIndexes = new List<int>();
         foreach (var player in GamePlayers)
         {
@@ -59,8 +67,7 @@ public class CustomNetworkManager : NetworkManager
             do
             {
                 randomIndex = Random.Range(0, MangmentClass.Count);
-            }
-            while (assignedIndexes.Contains(randomIndex));
+            } while (assignedIndexes.Contains(randomIndex));
 
             assignedIndexes.Add(randomIndex);
 
@@ -91,7 +98,7 @@ public class CustomNetworkManager : NetworkManager
     IEnumerator JoinMessage(PlayerObjectController GamePlayerInstance)
     {
         yield return new WaitForSeconds(1);
-        
+
         FizzyChat.Instance.Joined(GamePlayerInstance.PlayerName);
     }
 }
