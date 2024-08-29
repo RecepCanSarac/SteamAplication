@@ -59,25 +59,9 @@ public class PlayerObjectController : NetworkBehaviour
     {
         gameObject.SetActive(true);
     }
-
-    // added
     public void PlayerNameShow()
     {
         CmdPlayerNameShow();
-    }
-    
-    // added
-    [Command]
-    private void CmdPlayerNameShow()
-    {
-        RpcUpdateUI(this.PlayerName, className);
-    }
-    
-    [ClientRpc]
-    private void RpcUpdateUI(string playerName, string playerClassName)
-    {
-        NameText.text = playerName;
-        classText.text = playerClassName;
     }
     
     private void PlayerReadyUpdate(bool oldValue, bool newValue)
@@ -153,6 +137,19 @@ public class PlayerObjectController : NetworkBehaviour
         {
             RpcUpdateUI(PlayerName, newValue);
         }
+    }
+    
+    [Command]
+    private void CmdPlayerNameShow()
+    {
+        RpcUpdateUI(this.PlayerName, className);
+    }
+    
+    [ClientRpc]
+    private void RpcUpdateUI(string playerName, string playerClassName)
+    {
+        NameText.text = playerName;
+        classText.text = playerClassName;
     }
 
     public void CanStartGame(string SceneGame)

@@ -52,9 +52,10 @@ public class ClassItem : NetworkBehaviour
     public void FromOldListNewList(ClassGenerator _ClassGenerator, CustomNetworkManager manager)
     {
         //_ClassGenerator.Userclasses.Add(this.userClass.ToString());
-        if (isServer)
+        if (isLocalPlayer)
         {
             manager.AddListClass(this.userClass);
+            _ClassGenerator.SetList();
         }
         _ClassGenerator.UpdateStackedClasses(this.userClass);
     }

@@ -27,10 +27,9 @@ public class ClassGenerator : NetworkBehaviour
 
     public List<SOClass> classes = new List<SOClass>();
 
-    [SyncVar(hook = nameof(OnListChanged))]
     public List<string> Userclasses = new List<string>();
-    
-    
+
+    [SyncVar(hook = nameof(OnListChanged))]
     public List<string> Currentclasses = new List<string>();
 
     private Dictionary<ClassType, int> classStackCounts = new Dictionary<ClassType, int>();
@@ -83,10 +82,14 @@ public class ClassGenerator : NetworkBehaviour
             classItem.Setup(newClass.ClassName, newClass.ClassType);
             NetworkServer.Spawn(classIns);
             spawnedClassItems[classType] = classIns;
-            Currentclasses.Add(newClass.ClassName.ToString());
+            
+            List<string> updatedClasses = new List<string>(Currentclasses);
+            updatedClasses.Add(newClass.ClassName.ToString());
+            Currentclasses = updatedClasses;
 
-            SetList(Currentclasses);
             Manager.UpdatedClassPlayer(newClass.ClassName.ToString());
+
+            SetList();
         }
         else
         {
@@ -116,20 +119,24 @@ public class ClassGenerator : NetworkBehaviour
         }
     }
 
-    void SetList(List<string> newValue)
+    public void SetList()
     {
-        CmdSetList(newValue);
-        OnListChanged(null, newValue);
-    }
-
-    [Command]
-    void CmdSetList(List<string> newValue)
-    {
-        Userclasses = newValue;
-        OnListChanged(null, newValue);
+        CmdSetList();
     }
 
     void OnListChanged(List<string> oldValue, List<string> newValue)
+    {
+        RpcSetList(newValue);
+    }
+
+    [Command]
+    void CmdSetList()
+    {
+        RpcSetList(Currentclasses);
+    }
+
+    [ClientRpc]
+    void RpcSetList(List<string> newValue)
     {
         for (int i = 0; i < Manager.GamePlayers.Count; i++)
         {
@@ -139,5 +146,7 @@ public class ClassGenerator : NetworkBehaviour
 
             playerClass.ShowClasses();
         }
+
+        Userclasses = newValue;
     }
 }
