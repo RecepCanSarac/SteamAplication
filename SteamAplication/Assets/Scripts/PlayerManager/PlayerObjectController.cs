@@ -10,6 +10,8 @@ public class PlayerObjectController : NetworkBehaviour
     public string className;
 
     public GameObject gUI;
+
+    public bool ısOrderOf = false;
     
     [SyncVar] public int ConnectionID;
     [SyncVar] public int PlayerIdNumber;

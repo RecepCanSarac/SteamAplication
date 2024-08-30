@@ -8,15 +8,45 @@ public class GameTimeline : NetworkBehaviour
     public TextMeshProUGUI timeText;
 
     public TextMeshProUGUI messageText;
-    
+
     public TextMeshProUGUI roundText;
 
+    #region SyncVar Variable
+
     [SyncVar(hook = nameof(OnSetTime))] public float time = 30.0f;
-    
+
     [SyncVar(hook = nameof(OnSetRaound))] public int round = 0;
+
+    [SyncVar(hook = nameof(OnPlayerIndex))]
+    public int playerIndex = 0;
+
+    [SyncVar(hook = nameof(OnOrderOfPlayer))]
+    public PlayerObjectController orderOfPlayer;
 
     [SyncVar(hook = nameof(OnSendMessage))]
     public string message = string.Empty;
+    
+
+    #endregion
+    
+    #region Singleton
+
+    private CustomNetworkManager manager;
+
+    private CustomNetworkManager Manager
+    {
+        get
+        {
+            if (manager != null)
+            {
+                return manager;
+            }
+
+            return manager = NetworkManager.singleton as CustomNetworkManager;
+        }
+    }
+
+    #endregion
 
     private float currentTime;
 
@@ -38,12 +68,18 @@ public class GameTimeline : NetworkBehaviour
             round++;
             message = Message();
             SetRound();
+            SetPlayerIndex();
             GameTime();
+            SetPlayer();
             time = currentTime;
+            if (Manager.GamePlayers.Count - 1 > playerIndex) playerIndex++;
+            else playerIndex = 0;
         }
 
         SetTime();
     }
+
+    #region SetFunc
 
     public void SetTime()
     {
@@ -60,6 +96,21 @@ public class GameTimeline : NetworkBehaviour
         CmdSetRound();
     }
 
+    public void SetPlayer()
+    {
+        orderOfPlayer = Manager.GamePlayers[playerIndex];
+        CmdSetPlayer();
+    }
+
+    public void SetPlayerIndex()
+    {
+        CmdSetPlayerIndex();
+    }
+
+    #endregion
+
+    #region OnSyncvarFunc
+
     void OnSetTime(float oldValue, float newValue)
     {
         RpcTime(newValue);
@@ -75,6 +126,20 @@ public class GameTimeline : NetworkBehaviour
         RpcRound(newValue);
     }
 
+    void OnOrderOfPlayer(PlayerObjectController oldValue, PlayerObjectController newValue)
+    {
+        RpcOrderOfPlayer(oldValue, newValue);
+    }
+
+    void OnPlayerIndex(int oldValue, int newValue)
+    {
+        RpcPlayerIndex(newValue);
+    }
+
+    #endregion
+
+    #region Command
+
     [Command]
     void CmdTime()
     {
@@ -86,12 +151,28 @@ public class GameTimeline : NetworkBehaviour
     {
         RpcMessage(message);
     }
-    
+
     [Command]
     void CmdSetRound()
     {
         RpcRound(round);
     }
+
+    [Command]
+    void CmdSetPlayer()
+    {
+        RpcOrderOfPlayer(null, orderOfPlayer);
+    }
+
+    [Command]
+    void CmdSetPlayerIndex()
+    {
+        RpcPlayerIndex(playerIndex);
+    }
+
+    #endregion
+
+    #region ClientRPC
 
     [ClientRpc]
     void RpcTime(float newValue)
@@ -104,12 +185,27 @@ public class GameTimeline : NetworkBehaviour
     {
         messageText.text = newValue;
     }
-    
+
     [ClientRpc]
     void RpcRound(int newValue)
     {
         roundText.text = "Round : " + newValue;
     }
+
+    [ClientRpc]
+    void RpcOrderOfPlayer(PlayerObjectController oldValue, PlayerObjectController newValue)
+    {
+        if(oldValue != null) oldValue.ısOrderOf = false;
+        newValue.ısOrderOf = true;
+    }
+
+    [ClientRpc]
+    void RpcPlayerIndex(int index)
+    {
+        Debug.Log("player ındex : " + index.ToString());
+    }
+
+    #endregion
 
     string Message()
     {

@@ -1341,7 +1341,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1560570606}
   - component: {fileID: 1560570605}
-  - component: {fileID: 1560570604}
   m_Layer: 0
   m_Name: GameCamera
   m_TagString: Untagged
@@ -1349,14 +1348,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!81 &1560570604
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1560570603}
-  m_Enabled: 1
 --- !u!20 &1560570605
 Camera:
   m_ObjectHideFlags: 0
@@ -2007,6 +1998,8 @@ MonoBehaviour:
   roundText: {fileID: 1028520164}
   time: 5
   round: 0
+  playerIndex: 0
+  orderOfPlayer: {fileID: 0}
   message: 
 --- !u!4 &1930064399
 Transform:
