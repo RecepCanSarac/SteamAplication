@@ -11,6 +11,8 @@ public class GameTimeline : NetworkBehaviour
 
     public TextMeshProUGUI roundText;
 
+    public GameObject gameCamera;
+
     #region SyncVar Variable
 
     [SyncVar(hook = nameof(OnSetTime))] public float time = 30.0f;
@@ -52,6 +54,7 @@ public class GameTimeline : NetworkBehaviour
 
     void Start()
     {
+        gameCamera.SetActive(false);
         message = "Oyun başlıyor....";
         currentTime = time;
         GameTime();
@@ -70,7 +73,8 @@ public class GameTimeline : NetworkBehaviour
             SetRound();
             SetPlayerIndex();
             GameTime();
-            SetPlayer();
+            if(round % 2 == 0) SetPlayer(true);
+            else SetPlayer(false);
             time = currentTime;
             if (Manager.GamePlayers.Count - 1 > playerIndex) playerIndex++;
             else playerIndex = 0;
@@ -96,9 +100,19 @@ public class GameTimeline : NetworkBehaviour
         CmdSetRound();
     }
 
-    public void SetPlayer()
+    public void SetPlayer(bool isChange)
     {
         orderOfPlayer = Manager.GamePlayers[playerIndex];
+        foreach (PlayerObjectController players in Manager.GamePlayers)
+        {
+            players.SetCamera();
+            players.SetMovement();
+            
+            if (isChange == true)
+                gameCamera.SetActive(true);
+            else
+                gameCamera.SetActive(false);
+        }
         CmdSetPlayer();
     }
 

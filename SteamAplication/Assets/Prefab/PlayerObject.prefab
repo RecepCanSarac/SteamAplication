@@ -232,6 +232,7 @@ MonoBehaviour:
   classText: {fileID: 8215277387173407463}
   className: 
   gUI: {fileID: 5017718093623590817}
+  "\u0131sOrderOf": 0
   ConnectionID: 0
   PlayerIdNumber: 0
   PlayerSteamID: 0

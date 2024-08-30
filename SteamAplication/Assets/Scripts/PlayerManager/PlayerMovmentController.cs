@@ -1,6 +1,5 @@
 using UnityEngine;
 using Mirror;
-using UnityEngine.SceneManagement;
 
 public class PlayerMovmentController : NetworkBehaviour
 {
@@ -15,27 +14,24 @@ public class PlayerMovmentController : NetworkBehaviour
 
     private void Update()
     {
-        if (SceneManager.GetActiveScene().name == "Game" || SceneManager.GetActiveScene().name == "Lobby")
+        if (PlayerModel.activeSelf == false)
         {
-            if (PlayerModel.activeSelf == false)
-            {
-                SetPosition();
-                PlayerModel.SetActive(true);
-            }
+            SetPosition();
+            PlayerModel.SetActive(true);
+        }
 
-            if (isLocalPlayer == true)
-            {
-                Movement();
-            }
+        if (isLocalPlayer == true)
+        {
+            Movement();
         }
     }
 
-    public void SetPosition()
+    void SetPosition()
     {
         transform.position = new Vector3(Random.Range(-5, 5), 2, Random.Range(-15, 7));
     }
 
-    public void Movement()
+    void Movement()
     {
         float xDirection = Input.GetAxis("Horizontal");
         float zDirection = Input.GetAxis("Vertical");

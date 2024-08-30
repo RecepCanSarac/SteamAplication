@@ -20,8 +20,18 @@ public class PlayerObjectController : NetworkBehaviour
     [SyncVar(hook = nameof(PlayerReadyUpdate))] public bool Ready;
     [SyncVar(hook = nameof(ClassNameUpdate))] public string syncedClassName;
 
+    [SyncVar(hook = nameof(OnMovementControll))]
+    public bool movementControll = true;
+    [SyncVar(hook = nameof(OnCameraControll))]
+    public bool cameraControll = false;
+    
     private CustomNetworkManager manager;
     private PlayerCollider PlayerCollider;
+    
+    private PlayerMovmentController _movmentController;
+
+    private CameraController _controller;
+
     public bool consolActivated = false;
 
     private CustomNetworkManager Manager
@@ -37,6 +47,9 @@ public class PlayerObjectController : NetworkBehaviour
     }
     private void Start()
     {
+        _movmentController = GetComponent<PlayerMovmentController>();
+        _controller = GetComponent<CameraController>();
+        
         PlayerCollider = GetComponent<PlayerCollider>();
         DontDestroyOnLoad(this.gameObject);
 
@@ -171,5 +184,57 @@ public class PlayerObjectController : NetworkBehaviour
     {
         manager.StartGame(SceneGame);
     }
+
+    //<--------------------------------------------------------------------------------------------------------------------------------------------------------------->
+    #region InGameController
+
+    public void SetMovement()
+    {
+        movementControll = false;
+        CmdMovementControll();
+    }
+
+    public void SetCamera()
+    {
+        cameraControll = !cameraControll;
+        CmdCameraControll();
+    }
+
+    [Command]
+    void CmdMovementControll()
+    {
+        RpcMovementControll(movementControll);
+    }
+
+    [Command]
+    void CmdCameraControll()
+    {
+        RpcMovementControll(cameraControll);
+    }
+    
+    void OnMovementControll(bool oldValue, bool newValue)
+    {
+        RpcMovementControll(newValue);
+    }
+    
+    void OnCameraControll(bool oldValue, bool newValue)
+    {
+        RpcCameraControll(newValue);
+    }
+
+    [ClientRpc]
+    void RpcMovementControll(bool newValue)
+    {
+        _movmentController.enabled = newValue;
+    }
+
+    [ClientRpc]
+    void RpcCameraControll(bool newValue)
+    {
+        _controller.enabled = newValue;
+        _controller.ChangeCamera();
+    }
+
+    #endregion
 }
 
