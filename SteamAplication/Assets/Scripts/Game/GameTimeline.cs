@@ -15,6 +15,8 @@ public class GameTimeline : NetworkBehaviour
 
     #region SyncVar Variable
 
+    [SyncVar(hook = nameof(OnCameraControll))] public bool _cameracontroll = true;
+
     [SyncVar(hook = nameof(OnSetTime))] public float time = 30.0f;
 
     [SyncVar(hook = nameof(OnSetRaound))] public int round = 0;
@@ -73,8 +75,7 @@ public class GameTimeline : NetworkBehaviour
             SetRound();
             SetPlayerIndex();
             GameTime();
-            if(round % 2 == 0) SetPlayer(true);
-            else SetPlayer(false);
+            SetPlayer();
             time = currentTime;
             if (Manager.GamePlayers.Count - 1 > playerIndex) playerIndex++;
             else playerIndex = 0;
@@ -100,18 +101,14 @@ public class GameTimeline : NetworkBehaviour
         CmdSetRound();
     }
 
-    public void SetPlayer(bool isChange)
+    public void SetPlayer()
     {
         orderOfPlayer = Manager.GamePlayers[playerIndex];
         foreach (PlayerObjectController players in Manager.GamePlayers)
         {
             players.SetCamera();
             players.SetMovement();
-            
-            if (isChange == true)
-                gameCamera.SetActive(true);
-            else
-                gameCamera.SetActive(false);
+            SetCamera();
         }
         CmdSetPlayer();
     }
@@ -119,6 +116,12 @@ public class GameTimeline : NetworkBehaviour
     public void SetPlayerIndex()
     {
         CmdSetPlayerIndex();
+    }
+
+    public void SetCamera()
+    {
+        _cameracontroll = !_cameracontroll;
+        CmdSetCamera();
     }
 
     #endregion
@@ -148,6 +151,11 @@ public class GameTimeline : NetworkBehaviour
     void OnPlayerIndex(int oldValue, int newValue)
     {
         RpcPlayerIndex(newValue);
+    }
+
+    void OnCameraControll(bool oldValue, bool newValue)
+    {
+        RpcCameraControll(newValue);
     }
 
     #endregion
@@ -184,6 +192,12 @@ public class GameTimeline : NetworkBehaviour
         RpcPlayerIndex(playerIndex);
     }
 
+    [Command]
+    void CmdSetCamera()
+    {
+        RpcCameraControll(_cameracontroll);
+    }
+
     #endregion
 
     #region ClientRPC
@@ -217,6 +231,12 @@ public class GameTimeline : NetworkBehaviour
     void RpcPlayerIndex(int index)
     {
         Debug.Log("player ındex : " + index.ToString());
+    }
+
+    [ClientRpc]
+    void RpcCameraControll(bool newValue)
+    {
+        gameCamera.SetActive(newValue);
     }
 
     #endregion

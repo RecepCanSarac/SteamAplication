@@ -197,6 +197,10 @@ public class PlayerObjectController : NetworkBehaviour
     public void SetCamera()
     {
         cameraControll = !cameraControll;
+        foreach (PlayerObjectController players in Manager.GamePlayers)
+        {
+            players.GetComponent<CameraController>().cameraHolder.SetActive(false);
+        }
         CmdCameraControll();
     }
 
