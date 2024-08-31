@@ -5,9 +5,6 @@ using Steamworks;
 
 public class CameraController : NetworkBehaviour
 {
-    [SyncVar(hook = nameof(OnCameraControll))]
-    public bool cameraControll = false;
-
     public GameObject cameraHolder;
     public float senX, senY;
     public Transform oriantattion;
@@ -72,26 +69,8 @@ public class CameraController : NetworkBehaviour
         oriantattion.rotation = Quaternion.Euler(xRotation, yRotation, 0);
     }
 
-    public void ChangeCamera()
+    public void ChangeCamera(bool IsActive)
     {
-        CmdCameraControll();
-    }
-
-    [Command]
-    void CmdCameraControll()
-    {
-        cameraControll = !cameraControll;
-        RpcCameraControll(cameraControll);
-    }
-
-    void OnCameraControll(bool oldValue, bool newValue)
-    {
-        RpcCameraControll(newValue);
-    }
-
-    [ClientRpc]
-    void RpcCameraControll(bool newValue)
-    {
-        cameraHolder.SetActive(newValue);
+        cameraHolder.SetActive(IsActive);
     }
 }

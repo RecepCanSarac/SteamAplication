@@ -206,7 +206,7 @@ public class PlayerObjectController : NetworkBehaviour
     [Command]
     void CmdCameraControll()
     {
-        RpcMovementControll(cameraControll);
+        RpcCameraControll(cameraControll);
     }
     
     void OnMovementControll(bool oldValue, bool newValue)
@@ -228,8 +228,8 @@ public class PlayerObjectController : NetworkBehaviour
     [ClientRpc]
     void RpcCameraControll(bool newValue)
     {
+        _controller.ChangeCamera(newValue);
         _controller.enabled = newValue;
-        _controller.ChangeCamera();
     }
 
     #endregion
