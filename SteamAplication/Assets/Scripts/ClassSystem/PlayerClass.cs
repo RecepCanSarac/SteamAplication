@@ -7,18 +7,16 @@ public class PlayerClass : NetworkBehaviour
     public TextMeshProUGUI[] texts;
 
     public List<string> className = new List<string>();
-
-
+    
     public void ShowClasses()
     {
-        //Change Recep burası güzel
         for (int i = 0; i < className.Count; i++)
         {
             texts[i].gameObject.SetActive(true);
             texts[i].text = className[i];
         }
     }
-    //Add recep
+
     public void ShowClasses(List<string> clases)
     {
         for (int i = 0; i < texts.Length; i++)

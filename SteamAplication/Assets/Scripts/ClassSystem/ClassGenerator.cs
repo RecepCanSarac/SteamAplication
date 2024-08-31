@@ -71,7 +71,6 @@ public class ClassGenerator : NetworkBehaviour
         var classItem = itemIns.GetComponent<ClassItem>();
         classItem.Setup(classData.ClassName, classData.ClassType);
         classItem.userClass = classData;
-        //NetworkServer.Spawn(itemIns);
     }
 
     public void UpdateStackedClasses(SOClass newClass)
@@ -84,7 +83,6 @@ public class ClassGenerator : NetworkBehaviour
             GameObject classIns = Instantiate(ClassPrefab, ListContent);
             var classItem = classIns.GetComponent<ClassItem>();
             classItem.Setup(newClass.ClassName, newClass.ClassType);
-            //NetworkServer.Spawn(classIns);
             spawnedClassItems[classType] = classIns;
 
             List<string> updatedClasses = new List<string>(Currentclasses);
