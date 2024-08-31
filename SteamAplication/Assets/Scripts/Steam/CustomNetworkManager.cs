@@ -29,18 +29,14 @@ public class CustomNetworkManager : NetworkManager
             GamePlayerInstance.PlayerSteamID =
                 (ulong)SteamMatchmaking.GetLobbyMemberByIndex(
                     (CSteamID)SteamLobby.instance.CurrentLobbyID, GamePlayers.Count);
-            
+
+            GamePlayerInstance.GetComponent<PlayerClass>().className = ClassGenerator.Instance.Currentclasses;
+
             NetworkServer.AddPlayerForConnection(conn, GamePlayerInstance.gameObject);
+            
+            ClassGenerator.Instance.GetCurrentList();
 
             StartCoroutine(JoinMessage(GamePlayerInstance));
-        }
-    }
-
-    public void SetList()
-    {
-        foreach (PlayerObjectController players in GamePlayers)
-        {
-            players.GetComponent<PlayerClass>().className = className;
         }
     }
 

@@ -57,7 +57,6 @@ public class ClassItem : NetworkBehaviour
             _ClassGenerator.SetList();
             manager.AddListClass(this.userClass);
         }
-        manager.SetList();
         _ClassGenerator.UpdateStackedClasses(this.userClass);
     }
 

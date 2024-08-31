@@ -2,7 +2,6 @@ using UnityEngine;
 using Mirror;
 using Steamworks;
 using TMPro;
-
 public class PlayerObjectController : NetworkBehaviour
 {
     public TextMeshProUGUI NameText;
@@ -11,29 +10,22 @@ public class PlayerObjectController : NetworkBehaviour
     public string className;
 
     public bool ısOrderOf = false;
-
+    
     [SyncVar] public int ConnectionID;
     [SyncVar] public int PlayerIdNumber;
     [SyncVar] public ulong PlayerSteamID;
-
-    [SyncVar(hook = nameof(PlayerNameUpdate))]
-    public string PlayerName;
-
-    [SyncVar(hook = nameof(PlayerReadyUpdate))]
-    public bool Ready;
-
-    [SyncVar(hook = nameof(ClassNameUpdate))]
-    public string syncedClassName;
+    [SyncVar(hook = nameof(PlayerNameUpdate))] public string PlayerName;
+    [SyncVar(hook = nameof(PlayerReadyUpdate))] public bool Ready;
+    [SyncVar(hook = nameof(ClassNameUpdate))] public string syncedClassName;
 
     [SyncVar(hook = nameof(OnMovementControll))]
     public bool movementControll = true;
-
     [SyncVar(hook = nameof(OnCameraControll))]
     public bool cameraControll = false;
-
+    
     private CustomNetworkManager manager;
     private PlayerCollider PlayerCollider;
-
+    
     private PlayerMovmentController _movmentController;
 
     private CameraController _controller;
@@ -48,20 +40,17 @@ public class PlayerObjectController : NetworkBehaviour
             {
                 return manager;
             }
-
             return manager = CustomNetworkManager.singleton as CustomNetworkManager;
         }
     }
-
     private void Start()
     {
         _movmentController = GetComponent<PlayerMovmentController>();
         _controller = GetComponent<CameraController>();
-
+        
         PlayerCollider = GetComponent<PlayerCollider>();
         DontDestroyOnLoad(this.gameObject);
     }
-
     private void Update()
     {
         consolActivated = PlayerCollider.isConsolActiveted;
@@ -76,38 +65,34 @@ public class PlayerObjectController : NetworkBehaviour
             ReadText.color = Color.green;
         }
 
+        // added
         PlayerNameShow();
     }
-
     public void InitializePlayer()
     {
         gameObject.SetActive(true);
     }
-
     public void PlayerNameShow()
     {
         CmdPlayerNameShow();
     }
-
+    
     private void PlayerReadyUpdate(bool oldValue, bool newValue)
     {
         if (isServer)
         {
             this.Ready = newValue;
         }
-
         if (isClient)
         {
             LobbyController.instance.UpdatePlayerList();
         }
     }
-
     [Command]
     private void CMdSetPlayerReady()
     {
         this.PlayerReadyUpdate(this.Ready, !this.Ready);
     }
-
     public void ChangeReady()
     {
         if (isLocalPlayer)
@@ -115,7 +100,6 @@ public class PlayerObjectController : NetworkBehaviour
             CMdSetPlayerReady();
         }
     }
-
     public override void OnStartAuthority()
     {
         CmdSetPlayername(SteamFriends.GetPersonaName().ToString());
@@ -150,32 +134,30 @@ public class PlayerObjectController : NetworkBehaviour
         {
             this.PlayerName = newValue;
         }
-
         if (isClient)
         {
             LobbyController.instance.UpdatePlayerList();
         }
     }
-
+    
     private void ClassNameUpdate(string oldValue, string newValue)
     {
         if (isServer)
         {
             this.className = newValue;
         }
-
         if (isClient)
         {
             RpcUpdateUI(PlayerName, newValue);
         }
     }
-
+    
     [Command]
     private void CmdPlayerNameShow()
     {
         RpcUpdateUI(this.PlayerName, className);
     }
-
+    
     [ClientRpc]
     private void RpcUpdateUI(string playerName, string playerClassName)
     {
@@ -190,7 +172,6 @@ public class PlayerObjectController : NetworkBehaviour
             CmdCanStartGame(SceneGame);
         }
     }
-
     [Command]
     public void CmdCanStartGame(string SceneGame)
     {
@@ -198,7 +179,6 @@ public class PlayerObjectController : NetworkBehaviour
     }
 
     //<--------------------------------------------------------------------------------------------------------------------------------------------------------------->
-
     #region InGameController
 
     public void SetMovement()
@@ -212,9 +192,8 @@ public class PlayerObjectController : NetworkBehaviour
         cameraControll = !cameraControll;
         foreach (PlayerObjectController players in Manager.GamePlayers)
         {
-            players.GetComponent<CameraController>().cameraHolder.SetActive(cameraControll);
+            players.GetComponent<CameraController>().cameraHolder.SetActive(false);
         }
-
         CmdCameraControll();
     }
 
@@ -227,14 +206,14 @@ public class PlayerObjectController : NetworkBehaviour
     [Command]
     void CmdCameraControll()
     {
-        RpcCameraControll(cameraControll);
+        RpcMovementControll(cameraControll);
     }
-
+    
     void OnMovementControll(bool oldValue, bool newValue)
     {
         RpcMovementControll(newValue);
     }
-
+    
     void OnCameraControll(bool oldValue, bool newValue)
     {
         RpcCameraControll(newValue);
@@ -250,7 +229,9 @@ public class PlayerObjectController : NetworkBehaviour
     void RpcCameraControll(bool newValue)
     {
         _controller.enabled = newValue;
+        _controller.ChangeCamera();
     }
 
     #endregion
 }
+
