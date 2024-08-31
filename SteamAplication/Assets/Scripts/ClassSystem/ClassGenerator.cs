@@ -123,9 +123,12 @@ public class ClassGenerator : NetworkBehaviour
         }
     }
     //Add Recep
-    public void GetCurrentList(List<string> clases)
+    public void GetCurrentList()
     {
-        GetList(clases);
+        if (isServer)
+        {
+            GetList(Userclasses);
+        }
     }
 
     public void SetList()
