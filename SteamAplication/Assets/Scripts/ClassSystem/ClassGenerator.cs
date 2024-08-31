@@ -130,7 +130,6 @@ public class ClassGenerator : NetworkBehaviour
 
     public void SetList()
     {
-        // bu fonksiyonu çağırmamız yetiyor diğerlerinde olması için
         CmdSetList();
     }
     void OnListChanged(List<string> oldValue, List<string> newValue)
@@ -155,9 +154,6 @@ public class ClassGenerator : NetworkBehaviour
     {
         for (int i = 0; i < Manager.GamePlayers.Count; i++)
         {
-            // burdaki sıkıntı bir yerde set yapcaz ya ben yaptıydım
-            // diğeri gelince indeksler yuşmuyor tek sıkıntı o
-            // oda burayla alakalı
             PlayerClass playerClass = Manager.GamePlayers[i].GetComponent<PlayerClass>();
 
             playerClass.className.Clear();

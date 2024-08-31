@@ -161,9 +161,7 @@ public class LobbyController : MonoBehaviour
             NewPlayerItemScript.transform.localScale = Vector3.one;
 
             PlayerListItems.Add(NewPlayerItemScript);
-            //ADd recep
-            // get niye yapýon ki oyunculara set yapcaz
-            //ClassGenerator.GetCurrentList(LocalPlayerObject.GetComponent<PlayerClass>().className);
+            ClassGenerator.Instance.SetList();
         }
         PlayerItemCreated = true;
     }
@@ -188,7 +186,8 @@ public class LobbyController : MonoBehaviour
 
                 PlayerListItems.Add(NewPlayerItemScript);
                 //added Recep buraya gerek yok kibi
-                ClassGenerator.GetCurrentList(LocalPlayerObject.GetComponent<PlayerClass>().className);
+                ClassGenerator.Instance.SetList();
+                ClassGenerator.Instance.GetCurrentList(LocalPlayerObject.GetComponent<PlayerClass>().className);
             }
         }
     }
