@@ -32,6 +32,8 @@ public class ClassGenerator : NetworkBehaviour
     [SyncVar(hook = nameof(OnListChanged))]
     public List<string> Currentclasses = new List<string>();
 
+
+
     private Dictionary<ClassType, int> classStackCounts = new Dictionary<ClassType, int>();
     private Dictionary<ClassType, GameObject> spawnedClassItems = new Dictionary<ClassType, GameObject>();
 
@@ -67,7 +69,7 @@ public class ClassGenerator : NetworkBehaviour
         var classItem = itemIns.GetComponent<ClassItem>();
         classItem.Setup(classData.ClassName, classData.ClassType);
         classItem.userClass = classData;
-        NetworkServer.Spawn(itemIns); // Spawn işlemi burada yapılmalı
+        NetworkServer.Spawn(itemIns);
     }
 
     public void UpdateStackedClasses(SOClass newClass)
@@ -82,7 +84,7 @@ public class ClassGenerator : NetworkBehaviour
             classItem.Setup(newClass.ClassName, newClass.ClassType);
             NetworkServer.Spawn(classIns);
             spawnedClassItems[classType] = classIns;
-            
+
             List<string> updatedClasses = new List<string>(Currentclasses);
             updatedClasses.Add(newClass.ClassName.ToString());
             Currentclasses = updatedClasses;
@@ -118,17 +120,27 @@ public class ClassGenerator : NetworkBehaviour
             }
         }
     }
+    //Add Recep
+    public void GetCurrentList(List<string> clases)
+    {
+        GetList(clases);
+    }
 
     public void SetList()
     {
         CmdSetList();
     }
-
     void OnListChanged(List<string> oldValue, List<string> newValue)
     {
         RpcSetList(newValue);
     }
-
+    //Add Recep
+    [Command]
+    void GetList(List<string> clases)
+    {
+        GetRPCList(clases);
+    }
+    
     [Command]
     void CmdSetList()
     {
@@ -145,6 +157,21 @@ public class ClassGenerator : NetworkBehaviour
             playerClass.className = newValue;
 
             playerClass.ShowClasses();
+        }
+
+        Userclasses = newValue;
+    }
+    //Add recep
+    [ClientRpc]
+    void GetRPCList(List<string> newValue)
+    {
+        for (int i = 0; i < Manager.GamePlayers.Count; i++)
+        {
+            PlayerClass playerClass = Manager.GamePlayers[i].GetComponent<PlayerClass>();
+
+            playerClass.className = newValue;
+
+            playerClass.ShowClasses(newValue);
         }
 
         Userclasses = newValue;

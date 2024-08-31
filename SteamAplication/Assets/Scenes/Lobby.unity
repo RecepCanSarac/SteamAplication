@@ -261,6 +261,7 @@ MonoBehaviour:
   UI: {fileID: 505371356}
   ContentList: {fileID: 1078708361}
   ContentClass: {fileID: 1099256731}
+  ClassGenerator: {fileID: 453012098}
 --- !u!4 &88626241
 Transform:
   m_ObjectHideFlags: 0

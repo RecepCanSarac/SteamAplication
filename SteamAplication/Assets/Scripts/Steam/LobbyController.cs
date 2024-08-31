@@ -34,7 +34,7 @@ public class LobbyController : MonoBehaviour
     public GameObject ContentList;
     public GameObject ContentClass;
     private bool isActive;
-
+    public ClassGenerator ClassGenerator;
     private CustomNetworkManager Manager
     {
         get
@@ -164,6 +164,9 @@ public class LobbyController : MonoBehaviour
             NewPlayerItemScript.transform.localScale = Vector3.one;
 
             PlayerListItems.Add(NewPlayerItemScript);
+            //ADd recep
+            //burayada belki kodu yazmamamýz gerekebilir ama burasý sanýrým lobby sahibini olýþturuyor emin deðilim XD
+            //ClassGenerator.GetCurrentList(LocalPlayerObject.GetComponent<PlayerClass>().className);
         }
         PlayerItemCreated = true;
     }
@@ -187,6 +190,8 @@ public class LobbyController : MonoBehaviour
                 NewPlayerItemScript.transform.localScale = Vector3.one;
 
                 PlayerListItems.Add(NewPlayerItemScript);
+                //added Recep
+                ClassGenerator.GetCurrentList(LocalPlayerObject.GetComponent<PlayerClass>().className);
             }
         }
     }

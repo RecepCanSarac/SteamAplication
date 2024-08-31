@@ -239,6 +239,8 @@ MonoBehaviour:
   PlayerName: 
   Ready: 0
   syncedClassName: 
+  movementControll: 1
+  cameraControll: 0
   consolActivated: 0
 --- !u!114 &5928905197194942545
 MonoBehaviour:
@@ -255,6 +257,7 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
+  cameraControll: 0
   cameraHolder: {fileID: 4230404239732311174}
   senX: 400
   senY: 400
