@@ -134,7 +134,10 @@ public class ClassGenerator : NetworkBehaviour
     }
     void OnListChanged(List<string> oldValue, List<string> newValue)
     {
-        RpcSetList(newValue);
+        if (isServer)
+        {
+            RpcSetList(newValue);
+        }
     }
     
     [Command]
