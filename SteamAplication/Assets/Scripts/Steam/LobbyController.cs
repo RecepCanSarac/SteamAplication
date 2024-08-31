@@ -161,7 +161,6 @@ public class LobbyController : MonoBehaviour
             NewPlayerItemScript.transform.localScale = Vector3.one;
 
             PlayerListItems.Add(NewPlayerItemScript);
-            ClassGenerator.Instance.SetList();
         }
         PlayerItemCreated = true;
     }
@@ -185,9 +184,6 @@ public class LobbyController : MonoBehaviour
                 NewPlayerItemScript.transform.localScale = Vector3.one;
 
                 PlayerListItems.Add(NewPlayerItemScript);
-                //added Recep buraya gerek yok kibi
-                ClassGenerator.Instance.SetList();
-                ClassGenerator.Instance.GetCurrentList(LocalPlayerObject.GetComponent<PlayerClass>().className);
             }
         }
     }
