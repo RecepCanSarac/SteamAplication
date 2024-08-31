@@ -71,7 +71,7 @@ public class ClassGenerator : NetworkBehaviour
         var classItem = itemIns.GetComponent<ClassItem>();
         classItem.Setup(classData.ClassName, classData.ClassType);
         classItem.userClass = classData;
-        NetworkServer.Spawn(itemIns);
+        //NetworkServer.Spawn(itemIns);
     }
 
     public void UpdateStackedClasses(SOClass newClass)
