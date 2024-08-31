@@ -8,10 +8,15 @@ public class PlayerClass : NetworkBehaviour
 
     public List<string> className = new List<string>();
 
+    private void Start()
+    {
+        ShowClasses();
+    }
 
     public void ShowClasses()
     {
         //Change Recep burası güzel
+        //Ben yaptım tabii güzel
         for (int i = 0; i < className.Count; i++)
         {
             texts[i].gameObject.SetActive(true);
