@@ -31,6 +31,8 @@ public class CustomNetworkManager : NetworkManager
                     (CSteamID)SteamLobby.instance.CurrentLobbyID, GamePlayers.Count);
 
             NetworkServer.AddPlayerForConnection(conn, GamePlayerInstance.gameObject);
+            
+            ClassGenerator.Instance.SetList();
 
             StartCoroutine(JoinMessage(GamePlayerInstance));
         }

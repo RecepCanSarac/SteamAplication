@@ -9,8 +9,6 @@ public class PlayerObjectController : NetworkBehaviour
     public TextMeshProUGUI classText;
     public string className;
 
-    public GameObject gUI;
-
     public bool ısOrderOf = false;
     
     [SyncVar] public int ConnectionID;
@@ -52,11 +50,6 @@ public class PlayerObjectController : NetworkBehaviour
         
         PlayerCollider = GetComponent<PlayerCollider>();
         DontDestroyOnLoad(this.gameObject);
-
-        if (isLocalPlayer == false)
-        {
-            gUI.SetActive(false);
-        }
     }
     private void Update()
     {

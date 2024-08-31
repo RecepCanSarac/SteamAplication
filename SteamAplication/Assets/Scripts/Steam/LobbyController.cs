@@ -1,11 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Mirror;
 using Steamworks;
 using System.Linq;
 using TMPro;
-using System;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
@@ -165,7 +162,7 @@ public class LobbyController : MonoBehaviour
 
             PlayerListItems.Add(NewPlayerItemScript);
             //ADd recep
-            //burayada belki kodu yazmamamýz gerekebilir ama burasý sanýrým lobby sahibini olýþturuyor emin deðilim XD
+            // get niye yapýon ki oyunculara set yapcaz
             //ClassGenerator.GetCurrentList(LocalPlayerObject.GetComponent<PlayerClass>().className);
         }
         PlayerItemCreated = true;
@@ -190,7 +187,7 @@ public class LobbyController : MonoBehaviour
                 NewPlayerItemScript.transform.localScale = Vector3.one;
 
                 PlayerListItems.Add(NewPlayerItemScript);
-                //added Recep
+                //added Recep buraya gerek yok kibi
                 ClassGenerator.GetCurrentList(LocalPlayerObject.GetComponent<PlayerClass>().className);
             }
         }

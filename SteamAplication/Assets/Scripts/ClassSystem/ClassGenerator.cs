@@ -32,7 +32,9 @@ public class ClassGenerator : NetworkBehaviour
     [SyncVar(hook = nameof(OnListChanged))]
     public List<string> Currentclasses = new List<string>();
 
+    public static ClassGenerator Instance;
 
+    private void Awake() => Instance = this;
 
     private Dictionary<ClassType, int> classStackCounts = new Dictionary<ClassType, int>();
     private Dictionary<ClassType, GameObject> spawnedClassItems = new Dictionary<ClassType, GameObject>();
@@ -128,13 +130,14 @@ public class ClassGenerator : NetworkBehaviour
 
     public void SetList()
     {
+        // bu fonksiyonu çağırmamız yetiyor diğerlerinde olması için
         CmdSetList();
     }
     void OnListChanged(List<string> oldValue, List<string> newValue)
     {
         RpcSetList(newValue);
     }
-    //Add Recep
+    
     [Command]
     void GetList(List<string> clases)
     {
@@ -152,8 +155,12 @@ public class ClassGenerator : NetworkBehaviour
     {
         for (int i = 0; i < Manager.GamePlayers.Count; i++)
         {
+            // burdaki sıkıntı bir yerde set yapcaz ya ben yaptıydım
+            // diğeri gelince indeksler yuşmuyor tek sıkıntı o
+            // oda burayla alakalı
             PlayerClass playerClass = Manager.GamePlayers[i].GetComponent<PlayerClass>();
 
+            playerClass.className.Clear();
             playerClass.className = newValue;
 
             playerClass.ShowClasses();

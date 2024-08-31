@@ -11,7 +11,7 @@ public class PlayerClass : NetworkBehaviour
 
     public void ShowClasses()
     {
-        //Change Recep
+        //Change Recep burası güzel
         for (int i = 0; i < className.Count; i++)
         {
             texts[i].gameObject.SetActive(true);
