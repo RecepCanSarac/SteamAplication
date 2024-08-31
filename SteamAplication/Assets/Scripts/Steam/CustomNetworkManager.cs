@@ -32,7 +32,7 @@ public class CustomNetworkManager : NetworkManager
 
             NetworkServer.AddPlayerForConnection(conn, GamePlayerInstance.gameObject);
             
-            ClassGenerator.Instance.GetCurrentList();
+            ClassGenerator.Instance.SetList();
 
             StartCoroutine(JoinMessage(GamePlayerInstance));
         }
