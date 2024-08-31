@@ -127,7 +127,7 @@ public class ClassGenerator : NetworkBehaviour
     {
         if (isServer)
         {
-            GetList(Userclasses);
+            GetList(Currentclasses);
         }
     }
 

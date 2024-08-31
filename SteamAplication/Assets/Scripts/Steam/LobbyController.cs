@@ -162,7 +162,7 @@ public class LobbyController : MonoBehaviour
 
             PlayerListItems.Add(NewPlayerItemScript);
             //ClassGenerator.Instance.SetList();
-            ClassGenerator.Instance.SetList();
+            ClassGenerator.Instance.GetCurrentList();
         }
         PlayerItemCreated = true;
     }
@@ -188,7 +188,7 @@ public class LobbyController : MonoBehaviour
                 PlayerListItems.Add(NewPlayerItemScript);
                 //added Recep buraya gerek yok kibi
                 //ClassGenerator.Instance.SetList();
-                ClassGenerator.Instance.SetList();
+                ClassGenerator.Instance.GetCurrentList();
             }
         }
     }
