@@ -22,15 +22,13 @@ public class ClassGenerator : NetworkBehaviour
 {
     public Transform Content;
     public GameObject classItemPrefab;
-
-    public GameObject currentObject;
-
+    public GameObject ClassPrefab;
+    public Transform ListContent;
     public List<SOClass> classes = new List<SOClass>();
-
     public List<string> Userclasses = new List<string>();
 
     [SyncVar(hook = nameof(OnListChanged))]
-    public List<string> Currentclasses = new List<string>();
+    public List<ClassData> DataList = new List<ClassData>();
 
     public static ClassGenerator Instance;
 
@@ -38,9 +36,6 @@ public class ClassGenerator : NetworkBehaviour
 
     private Dictionary<ClassType, int> classStackCounts = new Dictionary<ClassType, int>();
     private Dictionary<ClassType, GameObject> spawnedClassItems = new Dictionary<ClassType, GameObject>();
-
-    public GameObject ClassPrefab;
-    public Transform ListContent;
 
     private CustomNetworkManager manager;
 
@@ -52,7 +47,6 @@ public class ClassGenerator : NetworkBehaviour
             {
                 return manager;
             }
-
             return manager = NetworkManager.singleton as CustomNetworkManager;
         }
     }
@@ -78,29 +72,35 @@ public class ClassGenerator : NetworkBehaviour
     {
         ClassType classType = newClass.ClassType;
 
+        ClassData classData = DataList.Find(cd => cd.ClassType == classType);
+
+        if (classData == null)
+        {
+            classData = new ClassData
+            {
+                ClassName = newClass.ClassName,
+                ClassType = classType,
+                Count = 1
+            };
+            DataList.Add(classData);
+        }
+        else
+        {
+            classData.Count++;
+        }
+
         if (!classStackCounts.ContainsKey(classType))
         {
             classStackCounts[classType] = 0;
             GameObject classIns = Instantiate(ClassPrefab, ListContent);
             var classItem = classIns.GetComponent<ClassItem>();
             classItem.Setup(newClass.ClassName, newClass.ClassType);
-            //NetworkServer.Spawn(classIns);
             spawnedClassItems[classType] = classIns;
-
-            List<string> updatedClasses = new List<string>(Currentclasses);
-            updatedClasses.Add(newClass.ClassName.ToString());
-            Currentclasses = updatedClasses;
-
-            Manager.UpdatedClassPlayer(newClass.ClassName.ToString());
-
-            SetList();
         }
-        else
-        {
-            classStackCounts[classType]++;
 
-            UpdateStackCount(classType);
-        }
+        UpdateStackCount(classType);
+        SetList();
+        Manager.UpdatedClassPlayer(newClass.ClassName.ToString());
     }
 
     private void UpdateStackCount(ClassType classType)
@@ -111,78 +111,52 @@ public class ClassGenerator : NetworkBehaviour
             if (classItem != null)
             {
                 TextMeshProUGUI text = classItem.GetComponent<ClassItem>().NumberText;
-                if (classStackCounts[classType] > 1)
-                {
-                    text.text = classStackCounts[classType].ToString();
-                }
-                else
-                {
-                    text.text = "1";
-                }
+                int count = DataList.Find(cd => cd.ClassType == classType).Count;
+                text.text = count.ToString();
             }
-        }
-    }
-    //Add Recep
-    public void GetCurrentList()
-    {
-        if (isServer)
-        {
-            GetList(Currentclasses);
         }
     }
 
     public void SetList()
     {
-        CmdSetList();
+        if(isServer)
+            CmdSetList();
     }
-    void OnListChanged(List<string> oldValue, List<string> newValue)
+
+    void OnListChanged(List<ClassData> oldValue, List<ClassData> newValue)
     {
         if (isServer)
         {
             RpcSetList(newValue);
         }
     }
-    
-    [Command]
-    void GetList(List<string> clases)
-    {
-        GetRPCList(clases);
-    }
-    
+
     [Command]
     void CmdSetList()
     {
-        RpcSetList(Currentclasses);
+        RpcSetList(DataList);
     }
 
     [ClientRpc]
-    void RpcSetList(List<string> newValue)
+    void RpcSetList(List<ClassData> newValue)
     {
+
         for (int i = 0; i < Manager.GamePlayers.Count; i++)
         {
             PlayerClass playerClass = Manager.GamePlayers[i].GetComponent<PlayerClass>();
-
-            playerClass.className.Clear();
-            playerClass.className = newValue;
-
             playerClass.ShowClasses();
-        }
-
-        Userclasses = newValue;
-    }
-    //Add recep
-    [ClientRpc]
-    void GetRPCList(List<string> newValue)
-    {
-        for (int i = 0; i < Manager.GamePlayers.Count; i++)
-        {
-            PlayerClass playerClass = Manager.GamePlayers[i].GetComponent<PlayerClass>();
-
-            playerClass.className = newValue;
-
             playerClass.ShowClasses(newValue);
         }
+    }
 
-        Userclasses = newValue;
+    [ClientRpc]
+    void GetRPCList(List<ClassData> newValue)
+    {
+        for (int i = 0; i < Manager.GamePlayers.Count; i++)
+        {
+            PlayerClass playerClass = Manager.GamePlayers[i].GetComponent<PlayerClass>();
+            playerClass.ShowClasses(newValue);
+        }
+        Userclasses = newValue.ConvertAll(cd => cd.ClassName);
     }
 }

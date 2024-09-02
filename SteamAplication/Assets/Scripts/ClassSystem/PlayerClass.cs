@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using Mirror;
+using Org.BouncyCastle.Asn1.Mozilla;
 using TMPro;
 using UnityEngine;
 
@@ -7,7 +9,7 @@ public class PlayerClass : NetworkBehaviour
 {
     public TextMeshProUGUI[] texts;
     public GameObject[] ClassItems;
-    public List<string> className = new List<string>();
+    public List<ClassData> playerClasses = new List<ClassData>();
 
     private void Start()
     {
@@ -16,23 +18,38 @@ public class PlayerClass : NetworkBehaviour
 
     public void ShowClasses()
     {
-        //Change Recep burası güzel
-        //Ben yaptım tabii güzel
-        for (int i = 0; i < className.Count; i++)
+        for (int i = 0; i < playerClasses.Count; i++)
         {
-            ClassItems[i].SetActive(true);
-            texts[i].gameObject.SetActive(true);
-            texts[i].text = className[i];
+            if (i < ClassItems.Length && i < texts.Length)
+            {
+                ClassItems[i].SetActive(true);
+                texts[i].gameObject.SetActive(true);
+                texts[i].text = $"{playerClasses[i].ClassName} ({playerClasses[i].Count})";
+            }
         }
     }
-    //Add recep
-    public void ShowClasses(List<string> clases)
+
+    public void ShowClasses(List<ClassData> classes)
     {
-        for (int i = 0; i < texts.Length; i++)
-        {
-            ClassItems[i].SetActive(true);
-            texts[i].gameObject.SetActive(true);
-            texts[i].text = clases[i];
-        }
+        playerClasses = classes;
+        ShowClasses();
+    }
+}
+
+
+[Serializable]
+public class ClassData
+{
+    public ClassType ClassType;
+    public string ClassName;
+    public int Count;
+
+    public ClassData() { }
+
+    public ClassData(ClassType ClassType, string ClassName, int _count)
+    {
+        this.ClassType = ClassType;
+        this.ClassName = ClassName;
+        this.Count = _count;
     }
 }

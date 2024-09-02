@@ -15,7 +15,7 @@ public class ClassItem : NetworkBehaviour
     private ClassGenerator ClassGenerator;
     [SyncVar(hook = nameof(OnStackCountChanged))]
     private int stackCount;
-    
+
     private CustomNetworkManager manager;
     public CustomNetworkManager Manager
     {
@@ -51,12 +51,13 @@ public class ClassItem : NetworkBehaviour
 
     public void FromOldListNewList(ClassGenerator _ClassGenerator, CustomNetworkManager manager)
     {
+
         //_ClassGenerator.Userclasses.Add(this.userClass.ToString());
-        if (manager.GamePlayers[0].isLocalPlayer == true)
-        {
-            _ClassGenerator.SetList();
-            manager.AddListClass(this.userClass);
-        }
+        //if (manager.GamePlayers[0].isLocalPlayer == true)
+        //{
+        _ClassGenerator.SetList();
+        manager.AddListClass(this.userClass);
+        // }
         _ClassGenerator.UpdateStackedClasses(this.userClass);
     }
 
