@@ -9,8 +9,8 @@ public class PlayerClass : NetworkBehaviour
 {
     public TextMeshProUGUI[] texts;
     public GameObject[] ClassItems;
+    public TextMeshProUGUI[] numbers;
     public List<ClassData> playerClasses = new List<ClassData>();
-
     private void Start()
     {
         ShowClasses();
@@ -24,7 +24,8 @@ public class PlayerClass : NetworkBehaviour
             {
                 ClassItems[i].SetActive(true);
                 texts[i].gameObject.SetActive(true);
-                texts[i].text = $"{playerClasses[i].ClassName} ({playerClasses[i].Count})";
+                texts[i].text = playerClasses[i].ClassName;
+                numbers[i].text = playerClasses[i].Count.ToString();
             }
         }
     }

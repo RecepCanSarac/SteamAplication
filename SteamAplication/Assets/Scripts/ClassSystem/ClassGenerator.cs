@@ -72,7 +72,10 @@ public class ClassGenerator : NetworkBehaviour
     {
         ClassType classType = newClass.ClassType;
 
-        ClassData classData = DataList.Find(cd => cd.ClassType == classType);
+        // Yeni bir liste oluþturun ve eski listeyi kopyalayýn
+        List<ClassData> newDataList = new List<ClassData>(DataList);
+
+        ClassData classData = newDataList.Find(cd => cd.ClassType == classType);
 
         if (classData == null)
         {
@@ -82,12 +85,14 @@ public class ClassGenerator : NetworkBehaviour
                 ClassType = classType,
                 Count = 1
             };
-            DataList.Add(classData);
+            newDataList.Add(classData);
         }
         else
         {
             classData.Count++;
         }
+
+        DataList = newDataList; // Yeni listeyi ata
 
         if (!classStackCounts.ContainsKey(classType))
         {
@@ -102,6 +107,7 @@ public class ClassGenerator : NetworkBehaviour
         SetList();
         Manager.UpdatedClassPlayer(newClass.ClassName.ToString());
     }
+
 
     private void UpdateStackCount(ClassType classType)
     {
@@ -119,10 +125,11 @@ public class ClassGenerator : NetworkBehaviour
 
     public void SetList()
     {
-        if(isServer)
+        if (isLocalPlayer)
+        {
             CmdSetList();
+        }
     }
-
     void OnListChanged(List<ClassData> oldValue, List<ClassData> newValue)
     {
         if (isServer)
@@ -140,23 +147,11 @@ public class ClassGenerator : NetworkBehaviour
     [ClientRpc]
     void RpcSetList(List<ClassData> newValue)
     {
-
         for (int i = 0; i < Manager.GamePlayers.Count; i++)
         {
             PlayerClass playerClass = Manager.GamePlayers[i].GetComponent<PlayerClass>();
             playerClass.ShowClasses();
             playerClass.ShowClasses(newValue);
         }
-    }
-
-    [ClientRpc]
-    void GetRPCList(List<ClassData> newValue)
-    {
-        for (int i = 0; i < Manager.GamePlayers.Count; i++)
-        {
-            PlayerClass playerClass = Manager.GamePlayers[i].GetComponent<PlayerClass>();
-            playerClass.ShowClasses(newValue);
-        }
-        Userclasses = newValue.ConvertAll(cd => cd.ClassName);
     }
 }

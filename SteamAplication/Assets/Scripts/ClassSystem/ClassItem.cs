@@ -52,13 +52,14 @@ public class ClassItem : NetworkBehaviour
     public void FromOldListNewList(ClassGenerator _ClassGenerator, CustomNetworkManager manager)
     {
 
-        //_ClassGenerator.Userclasses.Add(this.userClass.ToString());
-        //if (manager.GamePlayers[0].isLocalPlayer == true)
-        //{
-        _ClassGenerator.SetList();
-        manager.AddListClass(this.userClass);
-        // }
-        _ClassGenerator.UpdateStackedClasses(this.userClass);
+        _ClassGenerator.Userclasses.Add(this.userClass.ToString());
+        if (manager.GamePlayers[0].isLocalPlayer == true)
+        {
+            _ClassGenerator.SetList();
+            manager.AddListClass(this.userClass);
+
+            _ClassGenerator.UpdateStackedClasses(this.userClass);
+        }
     }
 
 

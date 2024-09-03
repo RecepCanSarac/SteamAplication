@@ -416,7 +416,13 @@ MonoBehaviour:
   - {fileID: 5008617753946377482}
   - {fileID: 2375862481696092007}
   - {fileID: 6366724514016258415}
-  className: []
+  numbers:
+  - {fileID: 3520255003823321795}
+  - {fileID: 7530172724877187096}
+  - {fileID: 2789663974205575518}
+  - {fileID: 3722681164071934678}
+  - {fileID: 7144683064078117608}
+  playerClasses: []
 --- !u!114 &2683643035559663142
 MonoBehaviour:
   m_ObjectHideFlags: 0
