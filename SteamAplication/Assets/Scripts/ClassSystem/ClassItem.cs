@@ -11,10 +11,9 @@ public class ClassItem : NetworkBehaviour
     public ClassType type;
     public TextMeshProUGUI NumberText;
     public Button SetClassButton;
-
+    public Button ClassDeleteButton;
     private ClassGenerator ClassGenerator;
-    [SyncVar(hook = nameof(OnStackCountChanged))]
-    private int stackCount;
+
 
     private CustomNetworkManager manager;
     public CustomNetworkManager Manager
@@ -33,7 +32,14 @@ public class ClassItem : NetworkBehaviour
     {
         ClassGenerator = GameObject.Find("GUIPanel").GetComponent<ClassGenerator>();
     }
-
+    private void Start()
+    {
+        if (ClassDeleteButton != null)
+            ClassDeleteButton.onClick.AddListener(() =>
+            {
+                RemoveClassItem(ClassGenerator, Manager);
+            });
+    }
     public void Setup(string _name, ClassType _type)
     {
         ClassName.text = _name;
@@ -51,8 +57,6 @@ public class ClassItem : NetworkBehaviour
 
     public void FromOldListNewList(ClassGenerator _ClassGenerator, CustomNetworkManager manager)
     {
-
-        _ClassGenerator.Userclasses.Add(this.userClass.ToString());
         if (manager.GamePlayers[0].isLocalPlayer == true)
         {
             _ClassGenerator.SetList();
@@ -62,9 +66,13 @@ public class ClassItem : NetworkBehaviour
         }
     }
 
-
-    private void OnStackCountChanged(int oldCount, int newCount)
+    public void RemoveClassItem(ClassGenerator _ClassGenerator, CustomNetworkManager manager)
     {
-        NumberText.text = newCount > 1 ? newCount.ToString() : "1";
+        if (manager.GamePlayers[0].isLocalPlayer == true)
+        {
+            _ClassGenerator.RemoveFromStackedClasses(this.userClass);
+            _ClassGenerator.SetList();
+        }
     }
+    
 }

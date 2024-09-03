@@ -25,7 +25,6 @@ public class ClassGenerator : NetworkBehaviour
     public GameObject ClassPrefab;
     public Transform ListContent;
     public List<SOClass> classes = new List<SOClass>();
-    public List<string> Userclasses = new List<string>();
 
     [SyncVar(hook = nameof(OnListChanged))]
     public List<ClassData> DataList = new List<ClassData>();
@@ -65,14 +64,12 @@ public class ClassGenerator : NetworkBehaviour
         var classItem = itemIns.GetComponent<ClassItem>();
         classItem.Setup(classData.ClassName, classData.ClassType);
         classItem.userClass = classData;
-        //NetworkServer.Spawn(itemIns);
     }
 
     public void UpdateStackedClasses(SOClass newClass)
     {
         ClassType classType = newClass.ClassType;
 
-        // Yeni bir liste oluþturun ve eski listeyi kopyalayýn
         List<ClassData> newDataList = new List<ClassData>(DataList);
 
         ClassData classData = newDataList.Find(cd => cd.ClassType == classType);
@@ -92,7 +89,7 @@ public class ClassGenerator : NetworkBehaviour
             classData.Count++;
         }
 
-        DataList = newDataList; // Yeni listeyi ata
+        DataList = newDataList;
 
         if (!classStackCounts.ContainsKey(classType))
         {
@@ -100,6 +97,7 @@ public class ClassGenerator : NetworkBehaviour
             GameObject classIns = Instantiate(ClassPrefab, ListContent);
             var classItem = classIns.GetComponent<ClassItem>();
             classItem.Setup(newClass.ClassName, newClass.ClassType);
+            classItem.userClass = newClass;
             spawnedClassItems[classType] = classIns;
         }
 
@@ -107,7 +105,39 @@ public class ClassGenerator : NetworkBehaviour
         SetList();
         Manager.UpdatedClassPlayer(newClass.ClassName.ToString());
     }
+    public void RemoveFromStackedClasses(SOClass classToRemove)
+    {
+        ClassType classType = classToRemove.ClassType;
 
+        List<ClassData> newDataList = new List<ClassData>(DataList);
+
+        ClassData classData = newDataList.Find(cd => cd.ClassType == classType);
+
+        if (classData != null)
+        {
+            classData.Count--;
+            if (classData.Count <= 0)
+            {
+                newDataList.Remove(classData);
+
+                if (classStackCounts.ContainsKey(classType))
+                {
+                    classStackCounts.Remove(classType);
+
+                    if (spawnedClassItems.ContainsKey(classType))
+                    {
+                        GameObject classIns = spawnedClassItems[classType];
+                        Destroy(classIns);
+                        spawnedClassItems.Remove(classType);
+                    }
+                }
+            }
+        }
+        UpdateStackCount(classType);
+        DataList = newDataList;
+        SetList();
+        Manager.UpdatedClassPlayer(classToRemove.ClassName.ToString());
+    }
 
     private void UpdateStackCount(ClassType classType)
     {

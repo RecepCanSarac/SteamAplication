@@ -5,7 +5,7 @@ using Org.BouncyCastle.Asn1.Mozilla;
 using TMPro;
 using UnityEngine;
 
-public class PlayerClass : NetworkBehaviour
+public class PlayerClass : MonoBehaviour
 {
     public TextMeshProUGUI[] texts;
     public GameObject[] ClassItems;
@@ -18,16 +18,16 @@ public class PlayerClass : NetworkBehaviour
 
     public void ShowClasses()
     {
-        for (int i = 0; i < playerClasses.Count; i++)
-        {
-            if (i < ClassItems.Length && i < texts.Length)
-            {
-                ClassItems[i].SetActive(true);
-                texts[i].gameObject.SetActive(true);
-                texts[i].text = playerClasses[i].ClassName;
-                numbers[i].text = playerClasses[i].Count.ToString();
-            }
-        }
+        //for (int i = 0; i < playerClasses.Count; i++)
+        //{
+        //    if (i < ClassItems.Length && i < texts.Length)
+        //    {
+        //        ClassItems[i].SetActive(true);
+        //        texts[i].gameObject.SetActive(true);
+        //        texts[i].text = playerClasses[i].ClassName;
+        //        numbers[i].text = playerClasses[i].Count.ToString();
+        //    }
+        //}
     }
 
     public void ShowClasses(List<ClassData> classes)
