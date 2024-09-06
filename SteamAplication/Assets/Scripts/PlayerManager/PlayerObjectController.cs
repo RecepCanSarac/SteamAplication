@@ -49,7 +49,10 @@ public class PlayerObjectController : NetworkBehaviour
         _controller = GetComponent<CameraController>();
         
         ClassGenerator.Instance.SetList();
-        Debug.Log(ClassGenerator.Instance.DataList);
+        foreach (var data in ClassGenerator.Instance.DataList)
+        {
+            Debug.Log(data.ClassName);
+        }
         
         PlayerCollider = GetComponent<PlayerCollider>();
         DontDestroyOnLoad(this.gameObject);
