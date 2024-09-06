@@ -12,7 +12,7 @@ public class PlayerObjectController : NetworkBehaviour
     public bool ısOrderOf = false;
 
     public GameObject house;
-    
+
     [SyncVar] public int ConnectionID;
     [SyncVar] public int PlayerIdNumber;
     [SyncVar] public ulong PlayerSteamID;
@@ -22,12 +22,12 @@ public class PlayerObjectController : NetworkBehaviour
 
     [SyncVar(hook = nameof(OnMovementControll))]
     public bool movementControll = true;
-    
+
     public bool cameraControll = true;
-    
+
     private CustomNetworkManager manager;
     private PlayerCollider PlayerCollider;
-    
+
     private PlayerMovmentController _movmentController;
 
     private CameraController _controller;
@@ -49,13 +49,13 @@ public class PlayerObjectController : NetworkBehaviour
     {
         _movmentController = GetComponent<PlayerMovmentController>();
         _controller = GetComponent<CameraController>();
-        
+
         ClassGenerator.Instance.SetList();
         foreach (var data in ClassGenerator.Instance.DataList)
         {
             Debug.Log(data.ClassName);
         }
-        
+
         PlayerCollider = GetComponent<PlayerCollider>();
         DontDestroyOnLoad(this.gameObject);
     }
@@ -84,7 +84,7 @@ public class PlayerObjectController : NetworkBehaviour
     {
         CmdPlayerNameShow();
     }
-    
+
     private void PlayerReadyUpdate(bool oldValue, bool newValue)
     {
         if (isServer)
@@ -147,7 +147,7 @@ public class PlayerObjectController : NetworkBehaviour
             LobbyController.instance.UpdatePlayerList();
         }
     }
-    
+
     private void ClassNameUpdate(string oldValue, string newValue)
     {
         if (isServer)
@@ -159,13 +159,13 @@ public class PlayerObjectController : NetworkBehaviour
             RpcUpdateUI(PlayerName, newValue);
         }
     }
-    
+
     [Command]
     private void CmdPlayerNameShow()
     {
         RpcUpdateUI(this.PlayerName, className);
     }
-    
+
     [ClientRpc]
     private void RpcUpdateUI(string playerName, string playerClassName)
     {
@@ -213,7 +213,7 @@ public class PlayerObjectController : NetworkBehaviour
     {
         RpcMovementControll(movementControll);
     }
-    
+
     void OnMovementControll(bool oldValue, bool newValue)
     {
         RpcMovementControll(newValue);
@@ -229,8 +229,13 @@ public class PlayerObjectController : NetworkBehaviour
 
     public void SetHouse(Vector3 pos)
     {
-        Vector3 offsetRotate = new Vector3(-8.95f,0f,0f);
+        Vector3 offsetRotate = new Vector3(-8.95f, 0f, 0f);
         GameObject houseInstance = Instantiate(house, pos, Quaternion.Euler(offsetRotate));
+
+        Vector3 anan = houseInstance.transform.position - transform.position;
+
+        anan.y = 0f;
+        houseInstance.transform.rotation = Quaternion.LookRotation(new Vector3(-8.95f,anan.y,anan.z));
     }
 }
 
