@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Mirror;
 using TMPro;
 using UnityEngine;
@@ -13,13 +14,17 @@ public class GameTimeline : NetworkBehaviour
 
     public GameObject gameCamera;
 
+    public List<string> roundName = new List<string>();
+
     #region SyncVar Variable
 
-    [SyncVar(hook = nameof(OnCameraControll))] public bool _cameracontroll = true;
+    [SyncVar(hook = nameof(OnCameraControll))] public bool _cameracontroll = false;
 
     [SyncVar(hook = nameof(OnSetTime))] public float time = 30.0f;
 
     [SyncVar(hook = nameof(OnSetRaound))] public int round = 0;
+    
+    [SyncVar(hook = nameof(OnSetClassOrder))] public int classOrder = 0;
 
     [SyncVar(hook = nameof(OnPlayerIndex))]
     public int playerIndex = 0;
@@ -56,10 +61,11 @@ public class GameTimeline : NetworkBehaviour
 
     void Start()
     {
-        gameCamera.SetActive(false);
+        gameCamera.SetActive(true);
         message = "Oyun başlıyor....";
         currentTime = time;
         GameTime();
+        SetPlayer();
     }
 
     void Update()
@@ -70,12 +76,11 @@ public class GameTimeline : NetworkBehaviour
 
         if (time <= 0)
         {
-            round++;
+            classOrder++;
             message = Message();
-            SetRound();
+            SetClass();
             SetPlayerIndex();
             GameTime();
-            SetPlayer();
             time = currentTime;
             if (Manager.GamePlayers.Count - 1 > playerIndex) playerIndex++;
             else playerIndex = 0;
@@ -99,6 +104,11 @@ public class GameTimeline : NetworkBehaviour
     public void SetRound()
     {
         CmdSetRound();
+    }
+
+    public void SetClass()
+    {
+        CmdSetClassOrder();
     }
 
     public void SetPlayer()
@@ -143,6 +153,11 @@ public class GameTimeline : NetworkBehaviour
         RpcRound(newValue);
     }
 
+    void OnSetClassOrder(int oldValue, int newValue)
+    {
+        RpcClassOrder(newValue);
+    }
+
     void OnOrderOfPlayer(PlayerObjectController oldValue, PlayerObjectController newValue)
     {
         RpcOrderOfPlayer(oldValue, newValue);
@@ -178,6 +193,12 @@ public class GameTimeline : NetworkBehaviour
     void CmdSetRound()
     {
         RpcRound(round);
+    }
+
+    [Command]
+    void CmdSetClassOrder()
+    {
+        RpcClassOrder(classOrder);
     }
 
     [Command]
@@ -221,6 +242,12 @@ public class GameTimeline : NetworkBehaviour
     }
 
     [ClientRpc]
+    void RpcClassOrder(int newValue)
+    {
+        
+    }
+
+    [ClientRpc]
     void RpcOrderOfPlayer(PlayerObjectController oldValue, PlayerObjectController newValue)
     {
         if(oldValue != null) oldValue.ısOrderOf = false;
@@ -245,11 +272,34 @@ public class GameTimeline : NetworkBehaviour
     {
         string result = round switch
         {
-            1 => "Oyun Başladı",
-            2 => "Doktor Zamanı",
+            1 => roundName[round-1] + " el",
+            2 => roundName[round-1] + " el",
+            3 => roundName[round-1] + " el",
+            4 => roundName[round-1] + " el",
+            5 => roundName[round-1] + " el",
             _ => "round finished"
         };
 
+        result = classOrder switch
+        {
+            1 => Monster(),
+            2 => "Doktor sırası",
+            _ => Finish()
+        };
+
         return result;
+    }
+
+    string Monster()
+    {
+        return "Gul yabani sırası";
+    }
+
+    string Finish()
+    {
+        round++;
+        SetRound();
+        SetPlayer();
+        return "Finish";
     }
 }

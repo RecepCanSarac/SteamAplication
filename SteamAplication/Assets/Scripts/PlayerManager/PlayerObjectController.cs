@@ -20,8 +20,8 @@ public class PlayerObjectController : NetworkBehaviour
 
     [SyncVar(hook = nameof(OnMovementControll))]
     public bool movementControll = true;
-    [SyncVar(hook = nameof(OnCameraControll))]
-    public bool cameraControll = false;
+    
+    public bool cameraControll = true;
     
     private CustomNetworkManager manager;
     private PlayerCollider PlayerCollider;
@@ -193,8 +193,11 @@ public class PlayerObjectController : NetworkBehaviour
         foreach (PlayerObjectController players in Manager.GamePlayers)
         {
             players.GetComponent<CameraController>().cameraHolder.SetActive(false);
+            if (players.ConnectionID == ConnectionID)
+            {
+                players.GetComponent<CameraController>().cameraHolder.SetActive(cameraControll);
+            }
         }
-        CmdCameraControll();
     }
 
     [Command]
@@ -202,34 +205,16 @@ public class PlayerObjectController : NetworkBehaviour
     {
         RpcMovementControll(movementControll);
     }
-
-    [Command]
-    void CmdCameraControll()
-    {
-        RpcCameraControll(cameraControll);
-    }
     
     void OnMovementControll(bool oldValue, bool newValue)
     {
         RpcMovementControll(newValue);
-    }
-    
-    void OnCameraControll(bool oldValue, bool newValue)
-    {
-        RpcCameraControll(newValue);
     }
 
     [ClientRpc]
     void RpcMovementControll(bool newValue)
     {
         _movmentController.enabled = newValue;
-    }
-
-    [ClientRpc]
-    void RpcCameraControll(bool newValue)
-    {
-        _controller.ChangeCamera(newValue);
-        _controller.enabled = newValue;
     }
 
     #endregion

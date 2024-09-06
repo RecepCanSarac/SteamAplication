@@ -68,9 +68,4 @@ public class CameraController : NetworkBehaviour
         playerModel.transform.rotation = Quaternion.Euler(0, yRotation, 0);
         oriantattion.rotation = Quaternion.Euler(xRotation, yRotation, 0);
     }
-
-    public void ChangeCamera(bool IsActive)
-    {
-        cameraHolder.SetActive(IsActive);
-    }
 }
