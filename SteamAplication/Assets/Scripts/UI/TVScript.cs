@@ -28,9 +28,8 @@ public class TVScript : NetworkBehaviour
     {
        playerClass = GameObject.Find("GUIPanel").GetComponent<ClassGenerator>();
 
-        var playerClassComponent = playerClass.GetComponent<PlayerClass>();
 
-        if (playerClassComponent.playerClasses.Count == 0)
+        if (playerClass.DataList.Count == 0)
         {
             foreach (var item in items)
             {
@@ -41,15 +40,15 @@ public class TVScript : NetworkBehaviour
 
         for (int i = 0; i < items.Length; i++)
         {
-            if (i >= playerClassComponent.playerClasses.Count || playerClassComponent.playerClasses[i].Count == 0)
+            if (i >= playerClass.DataList.Count || playerClass.DataList[i].Count == 0)
             {
                 items[i].gameObject.SetActive(false);
             }
             else
             {
                 items[i].gameObject.SetActive(true);
-                names[i].text = playerClassComponent.playerClasses[i].ClassName;
-                numbers[i].text = playerClassComponent.playerClasses[i].Count.ToString();
+                names[i].text = playerClass.DataList[i].ClassName;
+                numbers[i].text = playerClass.DataList[i].Count.ToString();
             }
         }
     }
