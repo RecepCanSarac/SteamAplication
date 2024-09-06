@@ -48,6 +48,9 @@ public class PlayerObjectController : NetworkBehaviour
         _movmentController = GetComponent<PlayerMovmentController>();
         _controller = GetComponent<CameraController>();
         
+        ClassGenerator.Instance.SetList();
+        Debug.Log(ClassGenerator.Instance.DataList);
+        
         PlayerCollider = GetComponent<PlayerCollider>();
         DontDestroyOnLoad(this.gameObject);
     }
