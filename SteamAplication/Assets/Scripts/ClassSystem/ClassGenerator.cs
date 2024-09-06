@@ -57,7 +57,10 @@ public class ClassGenerator : NetworkBehaviour
             CreateClassItem(classes[i]);
         }
     }
-
+    private void Update()
+    {
+        SetList();
+    }
     public void CreateClassItem(SOClass classData)
     {
         GameObject itemIns = Instantiate(classItemPrefab, Content);
