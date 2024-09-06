@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class TVScript : NetworkBehaviour
 {
-    public GameObject playerClass;
+    public ClassGenerator playerClass;
 
     public GameObject[] items;
     public TextMeshProUGUI[] names;
@@ -26,10 +26,7 @@ public class TVScript : NetworkBehaviour
 
     private void Update()
     {
-        if (playerClass == null)
-        {
-            playerClass = Manager.GamePlayers[0].gameObject;
-        }
+       playerClass = GameObject.Find("GUIPanel").GetComponent<ClassGenerator>();
 
         var playerClassComponent = playerClass.GetComponent<PlayerClass>();
 
