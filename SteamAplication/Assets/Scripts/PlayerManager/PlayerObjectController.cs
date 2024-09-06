@@ -20,9 +20,6 @@ public class PlayerObjectController : NetworkBehaviour
     [SyncVar(hook = nameof(PlayerReadyUpdate))] public bool Ready;
     [SyncVar(hook = nameof(ClassNameUpdate))] public string syncedClassName;
 
-    [SyncVar(hook = nameof(OnMovementControll))]
-    public bool movementControll = true;
-
     public bool cameraControll = true;
 
     private CustomNetworkManager manager;
@@ -191,8 +188,7 @@ public class PlayerObjectController : NetworkBehaviour
 
     public void SetMovement()
     {
-        movementControll = false;
-        CmdMovementControll();
+        _movmentController.enabled = false;
     }
 
     public void SetCamera()
@@ -206,23 +202,6 @@ public class PlayerObjectController : NetworkBehaviour
                 players.GetComponent<CameraController>().cameraHolder.SetActive(cameraControll);
             }
         }
-    }
-
-    [Command]
-    void CmdMovementControll()
-    {
-        RpcMovementControll(movementControll);
-    }
-
-    void OnMovementControll(bool oldValue, bool newValue)
-    {
-        RpcMovementControll(newValue);
-    }
-
-    [ClientRpc]
-    void RpcMovementControll(bool newValue)
-    {
-        _movmentController.enabled = newValue;
     }
 
     #endregion
