@@ -350,6 +350,7 @@ MonoBehaviour:
   classText: {fileID: 8215277387173407463}
   className: 
   "\u0131sOrderOf": 0
+  house: {fileID: 7575280036243738546, guid: b21ce616dd5c2ac4e8482b171d45c395, type: 3}
   ConnectionID: 0
   PlayerIdNumber: 0
   PlayerSteamID: 0

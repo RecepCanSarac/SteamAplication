@@ -24,6 +24,8 @@ public class GamePlayerSpawn : NetworkBehaviour
     #endregion
 
     public Transform[] points;
+    
+    public Transform[] housePoints;
 
     void Start()
     {
@@ -32,6 +34,10 @@ public class GamePlayerSpawn : NetworkBehaviour
             Vector3 offset = new Vector3(points[i].position.x, 1.6f, points[i].position.z);
 
             Manager.GamePlayers[i].transform.position = offset;
+            
+            Vector3 offsetHouse = new Vector3(housePoints[i].position.x, 12.7f, housePoints[i].position.z);
+
+            Manager.GamePlayers[i].SetHouse(offsetHouse);
         }
     }
 }

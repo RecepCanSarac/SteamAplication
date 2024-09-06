@@ -10,6 +10,8 @@ public class PlayerObjectController : NetworkBehaviour
     public string className;
 
     public bool ısOrderOf = false;
+
+    public GameObject house;
     
     [SyncVar] public int ConnectionID;
     [SyncVar] public int PlayerIdNumber;
@@ -224,5 +226,11 @@ public class PlayerObjectController : NetworkBehaviour
     }
 
     #endregion
+
+    public void SetHouse(Vector3 pos)
+    {
+        Vector3 offsetRotate = new Vector3(-8.95f,0f,0f);
+        GameObject houseInstance = Instantiate(house, pos, Quaternion.Euler(offsetRotate));
+    }
 }
 

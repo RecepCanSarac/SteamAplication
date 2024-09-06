@@ -26,9 +26,6 @@ public class TVScript : NetworkBehaviour
 
     private void Update()
     {
-       playerClass = GameObject.Find("GUIPanel").GetComponent<ClassGenerator>();
-
-
         if (playerClass.DataList.Count == 0)
         {
             foreach (var item in items)
