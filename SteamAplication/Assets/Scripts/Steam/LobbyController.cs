@@ -62,7 +62,6 @@ public class LobbyController : MonoBehaviour
             ContentList.SetActive(isActive);
             ContentClass.SetActive(isActive);
         }
-        // if not null added
         if ( LocalPlayerController != null && !LocalPlayerController.consolActivated)
         {
             UI.SetActive(false);
@@ -161,8 +160,6 @@ public class LobbyController : MonoBehaviour
             NewPlayerItemScript.transform.localScale = Vector3.one;
 
             PlayerListItems.Add(NewPlayerItemScript);
-            //ClassGenerator.Instance.SetList();
-            ClassGenerator.Instance.SetList();
         }
         PlayerItemCreated = true;
     }
@@ -186,8 +183,6 @@ public class LobbyController : MonoBehaviour
                 NewPlayerItemScript.transform.localScale = Vector3.one;
 
                 PlayerListItems.Add(NewPlayerItemScript);
-                //added Recep buraya gerek yok kibi
-                //ClassGenerator.Instance.SetList();
             }
         }
     }
