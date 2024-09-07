@@ -2083,7 +2083,7 @@ MonoBehaviour:
   VotePrefab: {fileID: 3514979247809794838, guid: 33b8211ece56d0b40993ef8dd7435e98, type: 3}
   VoteGroup: {fileID: 66123211}
   LocalPlayerObject: {fileID: 0}
-  isVote: 0
+  isVote: 1
 --- !u!4 &1615313633
 Transform:
   m_ObjectHideFlags: 0
@@ -2518,7 +2518,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1930064397
 MonoBehaviour:
   m_ObjectHideFlags: 0

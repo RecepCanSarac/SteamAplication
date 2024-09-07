@@ -1,6 +1,8 @@
 using Mirror;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Vote : NetworkBehaviour
 {
@@ -9,7 +11,6 @@ public class Vote : NetworkBehaviour
     public ulong PlayerSteamID;
     public bool isActive;
     [SyncVar(hook = nameof(ChangeVoteNumber))] int VoteNumber;
-
 
     public Sprite readySprite;
     public Sprite UnreadySprite;
@@ -45,7 +46,7 @@ public class Vote : NetworkBehaviour
     [ClientRpc]
     public void VoteReduction(int newValue)
     {
-        VoteNumber -= newValue; 
+        VoteNumber -= newValue;
 
         Debug.Log(VoteNumber);
     }

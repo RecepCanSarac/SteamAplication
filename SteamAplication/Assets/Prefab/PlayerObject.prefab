@@ -345,6 +345,7 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0.1
+  vote: {fileID: 0}
   NameText: {fileID: 6238308037538679177}
   ReadText: {fileID: 4302901152369056329}
   classText: {fileID: 8215277387173407463}
@@ -357,7 +358,6 @@ MonoBehaviour:
   PlayerName: 
   Ready: 0
   syncedClassName: 
-  movementControll: 1
   cameraControll: 0
   consolActivated: 0
 --- !u!114 &5928905197194942545

@@ -1,4 +1,5 @@
 using Mirror;
+using Steamworks;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -48,21 +49,28 @@ public class VoteManager : NetworkBehaviour
         {
             GameObject newVotePrefab = Instantiate(VotePrefab);
             VoidItem newVote = newVotePrefab.GetComponent<VoidItem>();
+
             newVote.NameText.text = item.PlayerName;
             newVote.Vote.PlayerName = item.PlayerName;
             newVote.Vote.ConnectionID = item.ConnectionID;
             newVote.Vote.PlayerSteamID = item.PlayerSteamID;
+
             newVote.SetPlayerValues();
 
+
+            RawImages(newVote.Images.Count, newVote, newVote.Vote);
             newVotePrefab.transform.SetParent(VoteGroup.transform);
             newVotePrefab.transform.localScale = Vector3.one;
+
             newVotePrefab.gameObject.GetComponent<Button>().onClick.AddListener(() =>
             {
                 UseToVote(newVote.Vote, newVote);
             });
+
             items.Add(newVote.Vote);
         }
     }
+
     public void UseToVote(Vote vote, VoidItem item)
     {
         if (vote == null) return;
@@ -80,4 +88,20 @@ public class VoteManager : NetworkBehaviour
 
         item.ChangeReadyStatus(isVote);
     }
+
+
+    void RawImages(int index, VoidItem item, Vote vote)
+    {
+        for (int i = 0; i < index; i++)
+        {
+            item.Images[i].gameObject.SetActive(true);
+            int ImageID = SteamFriends.GetLargeFriendAvatar((CSteamID)vote.PlayerSteamID);
+
+            if (ImageID != -1)
+            {
+                item.Images[i].texture = item.GetSteamImageAsTexture(ImageID);
+            }
+        }
+    }
+
 }

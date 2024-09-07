@@ -1,6 +1,7 @@
 using Mirror;
 using Steamworks;
 using System;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -16,6 +17,7 @@ public class VoidItem : MonoBehaviour
     protected Callback<AvatarImageLoaded_t> ImageLoaded;
 
 
+    public List<RawImage> Images = new List<RawImage>();
 
     public void ChangeReadyStatus(bool useVoit)
     {
@@ -46,7 +48,7 @@ public class VoidItem : MonoBehaviour
         if (ImageID == -1) { return; }
         PlayerIcon.texture = GetSteamImageAsTexture(ImageID);
     }
-    private Texture2D GetSteamImageAsTexture(int iImage)
+    public Texture2D GetSteamImageAsTexture(int iImage)
     {
         Texture2D texture = null;
 
