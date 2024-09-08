@@ -1,53 +1,67 @@
 using Mirror;
-using System;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Vote : NetworkBehaviour
 {
-    public string PlayerName;
-    public int ConnectionID;
-    public ulong PlayerSteamID;
-    public bool isActive;
-    [SyncVar(hook = nameof(ChangeVoteNumber))] int VoteNumber;
-
-    public Sprite readySprite;
-    public Sprite UnreadySprite;
-
-    public void ChangeVoteNumber(int newValue, int oldValue)
+    CustomNetworkManager manager;
+    private CustomNetworkManager Manager
     {
-        if (isServer)
+        get
         {
-            VoteUp(newValue);
+            if (manager != null)
+            {
+                return manager;
+            }
+            return manager = CustomNetworkManager.singleton as CustomNetworkManager;
         }
     }
 
+    public SyncDictionary<string, bool> VotePairs = new SyncDictionary<string, bool>();
 
-    [Command]
-    public void VoteUp(int newValue)
+    public void Update()
     {
-        VoteUpdate(newValue);
+        if (isLocalPlayer)
+        {
+            if (SceneManager.GetActiveScene().name == "Game" && NetworkClient.ready)
+            {
+                CmdInitializeVotePairs();
+            }
+        }
     }
 
     [Command]
-    public void VoteDown(int newValue)
+    public void CmdInitializeVotePairs()
     {
-        VoteReduction(newValue);
+        foreach (var player in Manager.GamePlayers)
+        {
+            if (!VotePairs.ContainsKey(player.PlayerName))
+            {
+                VotePairs.Add(player.PlayerName, false);
+            }
+        }
+    }
+    [Command]
+    public void CmdVoteForPlayer(string votedPlayerName)
+    {
+        RpcSetVote(votedPlayerName, this.GetComponent<PlayerObjectController>().PlayerName);
     }
 
     [ClientRpc]
-    public void VoteUpdate(int newValue)
+    void RpcSetVote(string votedPlayerName, string votingPlayerName)
     {
-        VoteNumber += newValue;
+        foreach (var player in Manager.GamePlayers)
+        {
+            if (player.PlayerName == votedPlayerName)
+            {
+                player.GetComponent<Vote>().VotePairs[votingPlayerName] = true;
+                break;
+            }
+        }
 
-        Debug.Log(VoteNumber);
-    }
-    [ClientRpc]
-    public void VoteReduction(int newValue)
-    {
-        VoteNumber -= newValue;
-
-        Debug.Log(VoteNumber);
+        if (isLocalPlayer)
+        {
+            Debug.Log($"{votingPlayerName}, {votedPlayerName} oyuncusuna oy verdi.");
+        }
     }
 }

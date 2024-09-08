@@ -2056,8 +2056,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1615313633}
-  - component: {fileID: 1615313632}
   - component: {fileID: 1615313634}
+  - component: {fileID: 1615313635}
   m_Layer: 0
   m_Name: VoitManager
   m_TagString: Untagged
@@ -2065,25 +2065,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1615313632
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1615313631}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d951071a5da7e2645bf7404986a88cf3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  syncDirection: 0
-  syncMode: 0
-  syncInterval: 0
-  VotePrefab: {fileID: 3514979247809794838, guid: 33b8211ece56d0b40993ef8dd7435e98, type: 3}
-  VoteGroup: {fileID: 66123211}
-  LocalPlayerObject: {fileID: 0}
-  isVote: 1
 --- !u!4 &1615313633
 Transform:
   m_ObjectHideFlags: 0
@@ -2116,6 +2097,21 @@ MonoBehaviour:
   serverOnly: 0
   visibility: 0
   hasSpawned: 0
+--- !u!114 &1615313635
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1615313631}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9895b5354d141f843b2f9717a0a51faa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  VoteCardPrefab: {fileID: 3514979247809794838, guid: 33b8211ece56d0b40993ef8dd7435e98, type: 3}
+  VoteCardParend: {fileID: 66123212}
+  LocalGamePlayer: {fileID: 0}
 --- !u!1 &1636686216
 GameObject:
   m_ObjectHideFlags: 0

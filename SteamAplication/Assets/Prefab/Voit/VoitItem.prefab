@@ -585,10 +585,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3514979247809794837}
-  - component: {fileID: 3514979247809794836}
   - component: {fileID: 774365806274417784}
-  - component: {fileID: 4467983259323000626}
   - component: {fileID: 4667905021271545687}
+  - component: {fileID: 9047058057088236966}
   m_Layer: 5
   m_Name: VoitItem
   m_TagString: Untagged
@@ -617,36 +616,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 150, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &3514979247809794836
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3514979247809794838}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f0e4c857d504aed40a4d57f585128e02, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Vote: {fileID: 4467983259323000626}
-  PlayerIcon: {fileID: 1351302258588025139}
-  NameText: {fileID: 3514979247250990750}
-  ReadyIcon: {fileID: 3514979247546301222}
-  Images:
-  - {fileID: 7369765667712789159}
-  - {fileID: 274836466019190194}
-  - {fileID: 8299853806620577694}
-  - {fileID: 7904319174056896024}
-  - {fileID: 2121265603210694321}
-  - {fileID: 4779129813508058161}
-  - {fileID: 7504284433762048508}
-  - {fileID: 240701143507144147}
-  - {fileID: 6408580878528936509}
-  - {fileID: 2186413369516056456}
-  - {fileID: 734102179535865110}
-  - {fileID: 4768287189057042485}
-  - {fileID: 7975997490190707495}
 --- !u!114 &774365806274417784
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -691,27 +660,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &4467983259323000626
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3514979247809794838}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 156c78644a7cddd4ebe8c2d1644d2a58, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  syncDirection: 0
-  syncMode: 0
-  syncInterval: 0
-  PlayerName: 
-  ConnectionID: 0
-  PlayerSteamID: 0
-  isActive: 0
-  readySprite: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
-  UnreadySprite: {fileID: 21300000, guid: 69c30291565a1407abc7ca25da395ea9, type: 3}
 --- !u!114 &4667905021271545687
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -729,6 +677,23 @@ MonoBehaviour:
   serverOnly: 0
   visibility: 0
   hasSpawned: 0
+--- !u!114 &9047058057088236966
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3514979247809794838}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25bdc2623a852704383a4a682748c08c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerVoteDC: {fileID: 0}
+  NameText: {fileID: 3514979247250990750}
+  PlayerIcon: {fileID: 1351302258588025139}
+  PlayerName: 
+  PlayerObjectController: {fileID: 0}
 --- !u!1 &3514979247981608915
 GameObject:
   m_ObjectHideFlags: 0

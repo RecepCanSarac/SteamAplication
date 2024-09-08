@@ -1,50 +1,30 @@
-using Mirror;
 using Steamworks;
-using System;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class VoidItem : MonoBehaviour
+public class VoteItem : MonoBehaviour
 {
-    public Vote Vote;
-    public RawImage PlayerIcon;
+    public Vote playerVoteDC;
     public TextMeshProUGUI NameText;
-    public Image ReadyIcon;
+    public RawImage PlayerIcon;
     private bool AvatarReceived;
-
+    public string PlayerName;
     protected Callback<AvatarImageLoaded_t> ImageLoaded;
 
-
-    public List<RawImage> Images = new List<RawImage>();
-
-    public void ChangeReadyStatus(bool useVoit)
+    public PlayerObjectController PlayerObjectController;
+    private void Start()
     {
-        if (useVoit)
-        {
-            ReadyIcon.sprite = Vote.readySprite;
-            ReadyIcon.color = Color.green;
-        }
-        else
-        {
-            ReadyIcon.sprite = Vote.UnreadySprite;
-            ReadyIcon.color = Color.red;
-        }
-    }
-    public void Start()
-    {
-        Vote = GetComponent<Vote>();
         ImageLoaded = Callback<AvatarImageLoaded_t>.Create(OnImageLoaded);
     }
     public void SetPlayerValues()
     {
-        ChangeReadyStatus(false);
+        NameText.text = PlayerName;
         if (!AvatarReceived) { GetPlayerIcon(); }
     }
     void GetPlayerIcon()
     {
-        int ImageID = SteamFriends.GetLargeFriendAvatar((CSteamID)Vote.PlayerSteamID);
+        int ImageID = SteamFriends.GetLargeFriendAvatar((CSteamID)PlayerObjectController.PlayerSteamID);
         if (ImageID == -1) { return; }
         PlayerIcon.texture = GetSteamImageAsTexture(ImageID);
     }
@@ -87,7 +67,7 @@ public class VoidItem : MonoBehaviour
 
     private void OnImageLoaded(AvatarImageLoaded_t callback)
     {
-        if (callback.m_steamID.m_SteamID == Vote.PlayerSteamID)
+        if (callback.m_steamID.m_SteamID == PlayerObjectController.PlayerSteamID)
         {
             PlayerIcon.texture = GetSteamImageAsTexture(callback.m_iImage);
         }
@@ -96,5 +76,4 @@ public class VoidItem : MonoBehaviour
             return;
         }
     }
-
 }
