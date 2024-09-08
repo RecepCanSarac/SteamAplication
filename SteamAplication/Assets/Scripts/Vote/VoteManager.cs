@@ -1,4 +1,5 @@
 using Steamworks;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,6 +7,19 @@ using UnityEngine.UI;
 
 public class VoteManager : MonoBehaviour
 {
+    public static VoteManager Instance;
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
     CustomNetworkManager manager;
     private CustomNetworkManager Manager
     {
@@ -22,7 +36,7 @@ public class VoteManager : MonoBehaviour
     public GameObject VoteCardPrefab;
     public Transform VoteCardParend;
 
-
+    private  int indexer;
     private void Start()
     {
         CreateVoteCardItem();
@@ -33,6 +47,7 @@ public class VoteManager : MonoBehaviour
     {
         foreach (var card in Manager.GamePlayers)
         {
+            indexer++;
             GameObject VoteCard = Instantiate(VoteCardPrefab);
             VoteItem cardItem = VoteCard.gameObject.GetComponent<VoteItem>();
             cardItem.PlayerObjectController = card;
@@ -50,16 +65,17 @@ public class VoteManager : MonoBehaviour
 
             VoteCard.gameObject.GetComponent<Button>().onClick.AddListener(() =>
             {
-                GiveToVote(VoteDC, card);
+                GiveToVote(VoteDC, card, cardItem.Icons[indexer],cardItem);
             });
 
         }
     }
-    public void GiveToVote(Vote cardVote, PlayerObjectController player)
+    public void GiveToVote(Vote cardVote, PlayerObjectController player,RawImage icon,VoteItem item)
     {
-
         cardVote.CmdVoteForPlayer(player.PlayerName);
-
-
+        icon.gameObject.SetActive(true);
+        int ImageID = SteamFriends.GetLargeFriendAvatar((CSteamID)player.PlayerSteamID);
+        icon.texture = item.GetSteamImageAsTexture(ImageID);
     }
+
 }

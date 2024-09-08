@@ -1,4 +1,5 @@
 using Steamworks;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -13,6 +14,8 @@ public class VoteItem : MonoBehaviour
     protected Callback<AvatarImageLoaded_t> ImageLoaded;
 
     public PlayerObjectController PlayerObjectController;
+
+    public List<RawImage> Icons = new List<RawImage>();
     private void Start()
     {
         ImageLoaded = Callback<AvatarImageLoaded_t>.Create(OnImageLoaded);
