@@ -23,7 +23,7 @@ public class GameTimeline : NetworkBehaviour
     [SyncVar(hook = nameof(OnSetTime))] public float time = 30.0f;
 
     [SyncVar(hook = nameof(OnSetRaound))] public int round = 0;
-    
+
     [SyncVar(hook = nameof(OnSetClassOrder))] public int classOrder = 0;
 
     [SyncVar(hook = nameof(OnPlayerIndex))]
@@ -34,10 +34,10 @@ public class GameTimeline : NetworkBehaviour
 
     [SyncVar(hook = nameof(OnSendMessage))]
     public string message = string.Empty;
-    
+
 
     #endregion
-    
+
     #region Singleton
 
     private CustomNetworkManager manager;
@@ -68,26 +68,26 @@ public class GameTimeline : NetworkBehaviour
         SetPlayer();
     }
 
-    void Update()
-    {
-        if (!isServer) return;
+    //void Update()
+    //{
+    //    if (!isServer) return;
 
-        time -= Time.deltaTime;
+    //    time -= Time.deltaTime;
 
-        if (time <= 0)
-        {
-            classOrder++;
-            message = Message();
-            SetClass();
-            SetPlayerIndex();
-            GameTime();
-            time = currentTime;
-            if (Manager.GamePlayers.Count - 1 > playerIndex) playerIndex++;
-            else playerIndex = 0;
-        }
+    //    if (time <= 0)
+    //    {
+    //        classOrder++;
+    //        message = Message();
+    //        SetClass();
+    //        SetPlayerIndex();
+    //        GameTime();
+    //        time = currentTime;
+    //        if (Manager.GamePlayers.Count - 1 > playerIndex) playerIndex++;
+    //        else playerIndex = 0;
+    //    }
 
-        SetTime();
-    }
+    //    SetTime();
+    //}
 
     #region SetFunc
 
@@ -244,13 +244,13 @@ public class GameTimeline : NetworkBehaviour
     [ClientRpc]
     void RpcClassOrder(int newValue)
     {
-        
+
     }
 
     [ClientRpc]
     void RpcOrderOfPlayer(PlayerObjectController oldValue, PlayerObjectController newValue)
     {
-        if(oldValue != null) oldValue.ısOrderOf = false;
+        if (oldValue != null) oldValue.ısOrderOf = false;
         newValue.ısOrderOf = true;
     }
 
@@ -272,11 +272,11 @@ public class GameTimeline : NetworkBehaviour
     {
         string result = round switch
         {
-            1 => roundName[round-1] + " el",
-            2 => roundName[round-1] + " el",
-            3 => roundName[round-1] + " el",
-            4 => roundName[round-1] + " el",
-            5 => roundName[round-1] + " el",
+            1 => roundName[round - 1] + " el",
+            2 => roundName[round - 1] + " el",
+            3 => roundName[round - 1] + " el",
+            4 => roundName[round - 1] + " el",
+            5 => roundName[round - 1] + " el",
             _ => "round finished"
         };
 
