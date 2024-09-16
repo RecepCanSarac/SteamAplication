@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class Vote : NetworkBehaviour
 {
     CustomNetworkManager manager;
+
     private CustomNetworkManager Manager
     {
         get
@@ -14,13 +15,14 @@ public class Vote : NetworkBehaviour
             {
                 return manager;
             }
+
             return manager = CustomNetworkManager.singleton as CustomNetworkManager;
         }
     }
 
     public Dictionary<string, bool> VotePairs = new Dictionary<string, bool>();
 
-    public void Update()
+    public void Start()
     {
         if (isLocalPlayer)
         {
@@ -42,6 +44,7 @@ public class Vote : NetworkBehaviour
             }
         }
     }
+
     [Command]
     public void CmdVoteForPlayer(string votedPlayerName)
     {
@@ -63,9 +66,6 @@ public class Vote : NetworkBehaviour
             }
         }
 
-        if (isLocalPlayer)
-        {
-            Debug.Log($"{votingPlayerName}, {votedPlayerName} oyuncusuna oy verdi.");
-        }
+        Debug.Log($"{votingPlayerName}, {votedPlayerName} oyuncusuna oy verdi.");
     }
 }
