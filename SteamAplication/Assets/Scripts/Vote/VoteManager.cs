@@ -87,8 +87,7 @@ public class VoteManager : NetworkBehaviour
             cardVote.CmdVoteForPlayer(player.PlayerName);
         }
     }
-
-    [Command]
+    
     public void CmdRequestVote(string playerName)
     {
         // Perform the voting on the server-side, ensuring that authority is respected
