@@ -32,8 +32,6 @@ public class PlayerObjectController : NetworkBehaviour
 
     public bool consolActivated = false;
 
-    public GameObject VotePanel;
-    public VoteManager VoteManager;
     private CustomNetworkManager Manager
     {
         get

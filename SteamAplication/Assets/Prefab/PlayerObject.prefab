@@ -290,7 +290,6 @@ GameObject:
   - component: {fileID: -1243883032286450148}
   - component: {fileID: 2683643035559663142}
   - component: {fileID: -602028724065143713}
-  - component: {fileID: 587354830985036474}
   m_Layer: 0
   m_Name: PlayerObject
   m_TagString: Player
@@ -361,8 +360,6 @@ MonoBehaviour:
   syncedClassName: 
   cameraControll: 0
   consolActivated: 0
-  VotePanel: {fileID: 0}
-  VoteManager: {fileID: 587354830985036474}
 --- !u!114 &5928905197194942545
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -513,20 +510,6 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
---- !u!114 &587354830985036474
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1695200303275747137}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9895b5354d141f843b2f9717a0a51faa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  VoteCardPrefab: {fileID: 3514979247809794838, guid: 33b8211ece56d0b40993ef8dd7435e98, type: 3}
-  VoteCardParend: {fileID: 0}
 --- !u!1 &4230404239732311174
 GameObject:
   m_ObjectHideFlags: 0
