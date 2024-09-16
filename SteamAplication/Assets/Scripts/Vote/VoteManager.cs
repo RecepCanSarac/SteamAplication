@@ -1,6 +1,5 @@
+using Mirror;
 using Steamworks;
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -20,6 +19,7 @@ public class VoteManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
     CustomNetworkManager manager;
     private CustomNetworkManager Manager
     {
@@ -41,7 +41,6 @@ public class VoteManager : MonoBehaviour
         CreateVoteCardItem();
     }
 
-
     private void CreateVoteCardItem()
     {
         foreach (Transform child in VoteCardParend)
@@ -55,7 +54,7 @@ public class VoteManager : MonoBehaviour
             VoteItem cardItem = VoteCard.gameObject.GetComponent<VoteItem>();
             cardItem.PlayerObjectController = card;
             Vote VoteDC = card.GetComponent<Vote>();
-            VoteCard.gameObject.GetComponent<VoteItem>().playerVoteDC = VoteDC;
+            cardItem.playerVoteDC = VoteDC;
 
             cardItem.PlayerName = card.PlayerName;
             cardItem.NameText.text = cardItem.PlayerName;
@@ -65,9 +64,18 @@ public class VoteManager : MonoBehaviour
             VoteCard.transform.SetParent(VoteCardParend);
             VoteCard.transform.localScale = Vector3.one;
 
+            // Adding the voting functionality with proper authority handling
             VoteCard.gameObject.GetComponent<Button>().onClick.AddListener(() =>
             {
-                GiveToVote(VoteDC, card);
+                if (card.isLocalPlayer)
+                {
+                    GiveToVote(VoteDC, card);
+                }
+                else
+                {
+                    // Inform the server to handle voting for this player
+                    CmdRequestVote(card.PlayerName);
+                }
             });
         }
     }
@@ -77,4 +85,26 @@ public class VoteManager : MonoBehaviour
         cardVote.CmdVoteForPlayer(player.PlayerName);
     }
 
+    [Command]
+    public void CmdRequestVote(string playerName)
+    {
+        // Perform the voting on the server-side, ensuring that authority is respected
+        PlayerObjectController votingPlayer = FindPlayerByName(playerName); // Assuming a method that finds the player
+        if (votingPlayer != null)
+        {
+            votingPlayer.GetComponent<Vote>().CmdVoteForPlayer(playerName);
+        }
+    }
+
+    private PlayerObjectController FindPlayerByName(string playerName)
+    {
+        foreach (var player in Manager.GamePlayers)
+        {
+            if (player.PlayerName == playerName)
+            {
+                return player;
+            }
+        }
+        return null;
+    }
 }
