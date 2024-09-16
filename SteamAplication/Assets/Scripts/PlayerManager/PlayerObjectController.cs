@@ -63,9 +63,7 @@ public class PlayerObjectController : NetworkBehaviour
     {
         if (SceneManager.GetActiveScene().name == "Game")
         {
-            VotePanel.SetActive(true);
-            VoteManager = GetComponent<VoteManager>();
-            VoteManager.enabled = true;
+            
         }
         consolActivated = PlayerCollider.isConsolActiveted;
         if (!Ready)
