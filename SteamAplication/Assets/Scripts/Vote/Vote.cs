@@ -22,7 +22,7 @@ public class Vote : NetworkBehaviour
 
     public Dictionary<string, bool> VotePairs = new Dictionary<string, bool>();
 
-    public void Start()
+    public void Update()
     {
         if (isLocalPlayer)
         {

@@ -21,7 +21,6 @@ public class VoteManager : NetworkBehaviour
     }
 
     CustomNetworkManager manager;
-
     private CustomNetworkManager Manager
     {
         get
@@ -30,7 +29,6 @@ public class VoteManager : NetworkBehaviour
             {
                 return manager;
             }
-
             return manager = CustomNetworkManager.singleton as CustomNetworkManager;
         }
     }
@@ -69,12 +67,15 @@ public class VoteManager : NetworkBehaviour
             // Adding the voting functionality with proper authority handling
             VoteCard.gameObject.GetComponent<Button>().onClick.AddListener(() =>
             {
-                GiveToVote(VoteDC, card);
-                /*else
+                if (card.isLocalPlayer)
+                {
+                    GiveToVote(VoteDC, card);
+                }
+                else
                 {
                     // Inform the server to handle voting for this player
                     CmdRequestVote(card.PlayerName);
-                }*/
+                }
             });
         }
     }
@@ -107,7 +108,6 @@ public class VoteManager : NetworkBehaviour
                 return player;
             }
         }
-
         return null;
     }
 }
