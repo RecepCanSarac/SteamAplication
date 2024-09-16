@@ -82,7 +82,10 @@ public class VoteManager : NetworkBehaviour
 
     public void GiveToVote(Vote cardVote, PlayerObjectController player)
     {
-        cardVote.CmdVoteForPlayer(player.PlayerName);
+        if (isLocalPlayer)
+        {
+            cardVote.CmdVoteForPlayer(player.PlayerName);
+        }
     }
 
     [Command]

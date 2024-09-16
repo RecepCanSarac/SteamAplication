@@ -66,6 +66,9 @@ public class Vote : NetworkBehaviour
             }
         }
 
-        Debug.Log($"{votingPlayerName}, {votedPlayerName} oyuncusuna oy verdi.");
+        if (isLocalPlayer)
+        {
+            Debug.Log($"{votingPlayerName}, {votedPlayerName} oyuncusuna oy verdi.");
+        }
     }
 }
