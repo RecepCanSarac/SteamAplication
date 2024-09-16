@@ -15,7 +15,6 @@ public class VoteItem : MonoBehaviour
 
     public PlayerObjectController PlayerObjectController;
 
-    public List<RawImage> Icons = new List<RawImage>();
     private void Start()
     {
         ImageLoaded = Callback<AvatarImageLoaded_t>.Create(OnImageLoaded);

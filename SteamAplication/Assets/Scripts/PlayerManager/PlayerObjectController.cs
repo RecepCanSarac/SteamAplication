@@ -2,6 +2,7 @@ using UnityEngine;
 using Mirror;
 using Steamworks;
 using TMPro;
+using UnityEngine.SceneManagement;
 public class PlayerObjectController : NetworkBehaviour
 {
     public TextMeshProUGUI NameText;
@@ -31,6 +32,8 @@ public class PlayerObjectController : NetworkBehaviour
 
     public bool consolActivated = false;
 
+    public GameObject VotePanel;
+    public VoteManager VoteManager;
     private CustomNetworkManager Manager
     {
         get
@@ -44,9 +47,9 @@ public class PlayerObjectController : NetworkBehaviour
     }
     private void Start()
     {
+
         _movmentController = GetComponent<PlayerMovmentController>();
         _controller = GetComponent<CameraController>();
-
         ClassGenerator.Instance.SetList();
         foreach (var data in ClassGenerator.Instance.DataList)
         {
@@ -58,6 +61,12 @@ public class PlayerObjectController : NetworkBehaviour
     }
     private void Update()
     {
+        if (SceneManager.GetActiveScene().name == "Game")
+        {
+            VotePanel.SetActive(true);
+            VoteManager = GetComponent<VoteManager>();
+            VoteManager.enabled = true;
+        }
         consolActivated = PlayerCollider.isConsolActiveted;
         if (!Ready)
         {
@@ -214,7 +223,7 @@ public class PlayerObjectController : NetworkBehaviour
         Vector3 anan = houseInstance.transform.position - transform.position;
 
         anan.y = 0f;
-        houseInstance.transform.rotation = Quaternion.LookRotation(new Vector3(-8.95f,anan.y,anan.z));
+        houseInstance.transform.rotation = Quaternion.LookRotation(new Vector3(-8.95f, anan.y, anan.z));
     }
 }
 

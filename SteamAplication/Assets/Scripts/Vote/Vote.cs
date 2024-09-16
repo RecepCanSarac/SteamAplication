@@ -44,7 +44,10 @@ public class Vote : NetworkBehaviour
     [Command]
     public void CmdVoteForPlayer(string votedPlayerName)
     {
-        RpcSetVote(votedPlayerName, this.GetComponent<PlayerObjectController>().PlayerName);
+        if (VotePairs.Count == Manager.GamePlayers.Count)
+        {
+            RpcSetVote(votedPlayerName, this.GetComponent<PlayerObjectController>().PlayerName);
+        }
     }
 
     [ClientRpc]

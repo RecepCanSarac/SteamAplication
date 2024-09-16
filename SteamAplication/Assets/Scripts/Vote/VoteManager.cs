@@ -36,7 +36,6 @@ public class VoteManager : MonoBehaviour
     public GameObject VoteCardPrefab;
     public Transform VoteCardParend;
 
-    private  int indexer;
     private void Start()
     {
         CreateVoteCardItem();
@@ -45,9 +44,13 @@ public class VoteManager : MonoBehaviour
 
     private void CreateVoteCardItem()
     {
+        foreach (Transform child in VoteCardParend)
+        {
+            Destroy(child.gameObject);
+        }
+
         foreach (var card in Manager.GamePlayers)
         {
-            indexer++;
             GameObject VoteCard = Instantiate(VoteCardPrefab);
             VoteItem cardItem = VoteCard.gameObject.GetComponent<VoteItem>();
             cardItem.PlayerObjectController = card;
@@ -62,20 +65,16 @@ public class VoteManager : MonoBehaviour
             VoteCard.transform.SetParent(VoteCardParend);
             VoteCard.transform.localScale = Vector3.one;
 
-
             VoteCard.gameObject.GetComponent<Button>().onClick.AddListener(() =>
             {
-                GiveToVote(VoteDC, card, cardItem.Icons[indexer],cardItem);
+                GiveToVote(VoteDC, card);
             });
-
         }
     }
-    public void GiveToVote(Vote cardVote, PlayerObjectController player,RawImage icon,VoteItem item)
+
+    public void GiveToVote(Vote cardVote, PlayerObjectController player)
     {
         cardVote.CmdVoteForPlayer(player.PlayerName);
-        icon.gameObject.SetActive(true);
-        int ImageID = SteamFriends.GetLargeFriendAvatar((CSteamID)player.PlayerSteamID);
-        icon.texture = item.GetSteamImageAsTexture(ImageID);
     }
 
 }
