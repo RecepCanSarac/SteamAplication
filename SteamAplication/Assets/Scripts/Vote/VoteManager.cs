@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class VoteManager : MonoBehaviour
+public class VoteManager : NetworkBehaviour
 {
     public static VoteManager Instance;
 
