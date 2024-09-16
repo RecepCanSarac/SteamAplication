@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Mirror;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -17,7 +18,7 @@ public class Vote : NetworkBehaviour
         }
     }
 
-    public SyncDictionary<string, bool> VotePairs = new SyncDictionary<string, bool>();
+    public Dictionary<string, bool> VotePairs = new Dictionary<string, bool>();
 
     public void Update()
     {
