@@ -81,7 +81,6 @@ public class VoteManager : NetworkBehaviour
         CheckPlayerVote();
 
         ıtem.voteCount = cardVote.voteCount;
-        ıtem.SetPlayerValues();
     }
 
     public void CheckPlayerVote()

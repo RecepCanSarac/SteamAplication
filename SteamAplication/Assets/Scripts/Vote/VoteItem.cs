@@ -1,3 +1,4 @@
+using System;
 using Steamworks;
 using Mirror;
 using TMPro;
@@ -25,6 +26,12 @@ public class VoteItem : NetworkBehaviour
     {
         ImageLoaded = Callback<AvatarImageLoaded_t>.Create(OnImageLoaded);
     }
+
+    private void Update()
+    {
+        SetPlayerValues();
+    }
+
     public void SetPlayerValues()
     {
         CmdSetVoteCount();
