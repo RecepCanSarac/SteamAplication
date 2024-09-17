@@ -7,6 +7,8 @@ using UnityEngine.UI;
 public class VoteManager : NetworkBehaviour
 {
     public static VoteManager Instance;
+    
+    List<PlayerObjectController> votePlayers = new List<PlayerObjectController>();
 
     private void Awake()
     {
@@ -74,11 +76,14 @@ public class VoteManager : NetworkBehaviour
 
     public void GiveToVote(Vote cardVote, PlayerObjectController player, VoteItem ıtem)
     {
-        string oldvalue = player.PlayerName;
-        
-        cardVote.vote = !cardVote.vote;
-        cardVote.SetVote(cardVote.vote, player.PlayerName);
-        CheckPlayerVote();
+        votePlayers.Add(player);
+
+        if (!votePlayers.Contains(player))
+        {
+            cardVote.vote = !cardVote.vote;
+            cardVote.SetVote(cardVote.vote, player.PlayerName);
+            CheckPlayerVote();
+        }
 
         ıtem.voteCount = cardVote.voteCount;
     }
