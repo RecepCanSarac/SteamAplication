@@ -1,16 +1,18 @@
 using Steamworks;
 using System.Collections.Generic;
+using Mirror;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class VoteItem : MonoBehaviour
+public class VoteItem : NetworkBehaviour
 {
     public Vote playerVoteDC;
     public TextMeshProUGUI NameText;
     public TextMeshProUGUI voteCountText;
     public RawImage PlayerIcon;
 
+    [SyncVar(hook = nameof(OnVoteCount))]
     public int voteCount;
     
     private bool AvatarReceived;
@@ -26,10 +28,31 @@ public class VoteItem : MonoBehaviour
     }
     public void SetPlayerValues()
     {
-        voteCountText.text = voteCount.ToString();
+        CmdSetVoteCount();
         //NameText.text = PlayerName;
         //if (!AvatarReceived) { GetPlayerIcon(); }
     }
+
+    [Command]
+    void CmdSetVoteCount()
+    {
+        if (isLocalPlayer)
+        {
+            RpcSetVoteCount(voteCount);
+        }
+    }
+
+    void OnVoteCount(int oldValue, int newValue)
+    {
+        RpcSetVoteCount(newValue);
+    }
+
+    [ClientRpc]
+    void RpcSetVoteCount(int newValue)
+    {
+        voteCountText.text = newValue.ToString();
+    }
+    
     void GetPlayerIcon()
     {
         int ImageID = SteamFriends.GetLargeFriendAvatar((CSteamID)PlayerObjectController.PlayerSteamID);
