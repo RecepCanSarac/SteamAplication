@@ -67,26 +67,19 @@ public class VoteManager : NetworkBehaviour
             VoteCard.transform.localScale = Vector3.one;
 
             // Adding the voting functionality with proper authority handling
-            VoteCard.gameObject.GetComponent<Button>().onClick.AddListener(() =>
-            {
-                GiveToVote(VoteDC, card, cardItem);
-            });
+            VoteCard.gameObject.GetComponent<Button>().onClick
+                .AddListener(() => { GiveToVote(VoteDC, card, cardItem); });
         }
     }
 
     public void GiveToVote(Vote cardVote, PlayerObjectController player, VoteItem ıtem)
     {
         string oldvalue = player.PlayerName;
-        if (cardVote.votePlayer != oldvalue)
-        {
-            cardVote.vote = !cardVote.vote;
-            cardVote.SetVote(cardVote.vote, player.PlayerName);
-            CheckPlayerVote();
-        }
-        else
-        {
-            Debug.Log("Bu oyuncuya verdin zaten");
-        }
+        
+        cardVote.vote = !cardVote.vote;
+        cardVote.SetVote(cardVote.vote, player.PlayerName);
+        CheckPlayerVote();
+
         ıtem.voteCount = cardVote.voteCount;
         ıtem.SetPlayerValues();
     }
@@ -96,7 +89,7 @@ public class VoteManager : NetworkBehaviour
         foreach (PlayerObjectController player in Manager.GamePlayers)
         {
             var voteInstance = player.GetComponent<Vote>();
-            
+
             if (player.PlayerName == voteInstance.votePlayer)
             {
                 voteInstance.voteCount++;
