@@ -351,7 +351,7 @@ MonoBehaviour:
   classText: {fileID: 8215277387173407463}
   className: 
   "\u0131sOrderOf": 0
-  house: {fileID: 7575280036243738546, guid: b21ce616dd5c2ac4e8482b171d45c395, type: 3}
+  house: {fileID: 7025001029638354048, guid: a7cf4ca5624781043a855e795fbe5b53, type: 3}
   ConnectionID: 0
   PlayerIdNumber: 0
   PlayerSteamID: 0
@@ -510,6 +510,9 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
+  votePlayer: 
+  vote: 0
+  voteCount: 0
 --- !u!1 &4230404239732311174
 GameObject:
   m_ObjectHideFlags: 0
