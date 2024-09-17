@@ -6,7 +6,10 @@ public class PlayerMovmentController : NetworkBehaviour
     public float Speed = 0.1f;
     public GameObject PlayerModel;
     public Transform orientation;
-    public Animator animator; 
+    public Animator animator;
+
+    [SyncVar(hook = nameof(OnSpeedChanged))]
+    private float syncMoveSpeed;
 
     private void Start()
     {
@@ -24,6 +27,7 @@ public class PlayerMovmentController : NetworkBehaviour
         if (isLocalPlayer == true)
         {
             Movement();
+            CmdSendAnimationSpeed(animator.GetFloat("Speed"));
         }
     }
 
@@ -45,6 +49,17 @@ public class PlayerMovmentController : NetworkBehaviour
         transform.Translate(moveDirection * Speed);
 
         float moveSpeed = moveDirection.magnitude;
-        animator.SetFloat("Speed", moveSpeed); 
+        animator.SetFloat("Speed", moveSpeed);
+    }
+
+    [Command]
+    void CmdSendAnimationSpeed(float moveSpeed)
+    {
+        syncMoveSpeed = moveSpeed;
+    }
+
+    void OnSpeedChanged(float oldSpeed, float newSpeed)
+    {
+        animator.SetFloat("Speed", newSpeed);  
     }
 }
