@@ -48,7 +48,10 @@ public class VoteItem : NetworkBehaviour
 
     void OnVoteCount(int oldValue, int newValue)
     {
-        RpcSetVoteCount(newValue);
+        if (isLocalPlayer)
+        {
+            RpcSetVoteCount(newValue);
+        }
     }
 
     [ClientRpc]
