@@ -69,46 +69,38 @@ public class VoteManager : NetworkBehaviour
             // Adding the voting functionality with proper authority handling
             VoteCard.gameObject.GetComponent<Button>().onClick.AddListener(() =>
             {
-                GiveToVote(VoteDC, card);
-                
-                if (card.isLocalPlayer)
-                {
-                    CmdRequestVote(card.PlayerName);
-                }
-                else
-                {
-                    // Inform the server to handle voting for this player
-                    CmdRequestVote(card.PlayerName);
-                }
+                GiveToVote(VoteDC, card, cardItem);
             });
         }
     }
 
-    public void GiveToVote(Vote cardVote, PlayerObjectController player)
+    public void GiveToVote(Vote cardVote, PlayerObjectController player, VoteItem ıtem)
     {
-        cardVote.CmdVoteForPlayer(player.PlayerName);
-    }
-
-    public void CmdRequestVote(string playerName)
-    {
-        // Perform the voting on the server-side, ensuring that authority is respected
-        PlayerObjectController votingPlayer = FindPlayerByName(playerName); // Assuming a method that finds the player
-        if (votingPlayer != null)
+        string oldvalue = player.PlayerName;
+        if (cardVote.votePlayer != oldvalue)
         {
-            votingPlayer.GetComponent<Vote>().CmdVoteForPlayer(playerName);
+            cardVote.vote = !cardVote.vote;
+            cardVote.SetVote(cardVote.vote, player.PlayerName);
+            CheckPlayerVote();
         }
+        else
+        {
+            Debug.Log("Bu oyuncuya verdin zaten");
+        }
+        ıtem.voteCount = cardVote.voteCount;
+        ıtem.SetPlayerValues();
     }
 
-    private PlayerObjectController FindPlayerByName(string playerName)
+    public void CheckPlayerVote()
     {
-        foreach (var player in Manager.GamePlayers)
+        foreach (PlayerObjectController player in Manager.GamePlayers)
         {
-            if (player.PlayerName == playerName)
+            var voteInstance = player.GetComponent<Vote>();
+            
+            if (player.PlayerName == voteInstance.votePlayer)
             {
-                return player;
+                voteInstance.voteCount++;
             }
         }
-
-        return null;
     }
 }

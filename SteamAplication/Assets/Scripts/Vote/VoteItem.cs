@@ -8,9 +8,14 @@ public class VoteItem : MonoBehaviour
 {
     public Vote playerVoteDC;
     public TextMeshProUGUI NameText;
+    public TextMeshProUGUI voteCountText;
     public RawImage PlayerIcon;
+
+    public int voteCount;
+    
     private bool AvatarReceived;
     public string PlayerName;
+    
     protected Callback<AvatarImageLoaded_t> ImageLoaded;
 
     public PlayerObjectController PlayerObjectController;
@@ -21,8 +26,9 @@ public class VoteItem : MonoBehaviour
     }
     public void SetPlayerValues()
     {
-        NameText.text = PlayerName;
-        if (!AvatarReceived) { GetPlayerIcon(); }
+        voteCountText.text = voteCount.ToString();
+        //NameText.text = PlayerName;
+        //if (!AvatarReceived) { GetPlayerIcon(); }
     }
     void GetPlayerIcon()
     {

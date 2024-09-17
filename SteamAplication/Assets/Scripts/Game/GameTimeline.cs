@@ -1,11 +1,11 @@
-//using System;
-//using System.Collections.Generic;
-//using Mirror;
-//using TMPro;
-//using UnityEngine;
+using System;
+using System.Collections.Generic;
+using Mirror;
+using TMPro;
+using UnityEngine;
 
-//public class GameTimeline : NetworkBehaviour
-//{
+public class GameTimeline : NetworkBehaviour
+{
 //    public TextMeshProUGUI timeText;
 
 //    public TextMeshProUGUI messageText;
@@ -302,4 +302,5 @@
 //        SetPlayer();
 //        return "Finish";
 //    }
-//}
+}
+
