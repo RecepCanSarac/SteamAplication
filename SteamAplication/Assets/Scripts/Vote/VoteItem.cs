@@ -1,5 +1,4 @@
 using Steamworks;
-using System.Collections.Generic;
 using Mirror;
 using TMPro;
 using UnityEngine;
@@ -29,6 +28,7 @@ public class VoteItem : NetworkBehaviour
     public void SetPlayerValues()
     {
         CmdSetVoteCount();
+        SetText();
         //NameText.text = PlayerName;
         //if (!AvatarReceived) { GetPlayerIcon(); }
     }
@@ -36,10 +36,7 @@ public class VoteItem : NetworkBehaviour
     [Command]
     void CmdSetVoteCount()
     {
-        if (isLocalPlayer)
-        {
-            RpcSetVoteCount(voteCount);
-        }
+        RpcSetVoteCount(voteCount);
     }
 
     void OnVoteCount(int oldValue, int newValue)
@@ -50,7 +47,13 @@ public class VoteItem : NetworkBehaviour
     [ClientRpc]
     void RpcSetVoteCount(int newValue)
     {
-        voteCountText.text = newValue.ToString();
+        voteCountText.text = "count : " + newValue;
+        SetText();
+    }
+
+    void SetText()
+    {
+        voteCountText.text = "count : " + voteCount;
     }
     
     void GetPlayerIcon()
