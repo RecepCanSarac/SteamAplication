@@ -1166,6 +1166,7 @@ MonoBehaviour:
   Speed: 0.05
   PlayerModel: {fileID: 6616155476713179239}
   orientation: {fileID: 1831015242549422001}
+  animator: {fileID: 3098988384399738226}
 --- !u!114 &5119151469330342104
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3333,7 +3334,8 @@ Animator:
   m_WarningMessage: "\nBinding warning: Some generic clip(s) animate transforms that
     are already bound by a Humanoid avatar. These transforms can only be changed
     by Humanoid clips.\n\tTransform 'mouth'\n\tTransform 'mouth'\n\tTransform 'head'\n\tTransform
-    'mouth'\n\tTransform 'head'\n\tFrom animation clip 'Idle03'"
+    'mouth'\n\tTransform 'head'\n\tFrom animation clip 'Idle03'\n\tFrom animation
+    clip 'Run01BWD_AnimLayer_RM'"
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0

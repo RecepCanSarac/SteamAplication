@@ -6,6 +6,7 @@ public class PlayerMovmentController : NetworkBehaviour
     public float Speed = 0.1f;
     public GameObject PlayerModel;
     public Transform orientation;
+    public Animator animator; 
 
     private void Start()
     {
@@ -42,5 +43,8 @@ public class PlayerMovmentController : NetworkBehaviour
         Vector3 moveDirection = forwardDirection * zDirection + rightDirection * xDirection;
 
         transform.Translate(moveDirection * Speed);
+
+        float moveSpeed = moveDirection.magnitude;
+        animator.SetFloat("Speed", moveSpeed); 
     }
 }
