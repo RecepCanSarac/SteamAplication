@@ -10,17 +10,9 @@ public class VoteManager : NetworkBehaviour
     
     List<PlayerObjectController> votePlayers = new List<PlayerObjectController>();
 
-    private void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
+    public VoteItem currentItem;
+
+    #region Singleton
 
     CustomNetworkManager manager;
 
@@ -34,6 +26,20 @@ public class VoteManager : NetworkBehaviour
             }
 
             return manager = CustomNetworkManager.singleton as CustomNetworkManager;
+        }
+    }
+
+    #endregion
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
         }
     }
 
@@ -76,16 +82,20 @@ public class VoteManager : NetworkBehaviour
 
     public void GiveToVote(Vote cardVote, PlayerObjectController player, VoteItem ıtem)
     {
-        votePlayers.Add(player);
-
+        currentItem = ıtem;
+        
         if (!votePlayers.Contains(player))
         {
-            cardVote.vote = !cardVote.vote;
-            cardVote.SetVote(cardVote.vote, player.PlayerName);
-            CheckPlayerVote();
-        }
+            if (isServer)
+            {
+                cardVote.vote = !cardVote.vote;
+                cardVote.SetVote(cardVote.vote, player.PlayerName);
+                CheckPlayerVote();
+            }
 
-        ıtem.voteCount = cardVote.voteCount;
+            votePlayers.Add(player);
+            ıtem.CmdSetVoteCount(cardVote.voteCount);
+        }
     }
 
     public void CheckPlayerVote()
@@ -99,5 +109,10 @@ public class VoteManager : NetworkBehaviour
                 voteInstance.voteCount++;
             }
         }
+    }
+
+    public void UpdateVoteCountUI(int newValue)
+    {
+        
     }
 }

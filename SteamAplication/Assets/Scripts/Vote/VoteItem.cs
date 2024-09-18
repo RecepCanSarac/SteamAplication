@@ -27,43 +27,34 @@ public class VoteItem : NetworkBehaviour
         ImageLoaded = Callback<AvatarImageLoaded_t>.Create(OnImageLoaded);
     }
 
-    private void Update()
-    {
-        SetPlayerValues();
-    }
-
     public void SetPlayerValues()
     {
-        CmdSetVoteCount();
-        SetText();
         //NameText.text = PlayerName;
         //if (!AvatarReceived) { GetPlayerIcon(); }
     }
+    
+    public void UpdateVoteCountUI(int newVoteCount)
+    {
+        voteCount = newVoteCount;
+        voteCountText.text = "Count: " + newVoteCount;
+    }
 
     [Command]
-    void CmdSetVoteCount()
+    public void CmdSetVoteCount(int count)
     {
-        RpcSetVoteCount(voteCount);
+        voteCount = count;
+        RpcSetVoteCount(count);
     }
 
     void OnVoteCount(int oldValue, int newValue)
     {
-        if (isLocalPlayer)
-        {
-            RpcSetVoteCount(newValue);
-        }
+        voteCountText.text = "Count: " + newValue;
     }
 
     [ClientRpc]
     void RpcSetVoteCount(int newValue)
     {
         voteCountText.text = "count : " + newValue;
-        SetText();
-    }
-
-    void SetText()
-    {
-        voteCountText.text = "count : " + voteCount;
     }
     
     void GetPlayerIcon()

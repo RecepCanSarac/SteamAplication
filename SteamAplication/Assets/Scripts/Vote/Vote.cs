@@ -8,10 +8,26 @@ public class Vote : NetworkBehaviour
     [SyncVar]
     public bool vote;
 
-    [SyncVar] public int voteCount;
+    [SyncVar(hook = nameof(OnVoteCountChanged))]
+    public int voteCount;
     public void SetVote(bool _vote, string _votePlayer)
     {
-        vote = _vote;
-        votePlayer = _votePlayer;
+        if (isServer)
+        {
+            voteCount += _vote ? 1 : 0;
+            votePlayer = _votePlayer;
+        }
+    }
+    
+    void OnVoteCountChanged(int oldValue, int newValue)
+    {
+        RpcUpdateVoteCount(newValue);
+    }
+    
+    [ClientRpc]
+    private void RpcUpdateVoteCount(int newValue)
+    {
+        VoteItem voteItem = VoteManager.Instance.currentItem;
+        voteItem.UpdateVoteCountUI(newValue);
     }
 }
