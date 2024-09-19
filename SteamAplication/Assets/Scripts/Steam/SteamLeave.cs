@@ -37,6 +37,10 @@ public class SteamLeave : NetworkBehaviour
 
         if (isLocalPlayer)
         {
+            foreach (var a in Manager.GamePlayers)
+            {
+                Destroy(a.gameObject);
+            }
             Manager.StopHost();
         }
 
