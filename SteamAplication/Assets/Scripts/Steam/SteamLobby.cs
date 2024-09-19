@@ -158,7 +158,6 @@ public class SteamLobby : MonoBehaviour
     {
         SteamMatchmaking.LeaveLobby(lobbyID);
         
-        SteamMatchmaking.LeaveLobby(new CSteamID(CurrentLobbyID));
         SteamMatchmaking.DeleteLobbyData(new CSteamID(CurrentLobbyID),"name");
     }
 }

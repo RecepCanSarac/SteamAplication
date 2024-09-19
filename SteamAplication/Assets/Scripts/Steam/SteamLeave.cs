@@ -40,30 +40,11 @@ public class SteamLeave : NetworkBehaviour
         else
             Debug.Log("Lobby ID : " + lobbyID);
 
-        StartCoroutine(LeaveGameWithDelay());
-    }
-    
-    IEnumerator LeaveGameWithDelay()
-    {
         Manager.offlineScene = "";
-
-        Debug.Log(authorityPlayer.PlayerName);
         
-        if (authorityPlayer)
-        {
-            if (isServer)
-            {
-                Manager.StopHost();
-            }
-            else
-            {
-                Manager.StopClient();
-            }
-        }
+        Manager.StopClient();
         
         Manager.networkAddress = "HostAddress";
-
-        yield return new WaitForSeconds(1);
 
         SceneManager.LoadScene(sceneID);
     }
