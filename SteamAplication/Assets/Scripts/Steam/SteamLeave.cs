@@ -35,14 +35,25 @@ public class SteamLeave : NetworkBehaviour
 
     public void LeaveGame()
     {
-        if(lobbyID != (CSteamID)0)
+        /*if(lobbyID != (CSteamID)0)
             SteamLobby.instance.LeaveGame(lobbyID);
         else
-            Debug.Log("Lobby ID : " + lobbyID);
+            Debug.Log("Lobby ID : " + lobbyID);*/
 
         Manager.offlineScene = "";
         
-        Manager.StopClient();
+        if (authorityPlayer.isLocalPlayer)
+        {
+            if (isServer)
+            {
+                Manager.StopHost();
+            }
+            else
+            {
+                SteamLobby.instance.LeaveGame(lobbyID);
+                Manager.StopClient();
+            }
+        }
         
         Manager.networkAddress = "HostAddress";
 
