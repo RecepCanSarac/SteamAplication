@@ -58,7 +58,7 @@ public class SteamLeave : NetworkBehaviour
                 Manager.StopClient();
             }
             
-            SceneManager.LoadScene(sceneID);
+            //SceneManager.LoadScene(sceneID);
         }
         
         
