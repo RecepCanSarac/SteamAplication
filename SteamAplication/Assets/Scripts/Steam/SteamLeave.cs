@@ -42,6 +42,7 @@ public class SteamLeave : NetworkBehaviour
 
         if (isLocalPlayer)
         {
+            Manager.StopClient();
             Manager.StopHost();
         }
 
