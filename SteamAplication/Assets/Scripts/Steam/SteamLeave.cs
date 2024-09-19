@@ -53,7 +53,7 @@ public class SteamLeave : NetworkBehaviour
             }
             else
             {
-                if (authorityPlayer)
+                if (authorityPlayer.isLocalPlayer)
                 {
                     SteamLobby.instance.LeaveGame(lobbyID);
 
