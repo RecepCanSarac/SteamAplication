@@ -1,3 +1,4 @@
+using System.Collections;
 using Mirror;
 using Steamworks;
 using UnityEngine;
@@ -37,9 +38,17 @@ public class SteamLeave : NetworkBehaviour
         
         foreach (var a in Manager.GamePlayers)
         {
-            Destroy(a.gameObject);
+            if (a != null)
+            {
+                Destroy(a.gameObject);
+            }
         }
 
+        StartCoroutine(LeaveGameWithDelay());
+    }
+    
+    IEnumerator LeaveGameWithDelay()
+    {
         if (isLocalPlayer)
         {
             Manager.StopHost();
@@ -51,6 +60,8 @@ public class SteamLeave : NetworkBehaviour
         }
 
         Manager.networkAddress = "HostAddress";
+
+        yield return new WaitForSeconds(1);  // Short delay
 
         SceneManager.LoadScene(sceneID);
     }
