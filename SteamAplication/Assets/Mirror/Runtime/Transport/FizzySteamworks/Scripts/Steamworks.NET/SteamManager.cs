@@ -67,6 +67,8 @@ public class SteamManager : MonoBehaviour {
 			return;
 		}
 		s_instance = this;
+		
+		InitializeSteamAPI();
 
 		if(s_EverInitialized) {
 			// This is almost always an error.
@@ -123,7 +125,6 @@ public class SteamManager : MonoBehaviour {
 		}
 
 		s_EverInitialized = true;
-		InitializeSteamAPI();
 	}
 	
 	private void InitializeSteamAPI() {
