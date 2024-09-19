@@ -404,6 +404,7 @@ Transform:
   m_Children:
   - {fileID: 5808129451842523869}
   - {fileID: 8518909831186490206}
+  - {fileID: 1301313717467763855}
   m_Father: {fileID: 2300221805437670018}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2236,7 +2237,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2871655934749563294}
-  - {fileID: 1301313717467763855}
   - {fileID: 6917869973988242974}
   m_Father: {fileID: 2300221805437670018}
   m_RootOrder: 1
@@ -2513,7 +2513,7 @@ RectTransform:
   m_Children:
   - {fileID: 7316900710721095465}
   m_Father: {fileID: 1831015242549422001}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -3797,8 +3797,8 @@ RectTransform:
   m_Children:
   - {fileID: 4180009922671677118}
   - {fileID: 3879804599514677355}
-  m_Father: {fileID: 1831015242549422001}
-  m_RootOrder: 1
+  m_Father: {fileID: 7291251144696078391}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -3848,7 +3848,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
+  m_PresetInfoIsWorld: 1
 --- !u!114 &4028302266246010050
 MonoBehaviour:
   m_ObjectHideFlags: 0
