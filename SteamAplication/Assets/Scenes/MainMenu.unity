@@ -648,9 +648,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 419748413}
-        m_TargetAssemblyTypeName: SteamLobby, Assembly-CSharp
-        m_MethodName: HostLobby
+      - m_Target: {fileID: 1764451227}
+        m_TargetAssemblyTypeName: LobbiesListManager, Assembly-CSharp
+        m_MethodName: Host
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

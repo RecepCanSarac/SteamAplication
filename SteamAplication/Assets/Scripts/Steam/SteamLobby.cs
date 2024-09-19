@@ -86,6 +86,7 @@ public class SteamLobby : MonoBehaviour
     {
         if (callback.m_eResult != EResult.k_EResultOK) { return; }
 
+        manager.StopHost();
         manager.StartHost();
 
         SteamMatchmaking.SetLobbyData(
@@ -152,5 +153,13 @@ public class SteamLobby : MonoBehaviour
         {
             Debug.Log("Lobby is full");
         }
+    }
+
+    public void LeaveGame(CSteamID lobbyID)
+    {
+        SteamMatchmaking.LeaveLobby(lobbyID);
+        
+        SteamMatchmaking.LeaveLobby(new CSteamID(CurrentLobbyID));
+        SteamMatchmaking.DeleteLobbyData(new CSteamID(CurrentLobbyID),"name");
     }
 }

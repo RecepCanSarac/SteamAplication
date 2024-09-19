@@ -56,6 +56,12 @@ public class LobbiesListManager : MonoBehaviour
             }
         }
     }
+
+    public void Host()
+    {
+        SteamLobby.instance.HostLobby();
+    }
+    
     public void DestroyLobbies()
     {
         foreach (GameObject lobbyItem in listOfLobbies)

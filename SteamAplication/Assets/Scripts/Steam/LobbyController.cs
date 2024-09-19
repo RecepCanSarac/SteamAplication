@@ -92,6 +92,8 @@ public class LobbyController : MonoBehaviour
 
     public void CheckIfAllReady()
     {
+        if(StartGameButton == null) return;
+        
         bool AllReady = false;
         foreach (PlayerObjectController player in Manager.GamePlayers)
         {
@@ -222,10 +224,14 @@ public class LobbyController : MonoBehaviour
         {
             foreach (PlayerListItem playerListItemToRomve in playerListItemToRemove)
             {
-                GameObject ObjectToRemove = playerListItemToRomve.gameObject;
+                if (playerListItemToRomve != null)
+                {
+                    GameObject ObjectToRemove = playerListItemToRomve.gameObject;
+                    Destroy(ObjectToRemove);
+                    ObjectToRemove = null;
+                }
                 PlayerListItems.Remove(playerListItemToRomve);
-                Destroy(ObjectToRemove);
-                ObjectToRemove = null;
+                
                 SceneManager.LoadScene("MainMenu");
             }
         }
