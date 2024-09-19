@@ -57,7 +57,7 @@ public class SteamLeave : NetworkBehaviour
                 {
                     SteamLobby.instance.LeaveGame(lobbyID);
 
-                    SceneManager.LoadScene(sceneID);
+                    //SceneManager.LoadScene(sceneID);
                 }
                 
                 Manager.StopClient();
