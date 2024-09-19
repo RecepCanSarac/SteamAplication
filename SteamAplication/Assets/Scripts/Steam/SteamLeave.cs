@@ -11,6 +11,7 @@ public class SteamLeave : NetworkBehaviour
     public CSteamID lobbyID;
 
     public PlayerObjectController authorityPlayer;
+    public PlayerObjectController currentPlayer;
     
     #region Singleton
 
@@ -30,7 +31,9 @@ public class SteamLeave : NetworkBehaviour
     {
         lobbyID = (CSteamID)SteamLobby.instance.CurrentLobbyID;
 
-        authorityPlayer = GameObject.Find("LocalGamePlayer").GetComponent<PlayerObjectController>();
+        authorityPlayer = Manager.GamePlayers[0];
+
+        currentPlayer = GameObject.Find("LocalGamePlayer").GetComponent<PlayerObjectController>();
     }
 
     public void LeaveGame()
@@ -42,7 +45,7 @@ public class SteamLeave : NetworkBehaviour
 
         Manager.offlineScene = "";
         
-        if (authorityPlayer.isLocalPlayer)
+        if (currentPlayer.isLocalPlayer)
         {
             if (isServer)
             {
@@ -50,12 +53,16 @@ public class SteamLeave : NetworkBehaviour
             }
             else
             {
-                SteamLobby.instance.LeaveGame(lobbyID);
+                if (authorityPlayer)
+                {
+                    SteamLobby.instance.LeaveGame(lobbyID);
+
+                    SceneManager.LoadScene(sceneID);
+                }
+                
                 Manager.StopClient();
                 
                 Manager.networkAddress = "HostAddress";
-
-                SceneManager.LoadScene(sceneID);
             }
         }
         
