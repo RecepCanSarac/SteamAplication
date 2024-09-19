@@ -53,13 +53,8 @@ public class SteamLeave : NetworkBehaviour
             }
             else
             {
-                if (authorityPlayer.isLocalPlayer)
-                {
-                    SteamLobby.instance.LeaveGame(lobbyID);
-
-                    //SceneManager.LoadScene(sceneID);
-                }
                 SteamLobby.instance.LeaveGame(lobbyID);
+                Debug.Log(currentPlayer.PlayerName);
                 Manager.networkAddress = "HostAddress";
             }
         }
