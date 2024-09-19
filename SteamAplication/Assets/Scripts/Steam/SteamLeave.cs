@@ -30,7 +30,7 @@ public class SteamLeave : NetworkBehaviour
     {
         lobbyID = (CSteamID)SteamLobby.instance.CurrentLobbyID;
 
-        authorityPlayer = Manager.GamePlayers[0];
+        authorityPlayer = GameObject.Find("LocalGamePlayer").GetComponent<PlayerObjectController>();
     }
 
     public void LeaveGame()
