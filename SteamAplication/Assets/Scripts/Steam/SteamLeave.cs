@@ -42,8 +42,6 @@ public class SteamLeave : NetworkBehaviour
             SteamLobby.instance.LeaveGame(lobbyID);
         else
             Debug.Log("Lobby ID : " + lobbyID);*/
-
-        Manager.offlineScene = "";
         
         if (currentPlayer.isLocalPlayer)
         {
@@ -54,13 +52,13 @@ public class SteamLeave : NetworkBehaviour
             else
             {
                 SteamLobby.instance.LeaveGame(lobbyID);
-
-                currentPlayer.OnStopClient();
-                
-                Debug.Log(lobbyID);
                 
                 Manager.networkAddress = "HostAddress";
+                
+                Manager.StopClient();
             }
+            
+            SceneManager.LoadScene(sceneID);
         }
         
         
