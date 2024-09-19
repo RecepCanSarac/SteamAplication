@@ -54,7 +54,9 @@ public class SteamLeave : NetworkBehaviour
             else
             {
                 SteamLobby.instance.LeaveGame(lobbyID);
-                Debug.Log(currentPlayer.PlayerName);
+                
+                Debug.Log(lobbyID);
+                
                 Manager.networkAddress = "HostAddress";
             }
         }
