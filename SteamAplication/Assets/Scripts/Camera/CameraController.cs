@@ -17,7 +17,7 @@ public class CameraController : NetworkBehaviour
 
     public override void OnStartAuthority()
     {
-        if (cameraHolder == null)
+        if (cameraHolder == null || isLocalPlayer == false)
         {
             return;
         }

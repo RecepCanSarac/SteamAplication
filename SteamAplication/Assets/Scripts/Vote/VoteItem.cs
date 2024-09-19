@@ -15,7 +15,7 @@ public class VoteItem : NetworkBehaviour
     [SyncVar(hook = nameof(OnVoteCount))]
     public int voteCount;
     
-    private bool AvatarReceived;
+    private bool _avatarReceived;
     public string PlayerName;
     
     protected Callback<AvatarImageLoaded_t> ImageLoaded;
@@ -96,7 +96,7 @@ public class VoteItem : NetworkBehaviour
                 texture.Apply();
             }
         }
-        AvatarReceived = true;
+        _avatarReceived = true;
         return texture;
     }
 

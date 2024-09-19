@@ -86,7 +86,6 @@ public class SteamLobby : MonoBehaviour
     {
         if (callback.m_eResult != EResult.k_EResultOK) { return; }
 
-        manager.StopHost();
         manager.StartHost();
 
         SteamMatchmaking.SetLobbyData(

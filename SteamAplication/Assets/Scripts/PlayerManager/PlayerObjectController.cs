@@ -59,10 +59,6 @@ public class PlayerObjectController : NetworkBehaviour
     }
     private void Update()
     {
-        if (SceneManager.GetActiveScene().name == "Game")
-        {
-            
-        }
         consolActivated = PlayerCollider.isConsolActiveted;
         if (!Ready)
         {
@@ -84,7 +80,7 @@ public class PlayerObjectController : NetworkBehaviour
     }
     public void PlayerNameShow()
     {
-        if (isLocalPlayer)
+        if (isLocalPlayer && isClient && NetworkClient.ready)
         {
             CmdPlayerNameShow();
         }
@@ -168,7 +164,10 @@ public class PlayerObjectController : NetworkBehaviour
     [Command]
     private void CmdPlayerNameShow()
     {
-        RpcUpdateUI(this.PlayerName, className);
+        if (NetworkClient.ready)
+        {
+            RpcUpdateUI(this.PlayerName, className);
+        }
     }
 
     [ClientRpc]

@@ -24,7 +24,7 @@ public class PlayerMovmentController : NetworkBehaviour
             PlayerModel.SetActive(true);
         }
 
-        if (isLocalPlayer == true)
+        if (isLocalPlayer && isClient && NetworkClient.ready)
         {
             Movement();
             CmdSendAnimationSpeed(animator.GetFloat("Speed"));

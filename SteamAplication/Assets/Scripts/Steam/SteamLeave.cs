@@ -9,6 +9,8 @@ public class SteamLeave : NetworkBehaviour
     public int sceneID;
 
     public CSteamID lobbyID;
+
+    public PlayerObjectController authorityPlayer;
     
     #region Singleton
 
@@ -27,6 +29,8 @@ public class SteamLeave : NetworkBehaviour
     void Start()
     {
         lobbyID = (CSteamID)SteamLobby.instance.CurrentLobbyID;
+
+        authorityPlayer = Manager.GamePlayers[0];
     }
 
     public void LeaveGame()
@@ -35,33 +39,31 @@ public class SteamLeave : NetworkBehaviour
             SteamLobby.instance.LeaveGame(lobbyID);
         else
             Debug.Log("Lobby ID : " + lobbyID);
-        
-        foreach (var a in Manager.GamePlayers)
-        {
-            if (a != null)
-            {
-                Destroy(a.gameObject);
-            }
-        }
 
         StartCoroutine(LeaveGameWithDelay());
     }
     
     IEnumerator LeaveGameWithDelay()
     {
-        if (isLocalPlayer)
-        {
-            Manager.StopHost();
-        }
+        Manager.offlineScene = "";
 
-        if (isClient)
+        Debug.Log(authorityPlayer.PlayerName);
+        
+        if (authorityPlayer)
         {
-            Manager.StopClient();
+            if (isServer)
+            {
+                Manager.StopHost();
+            }
+            else
+            {
+                Manager.StopClient();
+            }
         }
-
+        
         Manager.networkAddress = "HostAddress";
 
-        yield return new WaitForSeconds(1);  // Short delay
+        yield return new WaitForSeconds(1);
 
         SceneManager.LoadScene(sceneID);
     }
