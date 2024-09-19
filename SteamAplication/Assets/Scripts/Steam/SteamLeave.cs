@@ -43,7 +43,9 @@ public class SteamLeave : NetworkBehaviour
         else
             Debug.Log("Lobby ID : " + lobbyID);*/
         
-        if (currentPlayer.isLocalPlayer)
+        currentPlayer.Disconnected();
+        
+        /*if (currentPlayer.isLocalPlayer)
         {
             if (isServer)
             {
@@ -61,7 +63,7 @@ public class SteamLeave : NetworkBehaviour
             }
             
             //SceneManager.LoadScene(sceneID);
-        }
+        }*/
         
         
     }
