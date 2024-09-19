@@ -84,7 +84,7 @@ public class PlayerObjectController : NetworkBehaviour
     }
     public void PlayerNameShow()
     {
-        CmdPlayerNameShow();
+        if(isServer) CmdPlayerNameShow();
     }
 
     private void PlayerReadyUpdate(bool oldValue, bool newValue)
