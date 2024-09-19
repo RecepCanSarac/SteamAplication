@@ -23,7 +23,6 @@ public class LobbyDataEnttry : MonoBehaviour
 
     public void JoinLobby()
     {
-        CustomNetworkManager.singleton.StopHost();
         SteamLobby.instance.JoinLobby(LobbyID);
     }
 

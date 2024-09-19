@@ -35,18 +35,9 @@ public class SteamLeave : NetworkBehaviour
         else
             Debug.Log("Lobby ID : " + lobbyID);
 
-        if (isServer)
-        {
-            Manager.StopClient(); 
-        }
-
         if (isLocalPlayer)
         {
             Manager.StopHost();
-            foreach (var aPlayer in Manager.GamePlayers)
-            {
-                Destroy(aPlayer.gameObject);
-            }
         }
 
         Manager.networkAddress = "HostAddress";
