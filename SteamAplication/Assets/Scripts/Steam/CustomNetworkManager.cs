@@ -47,11 +47,6 @@ public class CustomNetworkManager : NetworkManager
         {
             AssignClassesToPlayers();
         }
-        
-        if (newSceneName.StartsWith("MainMenu"))
-        {
-            Debug.Log("this scene menu");
-        }
 
         base.ServerChangeScene(newSceneName);
     }

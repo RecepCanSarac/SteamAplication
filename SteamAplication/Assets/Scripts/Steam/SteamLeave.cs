@@ -34,13 +34,14 @@ public class SteamLeave : NetworkBehaviour
             SteamLobby.instance.LeaveGame(lobbyID);
         else
             Debug.Log("Lobby ID : " + lobbyID);
+        
+        foreach (var a in Manager.GamePlayers)
+        {
+            Destroy(a.gameObject);
+        }
 
         if (isLocalPlayer)
         {
-            foreach (var a in Manager.GamePlayers)
-            {
-                Destroy(a.gameObject);
-            }
             Manager.StopHost();
         }
 
