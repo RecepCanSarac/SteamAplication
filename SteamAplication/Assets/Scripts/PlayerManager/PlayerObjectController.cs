@@ -131,6 +131,52 @@ public class PlayerObjectController : NetworkBehaviour
         LobbyController.instance.UpdatePlayerList();
     }
 
+    public override void OnStopServer()
+    {
+        base.OnStopServer();
+        AssignNewHost();
+    }
+    
+    private void AssignNewHost()
+    {
+        if (NetworkServer.connections.Count > 1)
+        {
+            NetworkConnection newHostConnection = null;
+            
+            foreach (var conn in NetworkServer.connections)
+            {
+                if (conn.Value != connectionToClient)
+                {
+                    newHostConnection = conn.Value;
+                    break;
+                }
+            }
+            if (newHostConnection != null)
+            {
+                NotifyPlayersOfNewHost(newHostConnection);
+                TransferStateToNewHost(newHostConnection);
+            }
+        }
+        else
+        {
+            Debug.Log("Yeterli oyuncu yok, oyun sonlandırılıyor.");
+            manager.StopHost();
+        }
+    }
+    
+    private void NotifyPlayersOfNewHost(NetworkConnection newHostConnection)
+    {
+        foreach (var conn in NetworkServer.connections)
+        {
+            Debug.Log("hey notifiy");
+        }
+    }
+
+    private void TransferStateToNewHost(NetworkConnection newHostConnection)
+    {
+        Debug.Log("Changed state trasnfer");
+    }
+
     [Command]
     private void CmdSetPlayername(string PlayerName)
     {

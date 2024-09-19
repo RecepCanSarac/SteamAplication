@@ -7,7 +7,7 @@ public class SteamHostMigrationManager : NetworkBehaviour
 
     private void Awake()
     {
-        manager = GetComponent<NetworkManager>() as CustomNetworkManager;
+        manager = GetComponent<CustomNetworkManager>();
     }
 
     public override void OnStopServer()
