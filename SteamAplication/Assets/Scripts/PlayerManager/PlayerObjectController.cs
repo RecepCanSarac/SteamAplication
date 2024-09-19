@@ -86,12 +86,6 @@ public class PlayerObjectController : NetworkBehaviour
         }
     }
 
-    public void Disconnected()
-    {
-        Manager.StopClient();
-        SteamMatchmaking.LeaveLobby((CSteamID)SteamLobby.instance.CurrentLobbyID);
-    }
-
     private void PlayerReadyUpdate(bool oldValue, bool newValue)
     {
         if (isServer)
