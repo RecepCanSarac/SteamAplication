@@ -54,6 +54,8 @@ public class SteamLeave : NetworkBehaviour
             else
             {
                 SteamLobby.instance.LeaveGame(lobbyID);
+
+                currentPlayer.OnStopClient();
                 
                 Debug.Log(lobbyID);
                 
