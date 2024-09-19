@@ -37,12 +37,12 @@ public class SteamLeave : NetworkBehaviour
 
         if (isServer)
         {
-            Manager.StopHost();
+            Manager.StopClient(); 
         }
 
         if (isLocalPlayer)
         {
-            Manager.StopClient(); 
+            Manager.StopHost();
         }
 
         Manager.networkAddress = "HostAddress";
