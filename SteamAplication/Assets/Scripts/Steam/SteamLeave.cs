@@ -35,7 +35,7 @@ public class SteamLeave : NetworkBehaviour
         else
             Debug.Log("Lobby ID : " + lobbyID);
 
-        if (isClient)
+        if (isServer)
         {
             Manager.StopClient();
         }
