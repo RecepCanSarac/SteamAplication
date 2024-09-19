@@ -43,6 +43,10 @@ public class SteamLeave : NetworkBehaviour
         if (isLocalPlayer)
         {
             Manager.StopHost();
+            foreach (var aPlayer in Manager.GamePlayers)
+            {
+                Destroy(aPlayer.gameObject);
+            }
         }
 
         Manager.networkAddress = "HostAddress";
