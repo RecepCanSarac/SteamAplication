@@ -62,7 +62,7 @@ public class SteamManager : MonoBehaviour {
 
 	protected virtual void Awake() {
 		// Only one instance of SteamManager at a time!
-		if (s_instance != null && s_EverInitialized) {
+		if (s_instance != null) {
 			Destroy(gameObject);
 			return;
 		}
@@ -78,8 +78,6 @@ public class SteamManager : MonoBehaviour {
 
 		// We want our SteamManager Instance to persist across scenes.
 		DontDestroyOnLoad(gameObject);
-		
-		InitializeSteamAPI();
 
 		if (!Packsize.Test()) {
 			Debug.LogError("[Steamworks.NET] Packsize Test returned false, the wrong version of Steamworks.NET is being run in this platform.", this);
@@ -125,15 +123,6 @@ public class SteamManager : MonoBehaviour {
 		}
 
 		s_EverInitialized = true;
-	}
-	
-	private void InitializeSteamAPI() {
-		if (!s_EverInitialized) {
-			s_EverInitialized = SteamAPI.Init();
-			if (!s_EverInitialized) {
-				Debug.Log("SteamAPI initialization failed.");
-			}
-		}
 	}
 
 	// This should only ever get called on first load and after an Assembly reload, You should never Disable the Steamworks Manager yourself.
