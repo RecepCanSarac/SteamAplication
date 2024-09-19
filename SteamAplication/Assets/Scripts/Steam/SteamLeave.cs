@@ -51,14 +51,14 @@ public class SteamLeave : NetworkBehaviour
             }
             else
             {
-                SteamLobby.instance.LeaveGame(lobbyID);
+                SteamMatchmaking.LeaveLobby(lobbyID);
                 
                 Manager.networkAddress = "HostAddress";
                 
-                //Manager.StopClient();
+                Manager.StopClient();
             }
             
-            SceneManager.LoadScene(sceneID);
+            //SceneManager.LoadScene(sceneID);
         }
         
         
