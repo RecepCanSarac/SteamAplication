@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using UnityEngine;
 using Mirror;
 using UnityEngine.SceneManagement;
@@ -104,5 +105,19 @@ public class CustomNetworkManager : NetworkManager
         yield return new WaitForSeconds(1);
 
         FizzyChat.Instance.Joined(GamePlayerInstance.PlayerName);
+    }
+
+    public void ReturnToMainMenu(NetworkConnectionToClient conn)
+    {
+        if (conn?.identity?.isServer == true) {
+            // Debug.Log("is host");
+            StopHost();
+        }
+        else {
+            //  Debug.Log("is client");
+            StopClient();
+        }
+        
+        NetworkManager.singleton.StopServer();
     }
 }

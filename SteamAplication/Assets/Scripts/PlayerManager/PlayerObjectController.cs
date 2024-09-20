@@ -131,6 +131,22 @@ public class PlayerObjectController : NetworkBehaviour
         LobbyController.instance.UpdatePlayerList();
     }
     
+    public void ExitLobby()
+    {
+        if (isLocalPlayer) {
+            // try {
+            Debug.Log("Quitting lobby");
+            var lobbyNetworkManager = NetworkManager.singleton as CustomNetworkManager;
+            lobbyNetworkManager.ReturnToMainMenu(connectionToClient);
+            /*
+        }
+        catch {
+            Debug.LogWarning("Error quitting lobby");
+        }
+        */
+        }
+    }
+    
     [Command]
     private void CmdSetPlayername(string PlayerName)
     {
