@@ -3,6 +3,7 @@ using Mirror;
 using Steamworks;
 using TMPro;
 using UnityEngine.SceneManagement;
+
 public class PlayerObjectController : NetworkBehaviour
 {
     public TextMeshProUGUI NameText;
@@ -17,9 +18,15 @@ public class PlayerObjectController : NetworkBehaviour
     [SyncVar] public int ConnectionID;
     [SyncVar] public int PlayerIdNumber;
     [SyncVar] public ulong PlayerSteamID;
-    [SyncVar(hook = nameof(PlayerNameUpdate))] public string PlayerName;
-    [SyncVar(hook = nameof(PlayerReadyUpdate))] public bool Ready;
-    [SyncVar(hook = nameof(ClassNameUpdate))] public string syncedClassName;
+
+    [SyncVar(hook = nameof(PlayerNameUpdate))]
+    public string PlayerName;
+
+    [SyncVar(hook = nameof(PlayerReadyUpdate))]
+    public bool Ready;
+
+    [SyncVar(hook = nameof(ClassNameUpdate))]
+    public string syncedClassName;
 
     public bool cameraControll = true;
 
@@ -40,12 +47,13 @@ public class PlayerObjectController : NetworkBehaviour
             {
                 return manager;
             }
-            return manager = CustomNetworkManager.singleton as CustomNetworkManager;
+
+            return manager = NetworkManager.singleton as CustomNetworkManager;
         }
     }
+
     private void Start()
     {
-
         _movmentController = GetComponent<PlayerMovmentController>();
         _controller = GetComponent<CameraController>();
         ClassGenerator.Instance.SetList();
@@ -57,6 +65,7 @@ public class PlayerObjectController : NetworkBehaviour
         PlayerCollider = GetComponent<PlayerCollider>();
         DontDestroyOnLoad(this.gameObject);
     }
+
     private void Update()
     {
         consolActivated = PlayerCollider.isConsolActiveted;
@@ -74,10 +83,12 @@ public class PlayerObjectController : NetworkBehaviour
         // added
         PlayerNameShow();
     }
+
     public void InitializePlayer()
     {
         gameObject.SetActive(true);
     }
+
     public void PlayerNameShow()
     {
         if (isLocalPlayer && isClient && NetworkClient.ready)
@@ -86,29 +97,6 @@ public class PlayerObjectController : NetworkBehaviour
         }
     }
 
-    private void PlayerReadyUpdate(bool oldValue, bool newValue)
-    {
-        if (isServer)
-        {
-            this.Ready = newValue;
-        }
-        if (isClient)
-        {
-            LobbyController.instance.UpdatePlayerList();
-        }
-    }
-    [Command]
-    private void CMdSetPlayerReady()
-    {
-        this.PlayerReadyUpdate(this.Ready, !this.Ready);
-    }
-    public void ChangeReady()
-    {
-        if (isLocalPlayer)
-        {
-            CMdSetPlayerReady();
-        }
-    }
     public override void OnStartAuthority()
     {
         CmdSetPlayername(SteamFriends.GetPersonaName().ToString());
@@ -130,10 +118,27 @@ public class PlayerObjectController : NetworkBehaviour
         Manager.GamePlayers.Remove(this);
         LobbyController.instance.UpdatePlayerList();
     }
-    
+
+    public void CanStartGame(string SceneGame)
+    {
+        if (isLocalPlayer)
+        {
+            CmdCanStartGame(SceneGame);
+        }
+    }
+
+    public void ChangeReady()
+    {
+        if (isLocalPlayer)
+        {
+            CMdSetPlayerReady();
+        }
+    }
+
     public void ExitLobby()
     {
-        if (isLocalPlayer) {
+        if (isLocalPlayer)
+        {
             // try {
             Debug.Log("Quitting lobby");
             var lobbyNetworkManager = NetworkManager.singleton as CustomNetworkManager;
@@ -146,12 +151,6 @@ public class PlayerObjectController : NetworkBehaviour
         */
         }
     }
-    
-    [Command]
-    private void CmdSetPlayername(string PlayerName)
-    {
-        this.PlayerNameUpdate(this.PlayerName, PlayerName);
-    }
 
     private void PlayerNameUpdate(string OldValue, string newValue)
     {
@@ -159,6 +158,20 @@ public class PlayerObjectController : NetworkBehaviour
         {
             this.PlayerName = newValue;
         }
+
+        if (isClient)
+        {
+            LobbyController.instance.UpdatePlayerList();
+        }
+    }
+
+    private void PlayerReadyUpdate(bool oldValue, bool newValue)
+    {
+        if (isServer)
+        {
+            this.Ready = newValue;
+        }
+
         if (isClient)
         {
             LobbyController.instance.UpdatePlayerList();
@@ -171,10 +184,23 @@ public class PlayerObjectController : NetworkBehaviour
         {
             this.className = newValue;
         }
+
         if (isClient)
         {
             RpcUpdateUI(PlayerName, newValue);
         }
+    }
+
+    [Command]
+    public void CmdCanStartGame(string SceneGame)
+    {
+        manager.StartGame(SceneGame);
+    }
+
+    [Command]
+    private void CMdSetPlayerReady()
+    {
+        this.PlayerReadyUpdate(this.Ready, !this.Ready);
     }
 
     [Command]
@@ -186,48 +212,18 @@ public class PlayerObjectController : NetworkBehaviour
         }
     }
 
+    [Command]
+    private void CmdSetPlayername(string PlayerName)
+    {
+        this.PlayerNameUpdate(this.PlayerName, PlayerName);
+    }
+
     [ClientRpc]
     private void RpcUpdateUI(string playerName, string playerClassName)
     {
         NameText.text = playerName;
         classText.text = playerClassName;
     }
-
-    public void CanStartGame(string SceneGame)
-    {
-        if (isLocalPlayer)
-        {
-            CmdCanStartGame(SceneGame);
-        }
-    }
-    [Command]
-    public void CmdCanStartGame(string SceneGame)
-    {
-        manager.StartGame(SceneGame);
-    }
-
-    //<--------------------------------------------------------------------------------------------------------------------------------------------------------------->
-    #region InGameController
-
-    public void SetMovement()
-    {
-        _movmentController.enabled = false;
-    }
-
-    public void SetCamera()
-    {
-        cameraControll = !cameraControll;
-        foreach (PlayerObjectController players in Manager.GamePlayers)
-        {
-            players.GetComponent<CameraController>().cameraHolder.SetActive(false);
-            if (players.ConnectionID == ConnectionID)
-            {
-                players.GetComponent<CameraController>().cameraHolder.SetActive(cameraControll);
-            }
-        }
-    }
-
-    #endregion
 
     public void SetHouse(Vector3 pos)
     {
@@ -240,4 +236,3 @@ public class PlayerObjectController : NetworkBehaviour
         houseInstance.transform.rotation = Quaternion.LookRotation(new Vector3(-8.95f, anan.y, anan.z));
     }
 }
-

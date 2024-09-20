@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Steamworks;
 using System.Linq;
+using Mirror;
 using TMPro;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -40,7 +41,7 @@ public class LobbyController : MonoBehaviour
             {
                 return manager;
             }
-            return manager = CustomNetworkManager.singleton as CustomNetworkManager;
+            return manager = NetworkManager.singleton as CustomNetworkManager;
         }
     }
 
