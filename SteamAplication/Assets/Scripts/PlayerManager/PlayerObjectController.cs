@@ -10,9 +10,7 @@ public class PlayerObjectController : NetworkBehaviour
     public TextMeshProUGUI ReadText;
     public TextMeshProUGUI classText;
     public string className;
-
-    public bool ısOrderOf = false;
-
+    
     public GameObject house;
 
     [SyncVar] public int ConnectionID;
@@ -28,14 +26,8 @@ public class PlayerObjectController : NetworkBehaviour
     [SyncVar(hook = nameof(ClassNameUpdate))]
     public string syncedClassName;
 
-    public bool cameraControll = true;
-
     private CustomNetworkManager manager;
     private PlayerCollider PlayerCollider;
-
-    private PlayerMovmentController _movmentController;
-
-    private CameraController _controller;
 
     public bool consolActivated = false;
 
@@ -54,8 +46,6 @@ public class PlayerObjectController : NetworkBehaviour
 
     private void Start()
     {
-        _movmentController = GetComponent<PlayerMovmentController>();
-        _controller = GetComponent<CameraController>();
         ClassGenerator.Instance.SetList();
         foreach (var data in ClassGenerator.Instance.DataList)
         {

@@ -12,10 +12,9 @@ public class VoteItem : NetworkBehaviour
     public TextMeshProUGUI voteCountText;
     public RawImage PlayerIcon;
 
-    [SyncVar(hook = nameof(OnVoteCount))]
     public int voteCount;
     
-    private bool _avatarReceived;
+    public bool received;
     public string PlayerName;
     
     protected Callback<AvatarImageLoaded_t> ImageLoaded;
@@ -37,24 +36,6 @@ public class VoteItem : NetworkBehaviour
     {
         voteCount = newVoteCount;
         voteCountText.text = "Count: " + newVoteCount;
-    }
-
-    [Command]
-    public void CmdSetVoteCount(int count)
-    {
-        voteCount = count;
-        RpcSetVoteCount(count);
-    }
-
-    void OnVoteCount(int oldValue, int newValue)
-    {
-        voteCountText.text = "Count: " + newValue;
-    }
-
-    [ClientRpc]
-    void RpcSetVoteCount(int newValue)
-    {
-        voteCountText.text = "count : " + newValue;
     }
     
     void GetPlayerIcon()
@@ -96,7 +77,7 @@ public class VoteItem : NetworkBehaviour
                 texture.Apply();
             }
         }
-        _avatarReceived = true;
+        received = true;
         return texture;
     }
 

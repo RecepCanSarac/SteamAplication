@@ -12,6 +12,8 @@ public class VoteManager : NetworkBehaviour
 
     public VoteItem currentItem;
 
+    public List<VoteItem> currentVoteItem = new List<VoteItem>();
+
     #region Singleton
 
     CustomNetworkManager manager;
@@ -73,6 +75,8 @@ public class VoteManager : NetworkBehaviour
 
             VoteCard.transform.SetParent(VoteCardParend);
             VoteCard.transform.localScale = Vector3.one;
+            
+            currentVoteItem.Add(cardItem);
 
             // Adding the voting functionality with proper authority handling
             VoteCard.gameObject.GetComponent<Button>().onClick
@@ -89,12 +93,11 @@ public class VoteManager : NetworkBehaviour
             if (isServer)
             {
                 cardVote.vote = !cardVote.vote;
-                cardVote.SetVote(cardVote.vote, player.PlayerName);
+                cardVote.SetVote(cardVote.vote, player.PlayerName, cardVote.voteCount);
                 CheckPlayerVote();
             }
 
             votePlayers.Add(player);
-            ıtem.CmdSetVoteCount(cardVote.voteCount);
         }
     }
 
@@ -111,8 +114,11 @@ public class VoteManager : NetworkBehaviour
         }
     }
 
-    public void UpdateVoteCountUI(int newValue)
+    public void UpdateVoteCountUI()
     {
-        
+        for (int i = 0; i < Manager.GamePlayers.Count; i++)
+        {
+            currentVoteItem[i].UpdateVoteCountUI(currentVoteItem[i].voteCount);
+        }
     }
 }
