@@ -220,9 +220,9 @@ public class PlayerObjectController : NetworkBehaviour
         Vector3 offsetRotate = new Vector3(-8.95f, 0f, 0f);
         GameObject houseInstance = Instantiate(house, pos, Quaternion.Euler(offsetRotate));
 
-        Vector3 anan = houseInstance.transform.position - transform.position;
+        Vector3 dir = houseInstance.transform.position - transform.position;
 
-        anan.y = 0f;
-        houseInstance.transform.rotation = Quaternion.LookRotation(new Vector3(-8.95f, anan.y, anan.z));
+        dir.y = 0f;
+        houseInstance.transform.rotation = Quaternion.LookRotation(new Vector3(-8.95f, dir.y, dir.z));
     }
 }

@@ -14,7 +14,7 @@ public class DayTime : MonoBehaviour, IDayTimeCycle
     {
         isChanged = Input.GetKey(KeyCode.Space);
 
-        if (isChanged)
+        if (isChanged == false)
         {
             SetDayTime();
         }

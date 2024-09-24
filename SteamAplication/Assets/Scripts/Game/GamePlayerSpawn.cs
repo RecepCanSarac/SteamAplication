@@ -35,7 +35,7 @@ public class GamePlayerSpawn : NetworkBehaviour
 
             Manager.GamePlayers[i].transform.position = offset;
             
-            Vector3 offsetHouse = new Vector3(housePoints[i].position.x, 12.7f, housePoints[i].position.z);
+            Vector3 offsetHouse = new Vector3(housePoints[i].position.x, 0.5f, housePoints[i].position.z);
 
             Manager.GamePlayers[i].SetHouse(offsetHouse);
         }

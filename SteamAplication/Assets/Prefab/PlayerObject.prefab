@@ -281,7 +281,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 494662661376678830}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.57, z: 0.768}
+  m_LocalPosition: {x: 0, y: 0.98, z: 1.03}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1058,9 +1058,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1695200303275747137}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.49, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 7291251144696078391}
   - {fileID: 1831015242549422001}
@@ -1103,7 +1103,6 @@ MonoBehaviour:
   ReadText: {fileID: 4302901152369056329}
   classText: {fileID: 8215277387173407463}
   className: 
-  "\u0131sOrderOf": 0
   house: {fileID: 7025001029638354048, guid: a7cf4ca5624781043a855e795fbe5b53, type: 3}
   ConnectionID: 0
   PlayerIdNumber: 0
@@ -1111,7 +1110,6 @@ MonoBehaviour:
   PlayerName: 
   Ready: 0
   syncedClassName: 
-  cameraControll: 0
   consolActivated: 0
 --- !u!114 &5928905197194942545
 MonoBehaviour:
@@ -1162,7 +1160,7 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
-  Speed: 0.05
+  Speed: 0.1
   PlayerModel: {fileID: 6616155476713179239}
   orientation: {fileID: 1831015242549422001}
   animator: {fileID: 3098988384399738226}
@@ -3297,7 +3295,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6616155476713179239}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: -2.05, z: 0}
+  m_LocalPosition: {x: 0, y: -1, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 1
   m_Children:
