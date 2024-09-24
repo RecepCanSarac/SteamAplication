@@ -1,10 +1,6 @@
-using System;
-using System.Collections.Generic;
-using Mirror;
-using TMPro;
 using UnityEngine;
 
-public class GameTimeline : NetworkBehaviour
+public class GameTimeline : MonoBehaviour
 {
 //    public TextMeshProUGUI timeText;
 

@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 0.56
   m_AmbientMode: 3
   m_SubtractiveShadowColor: {r: 0.7924528, g: 0.6840513, b: 0.6840513, a: 1}
-  m_SkyboxMaterial: {fileID: 2100000, guid: f4fd12ce3f1645b4aad385aed28a5577, type: 2}
+  m_SkyboxMaterial: {fileID: 2100000, guid: 4a8fec105cb36c349b0fbb2446a921fd, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.11758968, g: 0.08324157, b: 0.1547648, a: 1}
+  m_IndirectSpecularColor: {r: 0.043403592, g: 0.4747851, b: 0.9734559, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -5068,7 +5068,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 13
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!1 &233082305
 GameObject:
@@ -10900,7 +10900,7 @@ Transform:
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 14
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!1 &1092655669
 GameObject:
@@ -11240,7 +11240,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!108 &1255785789
 Light:
   m_ObjectHideFlags: 0
@@ -11463,7 +11463,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1438929100
 PrefabInstance:
@@ -11689,7 +11689,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 12
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1525611727
 GameObject:
@@ -12066,7 +12066,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1615313634
 MonoBehaviour:
@@ -12123,7 +12123,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1656331227
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12481,7 +12481,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1930064399}
   - component: {fileID: 1930064398}
-  - component: {fileID: 1930064397}
+  - component: {fileID: 1930064400}
   m_Layer: 0
   m_Name: GameTimeline
   m_TagString: Untagged
@@ -12489,23 +12489,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1930064397
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1930064396}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sceneId: 1380406703
-  _assetId: 0
-  serverOnly: 0
-  visibility: 0
-  hasSpawned: 0
 --- !u!114 &1930064398
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12518,9 +12501,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29c6bab1443755a4c97a8b24a0435a98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  syncDirection: 0
-  syncMode: 0
-  syncInterval: 0
 --- !u!4 &1930064399
 Transform:
   m_ObjectHideFlags: 0
@@ -12534,8 +12514,24 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1930064400
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1930064396}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34daba217c009fe4a8d0637a80ff080f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  morningMaterial: {fileID: 2100000, guid: 4a8fec105cb36c349b0fbb2446a921fd, type: 2}
+  nightMaterial: {fileID: 2100000, guid: 779d8ada02cb17b4d959114288851d64, type: 2}
+  sun: {fileID: 1255785789}
+  isChanged: 0
 --- !u!1 &2014649136
 GameObject:
   m_ObjectHideFlags: 0
