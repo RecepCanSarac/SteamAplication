@@ -31,11 +31,11 @@ Material:
     m_Ints: []
     m_Floats:
     - _CubemapPosition: 0
-    - _CubemapTransition: 0
+    - _CubemapTransition: 0.00303035
     - _Cubemapp: 1
     - _EnableFog: 0
     - _EnableRotation: 0
-    - _Exposure: 1
+    - _Exposure: 0.9959583
     - _FogFill: 0.5
     - _FogHeight: 1
     - _FogIntensity: 1
