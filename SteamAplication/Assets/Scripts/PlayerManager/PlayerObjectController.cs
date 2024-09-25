@@ -131,12 +131,14 @@ public class PlayerObjectController : NetworkBehaviour
         {
             if (isServer)
             {
-                Manager.StopHost();
+                //Manager.StopHost();
             }
             else
             {
-                Manager.StopClient();
+                //Manager.StopClient();
             }
+
+            SceneManager.LoadScene(0);
         }
     }
 
