@@ -132,12 +132,12 @@ public class PlayerObjectController : NetworkBehaviour
             if (isServer)
             {
                 // Debug.Log("is host");
-                StopHost();
+                OnStopServer();
             }
             else
             {
                 //  Debug.Log("is client");
-                StopClient();
+                OnStopClient();
             }
         }
     }
