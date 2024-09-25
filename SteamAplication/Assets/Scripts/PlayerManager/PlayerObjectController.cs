@@ -129,16 +129,16 @@ public class PlayerObjectController : NetworkBehaviour
     {
         if (isLocalPlayer)
         {
-            // try {
-            Debug.Log("Quitting lobby");
-            var lobbyNetworkManager = NetworkManager.singleton as CustomNetworkManager;
-            lobbyNetworkManager.ReturnToMainMenu(connectionToClient);
-            /*
-        }
-        catch {
-            Debug.LogWarning("Error quitting lobby");
-        }
-        */
+            if (isServer)
+            {
+                // Debug.Log("is host");
+                StopHost();
+            }
+            else
+            {
+                //  Debug.Log("is client");
+                StopClient();
+            }
         }
     }
 
