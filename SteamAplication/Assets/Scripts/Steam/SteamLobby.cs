@@ -156,8 +156,6 @@ public class SteamLobby : MonoBehaviour
 
     public void LeaveGame(CSteamID lobbyID)
     {
-        
-        
         SteamMatchmaking.DeleteLobbyData(new CSteamID(CurrentLobbyID),"name");
     }
 }
