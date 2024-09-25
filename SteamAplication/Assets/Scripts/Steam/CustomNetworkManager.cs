@@ -54,11 +54,6 @@ public class CustomNetworkManager : NetworkManager
     {
         ServerChangeScene(SceneName);
     }
-    
-    public void Lobby(int SceneName)
-    {
-        SceneManager.LoadScene(SceneName);
-    }
 
     private void AssignClassesToPlayers()
     {
