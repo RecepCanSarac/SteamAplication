@@ -131,13 +131,11 @@ public class PlayerObjectController : NetworkBehaviour
         {
             if (isServer)
             {
-                // Debug.Log("is host");
-                OnStopServer();
+                Manager.StopHost();
             }
             else
             {
-                //  Debug.Log("is client");
-                OnStopClient();
+                Manager.StopClient();
             }
         }
     }
