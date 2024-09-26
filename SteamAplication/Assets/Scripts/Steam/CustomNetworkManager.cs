@@ -105,17 +105,23 @@ public class CustomNetworkManager : NetworkManager
         FizzyChat.Instance.Joined(GamePlayerInstance.PlayerName);
     }
 
-    public void ReturnToMainMenu(NetworkConnectionToClient conn)
+    public void ReturnToMainMenu(NetworkConnection conn)
     {
-        if (conn?.identity?.isServer == true) {
-            // Debug.Log("is host");
+        if (conn?.identity?.isServer == true)
+        {
             StopHost();
         }
-        else {
-            //  Debug.Log("is client");
+        else
+        {
             StopClient();
         }
-        
+
         NetworkManager.singleton.StopServer();
+        NetworkManager.singleton.StopClient();
+
+        SteamMatchmaking.LeaveLobby((CSteamID)SteamLobby.instance.CurrentLobbyID);
+
+        SceneManager.LoadScene("MainMenu");
     }
+
 }

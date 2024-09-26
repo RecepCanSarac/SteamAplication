@@ -218,29 +218,34 @@ public class LobbyController : MonoBehaviour
             if (!Manager.GamePlayers.Any(b => b.ConnectionID == playerlistItem.ConnectionID))
             {
                 playerListItemToRemove.Add(playerlistItem);
-                SceneManager.LoadScene("MainMenu");
             }
         }
+
         if (playerListItemToRemove.Count > 0)
         {
             foreach (PlayerListItem playerListItemToRomve in playerListItemToRemove)
             {
-                if (playerListItemToRomve != null)
+                if (playerListItemToRemove != null)
                 {
-                    GameObject ObjectToRemove = playerListItemToRomve.gameObject;
-                    Destroy(ObjectToRemove);
-                    ObjectToRemove = null;
+                    Destroy(playerListItemToRomve.gameObject);
                 }
                 PlayerListItems.Remove(playerListItemToRomve);
-                
-                SceneManager.LoadScene("MainMenu");
             }
-        }
 
+            SceneManager.LoadScene("MainMenu");
+        }
     }
 
+    
     public void StartGame(string SceneGame)
     {
         LocalPlayerController.CanStartGame(SceneGame);
     }
+   
+    public void OnLeaveButtonPressed()
+    {
+        manager.ReturnToMainMenu(NetworkClient.connection);
+        RemovePlayerItem();
+    }
+
 }
