@@ -17,6 +17,17 @@ public class CustomNetworkManager : NetworkManager
 
     public List<string> className = new List<string>();
 
+    public LobbyController controller;
+    public override void OnServerDisconnect(NetworkConnectionToClient conn)
+    {
+        // Eðer lobby sahibi deðilse sadece oyuncuyu kaldýr
+        if (!conn.identity.isServer)
+        {
+           controller.RemovePlayerItem(); // Oyuncuyu lobi listesinden çýkar
+        }
+
+        base.OnServerDisconnect(conn); // Normal baðlantý kesme iþlemi
+    }
     public override void OnServerAddPlayer(NetworkConnectionToClient conn)
     {
         if (SceneManager.GetActiveScene().name == "Lobby")
@@ -49,6 +60,7 @@ public class CustomNetworkManager : NetworkManager
 
         base.ServerChangeScene(newSceneName);
     }
+    
 
     public void StartGame(string SceneName)
     {
@@ -107,22 +119,24 @@ public class CustomNetworkManager : NetworkManager
 
     public void ReturnToMainMenu(NetworkConnection conn)
     {
-        if (conn?.identity?.isServer == true)
+        if (conn != null && conn.identity != null)
         {
-            StopHost();
-            Debug.Log("Stoped Host");
+            if (conn.identity.isServer)
+            {
+                StopHost();  // Sunucuyu kapat
+                Debug.Log("Host stopped.");
+            }
+            else
+            {
+                StopClient();
+                Debug.Log("Client disconnected.");
+            }
         }
-        else
-        {
-            StopClient();
-        }
-
-        NetworkManager.singleton.StopServer();
-        NetworkManager.singleton.StopClient();
 
         SteamMatchmaking.LeaveLobby((CSteamID)SteamLobby.instance.CurrentLobbyID);
 
         SceneManager.LoadScene("MainMenu");
     }
+
 
 }
