@@ -110,6 +110,7 @@ public class CustomNetworkManager : NetworkManager
         if (conn?.identity?.isServer == true)
         {
             StopHost();
+            Debug.Log("Stoped Host");
         }
         else
         {
