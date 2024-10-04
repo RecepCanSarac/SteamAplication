@@ -36,9 +36,9 @@ public class ClassGenerator : NetworkBehaviour
     private Dictionary<ClassType, int> classStackCounts = new Dictionary<ClassType, int>();
     private Dictionary<ClassType, GameObject> spawnedClassItems = new Dictionary<ClassType, GameObject>();
 
-    private Test manager;
+    private CustomNetworkManager manager;
 
-    private Test Manager
+    private CustomNetworkManager Manager
     {
         get
         {
@@ -46,7 +46,7 @@ public class ClassGenerator : NetworkBehaviour
             {
                 return manager;
             }
-            return manager = NetworkManager.singleton as Test;
+            return manager = NetworkManager.singleton as CustomNetworkManager;
         }
     }
 

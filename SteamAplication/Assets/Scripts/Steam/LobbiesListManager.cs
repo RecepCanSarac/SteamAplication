@@ -56,7 +56,6 @@ public class LobbiesListManager : MonoBehaviour
             }
         }
     }
-
     public void Host()
     {
         SteamLobby.instance.HostLobby();

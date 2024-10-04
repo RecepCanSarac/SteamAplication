@@ -27,7 +27,7 @@ public class SteamLobby : MonoBehaviour
     //Variables
     public ulong CurrentLobbyID;
     private const string HostAddresKey = "HostAddres";
-    private Test manager;
+    private CustomNetworkManager manager;
 
 
     public int MaxPlayer;
@@ -40,7 +40,7 @@ public class SteamLobby : MonoBehaviour
             return;
 
         if (instance == null) { instance = this; }
-        manager = GetComponent<Test>();
+        manager = GetComponent<CustomNetworkManager>();
 
         LobbyCreated = Callback<LobbyCreated_t>.Create(OnLobbyCreated);
         JoinRequest = Callback<GameLobbyJoinRequested_t>.Create(OnJoinRequest);

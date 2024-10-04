@@ -26,12 +26,12 @@ public class PlayerObjectController : NetworkBehaviour
     [SyncVar(hook = nameof(ClassNameUpdate))]
     public string syncedClassName;
 
-    private Test manager;
+    private CustomNetworkManager manager;
     private PlayerCollider PlayerCollider;
 
     public bool consolActivated = false;
 
-    private Test Manager
+    private CustomNetworkManager Manager
     {
         get
         {
@@ -40,7 +40,7 @@ public class PlayerObjectController : NetworkBehaviour
                 return manager;
             }
 
-            return manager = NetworkManager.singleton as Test;
+            return manager = NetworkManager.singleton as CustomNetworkManager;
         }
     }
 
@@ -225,4 +225,6 @@ public class PlayerObjectController : NetworkBehaviour
         dir.y = 0f;
         houseInstance.transform.rotation = Quaternion.LookRotation(new Vector3(-8.95f, dir.y, dir.z));
     }
+
+
 }

@@ -25,7 +25,7 @@ public class LobbyController : MonoBehaviour
 
     public Button StartGameButton;
 
-    private Test manager;
+    private CustomNetworkManager manager;
     public TextMeshProUGUI ReadyButtonText;
 
     public GameObject UI;
@@ -33,7 +33,7 @@ public class LobbyController : MonoBehaviour
     public GameObject ContentClass;
     private bool isActive;
     public ClassGenerator ClassGenerator;
-    private Test Manager
+    private CustomNetworkManager Manager
     {
         get
         {
@@ -41,7 +41,7 @@ public class LobbyController : MonoBehaviour
             {
                 return manager;
             }
-            return manager = NetworkManager.singleton as Test;
+            return manager = NetworkManager.singleton as CustomNetworkManager;
         }
     }
 

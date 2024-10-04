@@ -79,13 +79,21 @@ public class VoteManager : NetworkBehaviour
             currentVoteItem.Add(cardItem);
 
             VoteCard.gameObject.GetComponent<Button>().onClick
-                .AddListener(() => { GiveToVote(VoteDC, card, cardItem); });
+                .AddListener(() =>
+                {
+
+                    if (card.isLocalPlayer == true)
+                    {
+                        GiveToVote(VoteDC, card, cardItem);
+                    }
+                });
         }
     }
 
     public void GiveToVote(Vote cardVote, PlayerObjectController player, VoteItem item)
     {
-        CmdGiveToVote(player.netIdentity);
+        if(!isClient)
+            CmdGiveToVote(player.netIdentity);
     }
 
     [Command]

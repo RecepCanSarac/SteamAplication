@@ -17,17 +17,7 @@ public class CustomNetworkManager : NetworkManager
 
     public List<string> className = new List<string>();
 
-    public LobbyController controller;
-    public override void OnServerDisconnect(NetworkConnectionToClient conn)
-    {
-        // E�er lobby sahibi de�ilse sadece oyuncuyu kald�r
-        if (!conn.identity.isServer)
-        {
-           controller.RemovePlayerItem(); // Oyuncuyu lobi listesinden ��kar
-        }
-
-        base.OnServerDisconnect(conn); // Normal ba�lant� kesme i�lemi
-    }
+   
     public override void OnServerAddPlayer(NetworkConnectionToClient conn)
     {
         if (SceneManager.GetActiveScene().name == "Lobby")
