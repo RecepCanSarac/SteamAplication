@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class VoteManager : NetworkBehaviour
 {
     public static VoteManager Instance;
-    
+
     List<PlayerObjectController> votePlayers = new List<PlayerObjectController>();
 
     public VoteItem currentItem;
@@ -75,28 +75,30 @@ public class VoteManager : NetworkBehaviour
 
             VoteCard.transform.SetParent(VoteCardParend);
             VoteCard.transform.localScale = Vector3.one;
-            
+
             currentVoteItem.Add(cardItem);
 
-            // Adding the voting functionality with proper authority handling
             VoteCard.gameObject.GetComponent<Button>().onClick
                 .AddListener(() => { GiveToVote(VoteDC, card, cardItem); });
         }
     }
 
-    public void GiveToVote(Vote cardVote, PlayerObjectController player, VoteItem ıtem)
+    public void GiveToVote(Vote cardVote, PlayerObjectController player, VoteItem item)
     {
-        currentItem = ıtem;
-        
+        CmdGiveToVote(player.netIdentity);
+    }
+
+    [Command]
+    public void CmdGiveToVote(NetworkIdentity playerIdentity)
+    {
+        var player = playerIdentity.GetComponent<PlayerObjectController>();
+        var cardVote = player.GetComponent<Vote>();
+
         if (!votePlayers.Contains(player))
         {
-            if (isServer)
-            {
-                cardVote.vote = !cardVote.vote;
-                cardVote.SetVote(cardVote.vote, player.PlayerName, cardVote.voteCount);
-                CheckPlayerVote();
-            }
-
+            cardVote.vote = !cardVote.vote;
+            cardVote.SetVote(cardVote.vote, player.PlayerName, cardVote.voteCount);
+            CheckPlayerVote();
             votePlayers.Add(player);
         }
     }
@@ -112,7 +114,10 @@ public class VoteManager : NetworkBehaviour
                 voteInstance.voteCount++;
             }
         }
+
+        UpdateVoteCountUI();
     }
+
 
     public void UpdateVoteCountUI()
     {

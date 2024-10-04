@@ -20,13 +20,13 @@ public class CustomNetworkManager : NetworkManager
     public LobbyController controller;
     public override void OnServerDisconnect(NetworkConnectionToClient conn)
     {
-        // Eðer lobby sahibi deðilse sadece oyuncuyu kaldýr
+        // Eï¿½er lobby sahibi deï¿½ilse sadece oyuncuyu kaldï¿½r
         if (!conn.identity.isServer)
         {
-           controller.RemovePlayerItem(); // Oyuncuyu lobi listesinden çýkar
+           controller.RemovePlayerItem(); // Oyuncuyu lobi listesinden ï¿½ï¿½kar
         }
 
-        base.OnServerDisconnect(conn); // Normal baðlantý kesme iþlemi
+        base.OnServerDisconnect(conn); // Normal baï¿½lantï¿½ kesme iï¿½lemi
     }
     public override void OnServerAddPlayer(NetworkConnectionToClient conn)
     {
@@ -123,7 +123,7 @@ public class CustomNetworkManager : NetworkManager
         {
             if (conn.identity.isServer)
             {
-                StopHost();  // Sunucuyu kapat
+                StopHost();  
                 Debug.Log("Host stopped.");
             }
             else
