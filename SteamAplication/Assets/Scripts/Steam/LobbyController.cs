@@ -251,6 +251,8 @@ public class LobbyController : MonoBehaviour
     
     void StopButtons()
     {
+        SceneManager.LoadScene(2);
+        
         if (NetworkServer.active && NetworkClient.isConnected)
         {
             manager.StopHost();
