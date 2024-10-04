@@ -117,7 +117,7 @@ public class VoteManager : NetworkBehaviour
     {
         for (int i = 0; i < Manager.GamePlayers.Count; i++)
         {
-            currentVoteItem[i].UpdateVoteCountUI(currentVoteItem[i].voteCount);
+            currentVoteItem[i].UpdateCountUI(currentVoteItem[i].voteCount);
         }
     }
 }

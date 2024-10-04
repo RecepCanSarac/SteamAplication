@@ -32,8 +32,13 @@ public class VoteItem : NetworkBehaviour
         //if (!AvatarReceived) { GetPlayerIcon(); }
     }
 
+    public void UpdateCountUI(int newVoteCount)
+    {
+        TargetVoteCountUI(newVoteCount);
+    }
+
     [TargetRpc]
-    public void UpdateVoteCountUI(int newVoteCount)
+    public void TargetVoteCountUI(int newVoteCount)
     {
         voteCount = newVoteCount + 1;
         Debug.Log(voteCount);
