@@ -53,7 +53,7 @@ public class CustomNetworkManager : NetworkManager
     
         if (conn.identity != null)
         {
-            //NetworkServer.Destroy(conn.identity.gameObject);
+            NetworkServer.Destroy(conn.identity.gameObject);
         }
     
         Debug.Log("Client disconnected from server. Player object destroyed.");
