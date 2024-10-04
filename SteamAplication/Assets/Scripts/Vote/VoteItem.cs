@@ -37,7 +37,7 @@ public class VoteItem : NetworkBehaviour
         TargetVoteCountUI(newVoteCount);
     }
 
-    [TargetRpc]
+    [Server]
     public void TargetVoteCountUI(int newVoteCount)
     {
         voteCount = newVoteCount + 1;
