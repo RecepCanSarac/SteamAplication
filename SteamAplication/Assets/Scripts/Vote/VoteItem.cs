@@ -1,4 +1,5 @@
 using Steamworks;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,9 +7,9 @@ public class VoteItem : MonoBehaviour
 {
     public PlayerObjectController PlayerObjectController;
     public string PlayerName;
-    public Text NameText;
+    public TextMeshProUGUI NameText;
     public RawImage PlayerIcon;
-    public Text VoteCountText;
+    public TextMeshProUGUI VoteCountText;
 
     // Bu metod oy sayısını UI'da güncellemek için kullanılır
     public void UpdateCountUI(int newVoteCount)

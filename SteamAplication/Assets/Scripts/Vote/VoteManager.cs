@@ -8,9 +8,9 @@ public class VoteManager : NetworkBehaviour
 {
     public static VoteManager Instance;
 
-    private List<PlayerObjectController> votePlayers = new List<PlayerObjectController>();
+    public List<PlayerObjectController> votePlayers = new List<PlayerObjectController>();
     
-    private List<VoteItem> currentVoteItems = new List<VoteItem>();
+    public List<VoteItem> currentVoteItems = new List<VoteItem>();
 
     public GameObject VoteCardPrefab;
     public Transform VoteCardParent;

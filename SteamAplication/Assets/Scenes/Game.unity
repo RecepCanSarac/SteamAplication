@@ -11886,10 +11886,10 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
-  currentItem: {fileID: 0}
-  currentVoteItem: []
+  votePlayers: []
+  currentVoteItems: []
   VoteCardPrefab: {fileID: 3514979247809794838, guid: 33b8211ece56d0b40993ef8dd7435e98, type: 3}
-  VoteCardParend: {fileID: 2014649137}
+  VoteCardParent: {fileID: 2014649137}
 --- !u!1 &1656331226
 GameObject:
   m_ObjectHideFlags: 0
