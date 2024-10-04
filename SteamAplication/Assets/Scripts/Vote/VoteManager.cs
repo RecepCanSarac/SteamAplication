@@ -81,7 +81,7 @@ public class VoteManager : NetworkBehaviour
             {
                 if (card.isLocalPlayer)
                 {
-                    CmdRegisterVote(VoteDC);
+                    RegisterVote(VoteDC);
                 }
             });
         }
@@ -114,6 +114,11 @@ public class VoteManager : NetworkBehaviour
         }
 
         UpdateVoteCountUI();
+    }
+
+    void RegisterVote(Vote voteDC)
+    {
+        CmdRegisterVote(voteDC);
     }
 
     [Command]
