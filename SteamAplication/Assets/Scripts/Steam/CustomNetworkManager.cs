@@ -43,20 +43,29 @@ public class CustomNetworkManager : NetworkManager
     public override void OnClientDisconnect()
     {
         base.OnClientDisconnect();
-        
-        Debug.Log("Client disconnected from the server.");
+        Debug.Log("Hey <client>, you've been disconnected!");
     }
 
     public override void OnServerDisconnect(NetworkConnectionToClient conn)
     {
         base.OnServerDisconnect(conn);
-    
         if (conn.identity != null)
         {
-            NetworkServer.Destroy(conn.identity.gameObject);
+            // Perform any necessary cleanup here
+            // For example, you can disconnect Steam if necessary
+            // SteamAPI.Shutdown(); // Do not call this directly here
         }
-    
-        Debug.Log("Client disconnected from server. Player object destroyed.");
+    }
+
+    public override void OnStopClient()
+    {
+        GamePlayers.Clear();
+        base.OnStopClient();
+    }
+
+    public override void OnStopServer()
+    {
+        base.OnStopServer();
     }
 
     // added

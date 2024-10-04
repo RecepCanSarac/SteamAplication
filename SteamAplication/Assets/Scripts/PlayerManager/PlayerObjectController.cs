@@ -10,7 +10,7 @@ public class PlayerObjectController : NetworkBehaviour
     public TextMeshProUGUI ReadText;
     public TextMeshProUGUI classText;
     public string className;
-    
+
     public GameObject house;
 
     [SyncVar] public int ConnectionID;
@@ -43,8 +43,8 @@ public class PlayerObjectController : NetworkBehaviour
             return manager = NetworkManager.singleton as CustomNetworkManager;
         }
     }
-    [SyncVar]
-    public bool hasVoted = false;
+
+    [SyncVar] public bool hasVoted = false;
 
     [Command]
     public void CmdRegisterVote(string playerNameToVoteFor)
@@ -55,7 +55,7 @@ public class PlayerObjectController : NetworkBehaviour
     [Command]
     public void CmdGiveToVote(string playerNameToVoteFor)
     {
-        if (isLocalPlayer) 
+        if (isLocalPlayer)
         {
             VoteManager.Instance.ServerHandleVote(playerNameToVoteFor);
             hasVoted = true;
@@ -65,6 +65,7 @@ public class PlayerObjectController : NetworkBehaviour
             Debug.LogWarning("Oy verme işlemi yetkisiz oyuncu tarafından yapıldı!");
         }
     }
+
     private void Start()
     {
         ClassGenerator.Instance.SetList();
@@ -79,14 +80,12 @@ public class PlayerObjectController : NetworkBehaviour
 
     public void Leave()
     {
-        CmdLeaveGame();
+        Application.Quit();
     }
-    
+
     [Command]
     void CmdLeaveGame()
     {
-        // İstemcinin sunucudan ayrılması
-        CustomNetworkManager.singleton.StopClient();
     }
 
     private void OnDestroy()
@@ -247,6 +246,4 @@ public class PlayerObjectController : NetworkBehaviour
         dir.y = 0f;
         houseInstance.transform.rotation = Quaternion.LookRotation(new Vector3(-8.95f, dir.y, dir.z));
     }
-
-
 }
