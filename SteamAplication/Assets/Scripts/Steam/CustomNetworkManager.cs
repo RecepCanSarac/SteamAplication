@@ -17,7 +17,7 @@ public class CustomNetworkManager : NetworkManager
 
     public List<string> className = new List<string>();
 
-   
+
     public override void OnServerAddPlayer(NetworkConnectionToClient conn)
     {
         if (SceneManager.GetActiveScene().name == "Lobby")
@@ -30,10 +30,10 @@ public class CustomNetworkManager : NetworkManager
                 (ulong)SteamMatchmaking.GetLobbyMemberByIndex(
                     (CSteamID)SteamLobby.instance.CurrentLobbyID, GamePlayers.Count);
 
-           // GamePlayerInstance.GetComponent<PlayerClass>().className = ClassGenerator.Instance.Currentclasses;
+            // GamePlayerInstance.GetComponent<PlayerClass>().className = ClassGenerator.Instance.Currentclasses;
 
             NetworkServer.AddPlayerForConnection(conn, GamePlayerInstance.gameObject);
-            
+
             //ClassGenerator.Instance.GetCurrentList();
 
             StartCoroutine(JoinMessage(GamePlayerInstance));
@@ -50,7 +50,7 @@ public class CustomNetworkManager : NetworkManager
 
         base.ServerChangeScene(newSceneName);
     }
-    
+
 
     public void StartGame(string SceneName)
     {
@@ -107,26 +107,23 @@ public class CustomNetworkManager : NetworkManager
         FizzyChat.Instance.Joined(GamePlayerInstance.PlayerName);
     }
 
-    public void ReturnToMainMenu(NetworkConnection conn)
+    public void ReturnToMainMenu(NetworkConnectionToClient conn)
     {
-        if (conn != null && conn.identity != null)
+        if (conn?.identity?.isServer == true)
         {
-            if (conn.identity.isServer)
-            {
-                StopHost();  
-                Debug.Log("Host stopped.");
-            }
-            else
-            {
-                StopClient();
-                Debug.Log("Client disconnected.");
-            }
+            StopHost();
+            Debug.Log("Host stopped.");
         }
+        else
+        {
+            StopClient();
+            Debug.Log("Client disconnected.");
+        }
+
+        CustomNetworkManager.singleton.StopServer();
 
         SteamMatchmaking.LeaveLobby((CSteamID)SteamLobby.instance.CurrentLobbyID);
 
         SceneManager.LoadScene("MainMenu");
     }
-
-
 }

@@ -46,12 +46,11 @@ public class PlayerObjectController : NetworkBehaviour
     [SyncVar]
     public bool hasVoted = false;
 
-    public void TryToVote(Vote voteData, VoteItem voteItem)
+    [Command]
+    public void CmdRegisterVote(Vote voteDC)
     {
-        if (isLocalPlayer && !hasVoted)
-        {
-            CmdGiveToVote(netIdentity);
-        }
+        voteDC.SetVote(!voteDC.vote, voteDC.votePlayer, voteDC.voteCount + 1);
+        VoteManager.Instance.RpcUpdateVoteCountUI();
     }
 
     [Command]
@@ -144,16 +143,8 @@ public class PlayerObjectController : NetworkBehaviour
     {
         if (isLocalPlayer)
         {
-            if (isServer)
-            {
-                //Manager.StopHost();
-            }
-            else
-            {
-                //Manager.StopClient();
-            }
-
-            SceneManager.LoadScene(0);
+            var lobbyNetworkManager = NetworkManager.singleton as CustomNetworkManager;
+            lobbyNetworkManager.ReturnToMainMenu(connectionToClient);
         }
     }
 

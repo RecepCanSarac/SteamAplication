@@ -77,13 +77,7 @@ public class VoteManager : NetworkBehaviour
 
             currentVoteItem.Add(cardItem);
 
-            VoteCard.gameObject.GetComponent<Button>().onClick.AddListener(() =>
-            {
-                if (card.isLocalPlayer)
-                {
-                    RegisterVote(VoteDC);
-                }
-            });
+            VoteCard.gameObject.GetComponent<Button>().onClick.AddListener(() => { card.CmdRegisterVote(VoteDC); });
         }
     }
 
@@ -130,7 +124,7 @@ public class VoteManager : NetworkBehaviour
     }
 
     [ClientRpc]
-    private void RpcUpdateVoteCountUI()
+    public void RpcUpdateVoteCountUI()
     {
         UpdateVoteCountUI();
     }

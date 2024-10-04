@@ -227,7 +227,7 @@ public class LobbyController : MonoBehaviour
             {
                 if (playerListItemToRemove != null)
                 {
-                    Destroy(playerListItemToRomve.gameObject);
+                    Destroy(playerListItemToRomve);
                 }
                 PlayerListItems.Remove(playerListItemToRomve);
             }
@@ -244,7 +244,7 @@ public class LobbyController : MonoBehaviour
    
     public void OnLeaveButtonPressed()
     {
-        manager.ReturnToMainMenu(NetworkClient.connection);
+        //manager.ReturnToMainMenu(NetworkClient.connection);
         RemovePlayerItem();
     }
 
