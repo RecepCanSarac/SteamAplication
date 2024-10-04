@@ -8,15 +8,14 @@ public class VoteManager : NetworkBehaviour
 {
     public static VoteManager Instance;
 
-    List<PlayerObjectController> votePlayers = new List<PlayerObjectController>();
+    private List<PlayerObjectController> votePlayers = new List<PlayerObjectController>();
+    
+    private List<VoteItem> currentVoteItems = new List<VoteItem>();
 
-    public VoteItem currentItem;
-    public List<VoteItem> currentVoteItem = new List<VoteItem>();
+    public GameObject VoteCardPrefab;
+    public Transform VoteCardParent;
 
-    #region Singleton
-
-    CustomNetworkManager manager;
-
+    private CustomNetworkManager manager;
     private CustomNetworkManager Manager
     {
         get
@@ -30,8 +29,6 @@ public class VoteManager : NetworkBehaviour
         }
     }
 
-    #endregion
-
     private void Awake()
     {
         if (Instance == null)
@@ -44,9 +41,6 @@ public class VoteManager : NetworkBehaviour
         }
     }
 
-    public GameObject VoteCardPrefab;
-    public Transform VoteCardParend;
-
     private void Start()
     {
         CreateVoteCardItem();
@@ -54,72 +48,39 @@ public class VoteManager : NetworkBehaviour
 
     private void CreateVoteCardItem()
     {
-        foreach (Transform child in VoteCardParend)
+        // Önceki kartları temizle
+        foreach (Transform child in VoteCardParent)
         {
             Destroy(child.gameObject);
         }
 
-        foreach (var card in Manager.GamePlayers)
+        // Her oyuncu için bir oylama kartı oluştur
+        foreach (var player in Manager.GamePlayers)
         {
             GameObject VoteCard = Instantiate(VoteCardPrefab);
-            VoteItem cardItem = VoteCard.gameObject.GetComponent<VoteItem>();
-            cardItem.PlayerObjectController = card;
-            Vote VoteDC = card.GetComponent<Vote>();
-            cardItem.playerVoteDC = VoteDC;
+            VoteItem voteItem = VoteCard.GetComponent<VoteItem>();
+            voteItem.PlayerObjectController = player;
+            voteItem.PlayerName = player.PlayerName;
+            voteItem.NameText.text = player.PlayerName;
 
-            cardItem.PlayerName = card.PlayerName;
-            cardItem.NameText.text = cardItem.PlayerName;
-            int ImageID = SteamFriends.GetLargeFriendAvatar((CSteamID)card.PlayerSteamID);
-            cardItem.PlayerIcon.texture = cardItem.GetSteamImageAsTexture(ImageID);
+            // Oyuncunun Steam Avatarını al
+            int ImageID = SteamFriends.GetLargeFriendAvatar((CSteamID)player.PlayerSteamID);
+            voteItem.PlayerIcon.texture = voteItem.GetSteamImageAsTexture(ImageID);
 
-            VoteCard.transform.SetParent(VoteCardParend);
+            VoteCard.transform.SetParent(VoteCardParent);
             VoteCard.transform.localScale = Vector3.one;
+            
+            currentVoteItems.Add(voteItem);
 
-            currentVoteItem.Add(cardItem);
-
-            VoteCard.gameObject.GetComponent<Button>().onClick.AddListener(() => 
+            // Butona tıklama işlevi ekle
+            VoteCard.GetComponent<Button>().onClick.AddListener(() =>
             {
-                if (card.isLocalPlayer)
+                if (player.isLocalPlayer) // Yetki kontrolü
                 {
-                    card.CmdRegisterVote(cardItem.PlayerName);
-                }
-                else
-                {
-                    Debug.LogWarning("Player does not have authority to cast this vote.");
+                    player.CmdRegisterVote(voteItem.PlayerName);
                 }
             });
-
-
         }
-    }
-
-    public void GiveToVote(NetworkIdentity playerIdentity)
-    {
-        var player = playerIdentity.GetComponent<PlayerObjectController>();
-        var cardVote = player.GetComponent<Vote>();
-
-        if (!votePlayers.Contains(player))
-        {
-            cardVote.vote = !cardVote.vote;
-            cardVote.SetVote(cardVote.vote, player.PlayerName, cardVote.voteCount);
-            CheckPlayerVote();
-            votePlayers.Add(player);
-        }
-    }
-
-    public void CheckPlayerVote()
-    {
-        foreach (PlayerObjectController player in Manager.GamePlayers)
-        {
-            var voteInstance = player.GetComponent<Vote>();
-
-            if (player.PlayerName == voteInstance.votePlayer)
-            {
-                voteInstance.voteCount++;
-            }
-        }
-
-        UpdateVoteCountUI();
     }
 
     [Server]
@@ -130,19 +91,11 @@ public class VoteManager : NetworkBehaviour
             if (player.PlayerName == playerNameToVoteFor)
             {
                 var vote = player.GetComponent<Vote>();
-                vote.voteCount++; 
-                RpcUpdateVoteCountUI(); 
+                vote.voteCount++;
+                RpcUpdateVoteCountUI();
                 break;
             }
         }
-    }
-
-    [Command]
-    public void CmdRegisterVote(string playerNameToVoteFor)
-    {
-        if (!isLocalPlayer) return; 
-
-        VoteManager.Instance.ServerHandleVote(playerNameToVoteFor);
     }
 
     [ClientRpc]
@@ -153,9 +106,15 @@ public class VoteManager : NetworkBehaviour
 
     public void UpdateVoteCountUI()
     {
-        for (int i = 0; i < Manager.GamePlayers.Count; i++)
+        foreach (var player in Manager.GamePlayers)
         {
-            currentVoteItem[i].UpdateCountUI(currentVoteItem[i].voteCount);
+            foreach (var voteItem in currentVoteItems)
+            {
+                if (voteItem.PlayerName == player.PlayerName)
+                {
+                    voteItem.UpdateCountUI(player.GetComponent<Vote>().voteCount);
+                }
+            }
         }
     }
 }

@@ -1,95 +1,41 @@
-using System;
 using Steamworks;
-using Mirror;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class VoteItem : NetworkBehaviour
+public class VoteItem : MonoBehaviour
 {
-    public Vote playerVoteDC;
-    public TextMeshProUGUI NameText;
-    public TextMeshProUGUI voteCountText;
-    public RawImage PlayerIcon;
-
-    public int voteCount;
-    
-    public bool received;
-    public string PlayerName;
-    
-    protected Callback<AvatarImageLoaded_t> ImageLoaded;
-
     public PlayerObjectController PlayerObjectController;
+    public string PlayerName;
+    public Text NameText;
+    public RawImage PlayerIcon;
+    public Text VoteCountText;
 
-    private void Start()
-    {
-        ImageLoaded = Callback<AvatarImageLoaded_t>.Create(OnImageLoaded);
-    }
-
-    public void SetPlayerValues()
-    {
-        //NameText.text = PlayerName;
-        //if (!AvatarReceived) { GetPlayerIcon(); }
-    }
-
+    // Bu metod oy sayısını UI'da güncellemek için kullanılır
     public void UpdateCountUI(int newVoteCount)
     {
-        voteCount = newVoteCount;
-        voteCountText.text = "Count: " + voteCount + 1;
+        VoteCountText.text = newVoteCount.ToString();
     }
-    
-    void GetPlayerIcon()
-    {
-        int ImageID = SteamFriends.GetLargeFriendAvatar((CSteamID)PlayerObjectController.PlayerSteamID);
-        if (ImageID == -1) { return; }
-        PlayerIcon.texture = GetSteamImageAsTexture(ImageID);
-    }
-    public Texture2D GetSteamImageAsTexture(int iImage)
+
+    public Texture2D GetSteamImageAsTexture(int ImageID)
     {
         Texture2D texture = null;
+        uint ImageWidth;
+        uint ImageHeight;
+        bool success = SteamUtils.GetImageSize(ImageID, out ImageWidth, out ImageHeight);
 
-        bool isValid = SteamUtils.GetImageSize(iImage, out uint width, out uint height);
-        if (isValid)
+        if (success)
         {
-            byte[] image = new byte[width * height * 4];
+            byte[] Image = new byte[ImageWidth * ImageHeight * 4];
+            success = SteamUtils.GetImageRGBA(ImageID, Image, (int)(ImageWidth * ImageHeight * 4));
 
-            isValid = SteamUtils.GetImageRGBA(iImage, image, (int)(width * height * 4));
-
-            if (isValid)
+            if (success)
             {
-                texture = new Texture2D((int)width, (int)height, TextureFormat.RGBA32, false, true);
-                texture.LoadRawTextureData(image);
-                texture.Apply();
-
-                Color32[] pixels = texture.GetPixels32();
-                for (int y = 0; y < height / 2; y++)
-                {
-                    for (int x = 0; x < width; x++)
-                    {
-                        int topIndex = y * (int)width + x;
-                        int bottomIndex = ((int)height - 1 - y) * (int)width + x;
-                        Color32 temp = pixels[topIndex];
-                        pixels[topIndex] = pixels[bottomIndex];
-                        pixels[bottomIndex] = temp;
-                    }
-                }
-                texture.SetPixels32(pixels);
+                texture = new Texture2D((int)ImageWidth, (int)ImageHeight, TextureFormat.RGBA32, false, true);
+                texture.LoadRawTextureData(Image);
                 texture.Apply();
             }
         }
-        received = true;
-        return texture;
-    }
 
-    private void OnImageLoaded(AvatarImageLoaded_t callback)
-    {
-        if (callback.m_steamID.m_SteamID == PlayerObjectController.PlayerSteamID)
-        {
-            PlayerIcon.texture = GetSteamImageAsTexture(callback.m_iImage);
-        }
-        else
-        {
-            return;
-        }
+        return texture;
     }
 }

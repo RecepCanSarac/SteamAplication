@@ -53,9 +53,17 @@ public class PlayerObjectController : NetworkBehaviour
     }
 
     [Command]
-    public void CmdGiveToVote(NetworkIdentity playerIdentity)
+    public void CmdGiveToVote(string playerNameToVoteFor)
     {
-        VoteManager.Instance.GiveToVote(playerIdentity);
+        if (isLocalPlayer) 
+        {
+            VoteManager.Instance.ServerHandleVote(playerNameToVoteFor);
+            hasVoted = true;
+        }
+        else
+        {
+            Debug.LogWarning("Oy verme işlemi yetkisiz oyuncu tarafından yapıldı!");
+        }
     }
     private void Start()
     {
