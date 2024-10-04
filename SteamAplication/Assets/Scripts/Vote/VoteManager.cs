@@ -77,7 +77,19 @@ public class VoteManager : NetworkBehaviour
 
             currentVoteItem.Add(cardItem);
 
-            VoteCard.gameObject.GetComponent<Button>().onClick.AddListener(() => { card.CmdRegisterVote(cardItem.PlayerName); });
+            VoteCard.gameObject.GetComponent<Button>().onClick.AddListener(() => 
+            {
+                if (card.isLocalPlayer)
+                {
+                    card.CmdRegisterVote(cardItem.PlayerName);
+                }
+                else
+                {
+                    Debug.LogWarning("Player does not have authority to cast this vote.");
+                }
+            });
+
+
         }
     }
 
@@ -118,19 +130,19 @@ public class VoteManager : NetworkBehaviour
             if (player.PlayerName == playerNameToVoteFor)
             {
                 var vote = player.GetComponent<Vote>();
-                vote.voteCount++; // Increase the vote count
-                UpdateVoteCountUI();
+                vote.voteCount++; 
+                RpcUpdateVoteCountUI(); 
                 break;
             }
         }
     }
 
     [Command]
-    private void CmdRegisterVote(Vote voteDC)
+    public void CmdRegisterVote(string playerNameToVoteFor)
     {
-        var player = voteDC.votePlayer;
-        voteDC.SetVote(!voteDC.vote, player, voteDC.voteCount + 1);
-        RpcUpdateVoteCountUI();
+        if (!isLocalPlayer) return; 
+
+        VoteManager.Instance.ServerHandleVote(playerNameToVoteFor);
     }
 
     [ClientRpc]
