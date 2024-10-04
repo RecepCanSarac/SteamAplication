@@ -79,7 +79,10 @@ public class VoteManager : NetworkBehaviour
 
             VoteCard.gameObject.GetComponent<Button>().onClick.AddListener(() =>
             {
-                CmdRegisterVote(VoteDC);
+                if (card.isLocalPlayer)
+                {
+                    CmdRegisterVote(VoteDC);
+                }
             });
         }
     }
