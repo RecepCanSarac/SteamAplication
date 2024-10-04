@@ -31,7 +31,8 @@ public class VoteItem : NetworkBehaviour
         //NameText.text = PlayerName;
         //if (!AvatarReceived) { GetPlayerIcon(); }
     }
-    
+
+    [TargetRpc]
     public void UpdateVoteCountUI(int newVoteCount)
     {
         voteCount = newVoteCount + 1;
