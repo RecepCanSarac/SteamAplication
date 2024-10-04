@@ -26,12 +26,12 @@ public class PlayerObjectController : NetworkBehaviour
     [SyncVar(hook = nameof(ClassNameUpdate))]
     public string syncedClassName;
 
-    private CustomNetworkManager manager;
+    private Test manager;
     private PlayerCollider PlayerCollider;
 
     public bool consolActivated = false;
 
-    private CustomNetworkManager Manager
+    private Test Manager
     {
         get
         {
@@ -40,7 +40,7 @@ public class PlayerObjectController : NetworkBehaviour
                 return manager;
             }
 
-            return manager = NetworkManager.singleton as CustomNetworkManager;
+            return manager = NetworkManager.singleton as Test;
         }
     }
 

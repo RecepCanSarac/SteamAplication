@@ -36,9 +36,9 @@ public class ClassGenerator : NetworkBehaviour
     private Dictionary<ClassType, int> classStackCounts = new Dictionary<ClassType, int>();
     private Dictionary<ClassType, GameObject> spawnedClassItems = new Dictionary<ClassType, GameObject>();
 
-    private CustomNetworkManager manager;
+    private Test manager;
 
-    private CustomNetworkManager Manager
+    private Test Manager
     {
         get
         {
@@ -46,7 +46,7 @@ public class ClassGenerator : NetworkBehaviour
             {
                 return manager;
             }
-            return manager = NetworkManager.singleton as CustomNetworkManager;
+            return manager = NetworkManager.singleton as Test;
         }
     }
 
@@ -106,7 +106,7 @@ public class ClassGenerator : NetworkBehaviour
 
         UpdateStackCount(classType);
         SetList();
-        Manager.UpdatedClassPlayer(newClass.ClassName.ToString());
+        //Manager.UpdatedClassPlayer(newClass.ClassName.ToString());
     }
     public void RemoveFromStackedClasses(SOClass classToRemove)
     {
@@ -139,7 +139,7 @@ public class ClassGenerator : NetworkBehaviour
         UpdateStackCount(classType);
         DataList = newDataList;
         SetList();
-        Manager.UpdatedClassPlayer(classToRemove.ClassName.ToString());
+        //Manager.UpdatedClassPlayer(classToRemove.ClassName.ToString());
     }
 
     private void UpdateStackCount(ClassType classType)
