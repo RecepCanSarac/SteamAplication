@@ -35,6 +35,14 @@ public class VoteItem : NetworkBehaviour
     public void UpdateCountUI(int newVoteCount)
     {
         TargetVoteCountUI(newVoteCount);
+        CmdCountUI();
+    }
+
+    [Command]
+    void CmdCountUI()
+    {
+        voteCount++;
+        voteCountText.text = "Count: " + voteCount;
     }
 
     [Server]
