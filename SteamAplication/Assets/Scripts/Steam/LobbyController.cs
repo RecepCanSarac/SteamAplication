@@ -244,7 +244,7 @@ public class LobbyController : MonoBehaviour
    
     public void OnLeaveButtonPressed()
     {
-        //manager.ReturnToMainMenu(NetworkClient.connection);
+        manager.ReturnToMainMenu(NetworkClient.connection);
         RemovePlayerItem();
     }
 

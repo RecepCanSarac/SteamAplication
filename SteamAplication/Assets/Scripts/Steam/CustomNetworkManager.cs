@@ -107,7 +107,7 @@ public class CustomNetworkManager : NetworkManager
         FizzyChat.Instance.Joined(GamePlayerInstance.PlayerName);
     }
 
-    public void ReturnToMainMenu(NetworkConnectionToClient conn)
+    public void ReturnToMainMenu(NetworkConnection conn)
     {
         if (conn?.identity?.isServer == true)
         {
