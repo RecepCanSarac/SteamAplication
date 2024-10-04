@@ -244,8 +244,25 @@ public class LobbyController : MonoBehaviour
    
     public void OnLeaveButtonPressed()
     {
-        manager.ReturnToMainMenu(NetworkClient.connection);
+        StopButtons();
+        //manager.ReturnToMainMenu(NetworkClient.connection);
         RemovePlayerItem();
+    }
+    
+    void StopButtons()
+    {
+        if (NetworkServer.active && NetworkClient.isConnected)
+        {
+            manager.StopHost();
+        }
+        else if (NetworkClient.isConnected)
+        {
+            manager.StopClient();
+        }
+        else if (NetworkServer.active)
+        {
+            manager.StopServer();
+        }
     }
 
 }
