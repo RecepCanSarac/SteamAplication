@@ -47,10 +47,9 @@ public class PlayerObjectController : NetworkBehaviour
     public bool hasVoted = false;
 
     [Command]
-    public void CmdRegisterVote(Vote voteDC)
+    public void CmdRegisterVote(string playerNameToVoteFor)
     {
-        voteDC.SetVote(!voteDC.vote, voteDC.votePlayer, voteDC.voteCount + 1);
-        VoteManager.Instance.RpcUpdateVoteCountUI();
+        VoteManager.Instance.ServerHandleVote(playerNameToVoteFor);
     }
 
     [Command]

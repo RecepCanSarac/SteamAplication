@@ -77,7 +77,7 @@ public class VoteManager : NetworkBehaviour
 
             currentVoteItem.Add(cardItem);
 
-            VoteCard.gameObject.GetComponent<Button>().onClick.AddListener(() => { card.CmdRegisterVote(VoteDC); });
+            VoteCard.gameObject.GetComponent<Button>().onClick.AddListener(() => { card.CmdRegisterVote(cardItem.PlayerName); });
         }
     }
 
@@ -110,9 +110,19 @@ public class VoteManager : NetworkBehaviour
         UpdateVoteCountUI();
     }
 
-    void RegisterVote(Vote voteDC)
+    [Server]
+    public void ServerHandleVote(string playerNameToVoteFor)
     {
-        CmdRegisterVote(voteDC);
+        foreach (var player in Manager.GamePlayers)
+        {
+            if (player.PlayerName == playerNameToVoteFor)
+            {
+                var vote = player.GetComponent<Vote>();
+                vote.voteCount++; // Increase the vote count
+                UpdateVoteCountUI();
+                break;
+            }
+        }
     }
 
     [Command]
@@ -131,7 +141,7 @@ public class VoteManager : NetworkBehaviour
 
     public void UpdateVoteCountUI()
     {
-        for (int i = 0; i < currentVoteItem.Count; i++)
+        for (int i = 0; i < Manager.GamePlayers.Count; i++)
         {
             currentVoteItem[i].UpdateCountUI(currentVoteItem[i].voteCount);
         }
