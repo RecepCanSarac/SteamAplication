@@ -529,7 +529,7 @@ MonoBehaviour:
   sendRate: 60
   autoStartServerBuild: 0
   autoConnectClientBuild: 0
-  offlineScene: 
+  offlineScene: Assets/Scenes/MainMenu.unity
   onlineScene: Assets/Scenes/Lobby.unity
   transport: {fileID: 419748415}
   networkAddress: localhost
@@ -545,7 +545,6 @@ MonoBehaviour:
   - {fileID: 8499932613180364625, guid: cb13e78fa63510742898c19c17e05cd7, type: 3}
   - {fileID: 8499932613180364625, guid: d384ccef54c297143afaecc63668837d, type: 3}
   - {fileID: 4717805457025281308, guid: f6ab230b529bb9448b287f7c805c0316, type: 3}
-  - {fileID: 1695200303275747137, guid: 94d1a1b2e90a464408e351fcce05752c, type: 3}
   - {fileID: 3514979247809794838, guid: 33b8211ece56d0b40993ef8dd7435e98, type: 3}
   exceptionsDisconnect: 1
   snapshotSettings:
@@ -566,7 +565,6 @@ MonoBehaviour:
   GamePlayers: []
   MangmentClass: []
   className: []
-  controller: {fileID: 0}
 --- !u!1 &428787824
 GameObject:
   m_ObjectHideFlags: 0
