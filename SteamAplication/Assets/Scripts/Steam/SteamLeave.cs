@@ -36,18 +36,4 @@ public class SteamLeave : NetworkBehaviour
         currentPlayer = GameObject.Find("LocalGamePlayer").GetComponent<PlayerObjectController>();
     }
 
-    public void LeaveGame()
-    {
-        /*if(lobbyID != (CSteamID)0)
-            SteamLobby.instance.LeaveGame(lobbyID);
-        else
-            Debug.Log("Lobby ID : " + lobbyID);*/
-        
-        currentPlayer.ExitLobby();
-
-        SceneManager.LoadScene(0);
-
-
-    }
-
 }

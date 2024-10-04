@@ -77,6 +77,24 @@ public class PlayerObjectController : NetworkBehaviour
         DontDestroyOnLoad(this.gameObject);
     }
 
+    public void Leave()
+    {
+        CmdLeaveGame();
+    }
+    
+    [Command]
+    void CmdLeaveGame()
+    {
+        // İstemcinin sunucudan ayrılması
+        CustomNetworkManager.singleton.StopClient();
+    }
+
+    private void OnDestroy()
+    {
+        // Oyuncu nesnesi yok edilirken yapılacak işlemler
+        Debug.Log("Player object is being destroyed.");
+    }
+
     private void Update()
     {
         consolActivated = PlayerCollider.isConsolActiveted;
@@ -143,15 +161,6 @@ public class PlayerObjectController : NetworkBehaviour
         if (isLocalPlayer)
         {
             CMdSetPlayerReady();
-        }
-    }
-
-    public void ExitLobby()
-    {
-        if (isLocalPlayer)
-        {
-            var lobbyNetworkManager = NetworkManager.singleton as CustomNetworkManager;
-            lobbyNetworkManager.ReturnToMainMenu(connectionToClient);
         }
     }
 

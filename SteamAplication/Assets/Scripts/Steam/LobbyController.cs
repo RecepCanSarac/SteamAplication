@@ -241,35 +241,5 @@ public class LobbyController : MonoBehaviour
     {
         LocalPlayerController.CanStartGame(SceneGame);
     }
-   
-    public void OnLeaveButtonPressed()
-    {
-        StopButtons();
-        //manager.ReturnToMainMenu(NetworkClient.connection);
-        RemovePlayerItem();
-    }
-    
-    void StopButtons()
-    {
-        if (NetworkServer.active && NetworkClient.isConnected)
-        {
-            manager.StopHost();
-        
-            SceneManager.LoadScene(2);
-        }
-        else if (NetworkClient.isConnected)
-        {
-            manager.StopClient();
-        
-            SceneManager.LoadScene(2);
-        }
-        else if (NetworkServer.active)
-        {
-            manager.StopServer();
-        
-            SceneManager.LoadScene(2);
-        }
-
-    }
 
 }

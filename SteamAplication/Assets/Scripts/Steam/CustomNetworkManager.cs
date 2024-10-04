@@ -40,6 +40,25 @@ public class CustomNetworkManager : NetworkManager
         }
     }
 
+    public override void OnClientDisconnect()
+    {
+        base.OnClientDisconnect();
+        
+        Debug.Log("Client disconnected from the server.");
+    }
+
+    public override void OnServerDisconnect(NetworkConnectionToClient conn)
+    {
+        base.OnServerDisconnect(conn);
+    
+        if (conn.identity != null)
+        {
+            //NetworkServer.Destroy(conn.identity.gameObject);
+        }
+    
+        Debug.Log("Client disconnected from server. Player object destroyed.");
+    }
+
     // added
     public override void ServerChangeScene(string newSceneName)
     {
@@ -105,25 +124,5 @@ public class CustomNetworkManager : NetworkManager
         yield return new WaitForSeconds(1);
 
         FizzyChat.Instance.Joined(GamePlayerInstance.PlayerName);
-    }
-
-    public void ReturnToMainMenu(NetworkConnection conn)
-    {
-        if (conn?.identity?.isServer == true)
-        {
-            StopHost();
-            Debug.Log("Host stopped.");
-        }
-        else
-        {
-            StopClient();
-            Debug.Log("Client disconnected.");
-        }
-
-        CustomNetworkManager.singleton.StopServer();
-
-        SteamMatchmaking.LeaveLobby((CSteamID)SteamLobby.instance.CurrentLobbyID);
-
-        //SceneManager.LoadScene("MainMenu");
     }
 }
