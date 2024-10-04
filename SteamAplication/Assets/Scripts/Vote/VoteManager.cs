@@ -48,12 +48,6 @@ public class VoteManager : NetworkBehaviour
 
     private void CreateVoteCardItem()
     {
-        // Önceki kartları temizle
-        foreach (Transform child in VoteCardParent)
-        {
-            Destroy(child.gameObject);
-        }
-
         // Her oyuncu için bir oylama kartı oluştur
         foreach (var player in Manager.GamePlayers)
         {
