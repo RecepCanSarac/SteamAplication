@@ -18,7 +18,6 @@ public class Vote : NetworkBehaviour
             votePlayer = _votePlayer;
             voteCount = _votecount;
 
-            RpcUpdateVoteUI(voteCount);
         }
     }
 
@@ -27,5 +26,4 @@ public class Vote : NetworkBehaviour
     {
         VoteManager.Instance.UpdateVoteCountUI();
     }
-
 }

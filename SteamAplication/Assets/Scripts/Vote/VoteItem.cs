@@ -34,8 +34,9 @@ public class VoteItem : NetworkBehaviour
     
     public void UpdateVoteCountUI(int newVoteCount)
     {
-        voteCount = newVoteCount;
-        voteCountText.text = "Count: " + newVoteCount;
+        voteCount = newVoteCount + 1;
+        Debug.Log(voteCount);
+        voteCountText.text = "Count: " + voteCount;
     }
     
     void GetPlayerIcon()

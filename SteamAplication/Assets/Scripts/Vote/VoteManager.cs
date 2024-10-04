@@ -11,7 +11,6 @@ public class VoteManager : NetworkBehaviour
     List<PlayerObjectController> votePlayers = new List<PlayerObjectController>();
 
     public VoteItem currentItem;
-
     public List<VoteItem> currentVoteItem = new List<VoteItem>();
 
     #region Singleton
@@ -78,26 +77,14 @@ public class VoteManager : NetworkBehaviour
 
             currentVoteItem.Add(cardItem);
 
-            VoteCard.gameObject.GetComponent<Button>().onClick
-                .AddListener(() =>
-                {
-
-                    if (card.isLocalPlayer == true)
-                    {
-                        GiveToVote(VoteDC, card, cardItem);
-                    }
-                });
+            VoteCard.gameObject.GetComponent<Button>().onClick.AddListener(() =>
+            {
+                card.TryToVote(VoteDC, cardItem);
+            });
         }
     }
 
-    public void GiveToVote(Vote cardVote, PlayerObjectController player, VoteItem item)
-    {
-        if(!isClient)
-            CmdGiveToVote(player.netIdentity);
-    }
-
-    [Command]
-    public void CmdGiveToVote(NetworkIdentity playerIdentity)
+    public void GiveToVote(NetworkIdentity playerIdentity)
     {
         var player = playerIdentity.GetComponent<PlayerObjectController>();
         var cardVote = player.GetComponent<Vote>();
@@ -125,7 +112,6 @@ public class VoteManager : NetworkBehaviour
 
         UpdateVoteCountUI();
     }
-
 
     public void UpdateVoteCountUI()
     {

@@ -43,7 +43,22 @@ public class PlayerObjectController : NetworkBehaviour
             return manager = NetworkManager.singleton as CustomNetworkManager;
         }
     }
+    [SyncVar]
+    public bool hasVoted = false;
 
+    public void TryToVote(Vote voteData, VoteItem voteItem)
+    {
+        if (isLocalPlayer && !hasVoted)
+        {
+            CmdGiveToVote(netIdentity);
+        }
+    }
+
+    [Command]
+    public void CmdGiveToVote(NetworkIdentity playerIdentity)
+    {
+        VoteManager.Instance.GiveToVote(playerIdentity);
+    }
     private void Start()
     {
         ClassGenerator.Instance.SetList();
