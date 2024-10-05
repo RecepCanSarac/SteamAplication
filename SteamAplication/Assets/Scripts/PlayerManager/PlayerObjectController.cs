@@ -259,7 +259,7 @@ public class PlayerObjectController : NetworkBehaviour
     {
         ServerActivetedHouse(type);
     }
-    [Server]
+    [Command]
     public void ServerActivetedHouse(ClassType type)
     {
         RpcActivetedHouse(type);
