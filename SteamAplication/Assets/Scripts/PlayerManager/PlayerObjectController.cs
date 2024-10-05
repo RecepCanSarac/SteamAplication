@@ -240,10 +240,48 @@ public class PlayerObjectController : NetworkBehaviour
     {
         Vector3 offsetRotate = new Vector3(-8.95f, 0f, 0f);
         GameObject houseInstance = Instantiate(house, pos, Quaternion.Euler(offsetRotate));
-
+        houseInstance.GetComponent<House>().PlayerObjectController = this;
         Vector3 dir = houseInstance.transform.position - transform.position;
 
         dir.y = 0f;
         houseInstance.transform.rotation = Quaternion.LookRotation(new Vector3(-8.95f, dir.y, dir.z));
     }
+
+    public void ActivetedHouse(ClassType type)
+    {
+        switch (type)
+        {
+            case ClassType.Doctor:
+                Debug.Log("Doctor IsActive");
+                break;
+            case ClassType.Detective:
+                Debug.Log("Detective IsActive");
+                break;
+            case ClassType.Seer:
+                Debug.Log("Seer IsActive");
+                break;
+            case ClassType.Armored:
+                Debug.Log("Armored IsActive");
+                break;
+            case ClassType.Confessor:
+                Debug.Log("Confessor IsActive");
+                break;
+            case ClassType.Thief:
+                Debug.Log("Thief IsActive");
+                break;
+            case ClassType.Trapper:
+                Debug.Log("Trapper IsActive");
+                break;
+            case ClassType.Buffoon:
+                Debug.Log("Buffoon IsActive");
+                break;
+            case ClassType.Lookout:
+                Debug.Log("Lookout IsActive");
+                break;
+            case ClassType.Killer:
+                Debug.Log("Killer IsActive");
+                break;
+        }
+    }
+
 }
