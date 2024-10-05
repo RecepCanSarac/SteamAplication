@@ -337,3 +337,4 @@ public class PlayerObjectController : NetworkBehaviour
                 break;
         }
     }
+}
