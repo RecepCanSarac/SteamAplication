@@ -1,9 +1,11 @@
+using Mirror;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
-public class House : MonoBehaviour, IHouseManager
+public class House : NetworkBehaviour, IHouseManager
 {
     public bool isLelect { get; set; }
     public PlayerObjectController PlayerObjectController { get; set; }
@@ -15,12 +17,24 @@ public class House : MonoBehaviour, IHouseManager
         {
             isActiveHouse();
         }
-    }   
+    }
     public void isActiveHouse()
     {
+        if (isServer)
+        {
+            if (Enum.TryParse(PlayerObjectController.className, out ClassType classType))
+            {
+                PlayerObjectController.ServerActivetedHouse(classType);
+                return;
+            }
+
+        }
         if (Enum.TryParse(PlayerObjectController.className, out ClassType classType))
         {
-            PlayerObjectController.ActivetedHouse(classType);
+            PlayerObjectController.CMDActivetedHouse(classType);
         }
+
     }
+
+   
 }
