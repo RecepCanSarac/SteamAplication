@@ -256,7 +256,7 @@ public class PlayerObjectController : NetworkBehaviour
         }
         if (isLocalPlayer)
         {
-            CMDActivetedHouse(type);
+            ServerActivetedHouse(type);
         }
     }
     [Command]
