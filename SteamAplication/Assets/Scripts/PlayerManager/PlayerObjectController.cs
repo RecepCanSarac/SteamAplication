@@ -264,6 +264,11 @@ public class PlayerObjectController : NetworkBehaviour
     [Server]
     public void ServerActivetedHouse(ClassType type)
     {
+        RpcActivetedHouse(type);
+    }
+    [ClientRpc]
+    void RpcActivetedHouse(ClassType type)
+    {
         switch (type)
         {
             case ClassType.Doctor:
@@ -297,9 +302,5 @@ public class PlayerObjectController : NetworkBehaviour
                 Debug.Log("Killer IsActive (Client)");
                 break;
         }
-    }
-    void RpcActivetedHouse(ClassType type)
-    {
-      
     }
 }

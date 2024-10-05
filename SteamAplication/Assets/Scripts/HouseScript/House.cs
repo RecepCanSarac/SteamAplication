@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-public class House : NetworkBehaviour, IHouseManager
+public class House : NetworkBehaviour
 {
     public bool isLelect { get; set; }
     public PlayerObjectController PlayerObjectController { get; set; }
