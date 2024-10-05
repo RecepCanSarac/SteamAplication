@@ -80,7 +80,12 @@ public class PlayerObjectController : NetworkBehaviour
 
     public void Leave()
     {
-        Application.Quit();
+        if (isServer)
+        {
+            CustomNetworkManager.singleton.StopHost();
+            return;
+        }
+        CustomNetworkManager.singleton.StopClient();
     }
 
     [Command]
