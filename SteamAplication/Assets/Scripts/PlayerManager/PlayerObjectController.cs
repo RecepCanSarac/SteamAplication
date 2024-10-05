@@ -249,6 +249,12 @@ public class PlayerObjectController : NetworkBehaviour
 
     public void ActivetedHouse(ClassType type)
     {
+        CMDActivetedHouse(type);
+    }
+
+    [Command]
+    public void CMDActivetedHouse(ClassType type)
+    {
         switch (type)
         {
             case ClassType.Doctor:
