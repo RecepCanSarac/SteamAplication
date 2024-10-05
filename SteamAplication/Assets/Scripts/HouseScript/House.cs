@@ -22,9 +22,9 @@ public class House : NetworkBehaviour, IHouseManager
     {
         if (isServer)
         {
-            if (Enum.TryParse(PlayerObjectController.className, out ClassType classType))
+            if (Enum.TryParse(PlayerObjectController.className, out ClassType type))
             {
-                PlayerObjectController.ServerActivetedHouse(classType);
+                PlayerObjectController.ServerActivetedHouse(type);
                 return;
             }
 
