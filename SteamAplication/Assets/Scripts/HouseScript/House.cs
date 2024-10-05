@@ -15,7 +15,7 @@ public class House : MonoBehaviour, IHouseManager
         {
             isActiveHouse();
         }
-    }
+    }   
     public void isActiveHouse()
     {
         if (Enum.TryParse(PlayerObjectController.className, out ClassType classType))

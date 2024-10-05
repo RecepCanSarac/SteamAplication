@@ -249,14 +249,20 @@ public class PlayerObjectController : NetworkBehaviour
 
     public void ActivetedHouse(ClassType type)
     {
-        if (isLocalPlayer)
+        if (isServer)
         {
-            CMDActivetedHouse(type);
+            ServerActivetedHouse(type);
+            return;
         }
+        CMDActivetedHouse(type);
     }
-
     [Command]
     public void CMDActivetedHouse(ClassType type)
+    {
+        ServerActivetedHouse(type);
+    }
+    [Server]
+    public void ServerActivetedHouse(ClassType type)
     {
         switch (type)
         {
