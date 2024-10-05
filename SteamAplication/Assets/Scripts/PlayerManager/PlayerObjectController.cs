@@ -249,23 +249,20 @@ public class PlayerObjectController : NetworkBehaviour
 
     public void ActivetedHouse(ClassType type)
     {
-        if (isServer || isLocalPlayer)
+        if (isServer)
         {
             ServerActivetedHouse(type);
+            return;
         }
+        CMDActivetedHouse(type);
     }
     [Command]
     public void CMDActivetedHouse(ClassType type)
     {
         ServerActivetedHouse(type);
     }
-    [Command]
+    [Server]
     public void ServerActivetedHouse(ClassType type)
-    {
-        RpcActivetedHouse(type);
-    }
-    [ClientRpc]
-    void RpcActivetedHouse(ClassType type)
     {
         switch (type)
         {
@@ -300,5 +297,9 @@ public class PlayerObjectController : NetworkBehaviour
                 Debug.Log("Killer IsActive (Client)");
                 break;
         }
+    }
+    void RpcActivetedHouse(ClassType type)
+    {
+      
     }
 }
