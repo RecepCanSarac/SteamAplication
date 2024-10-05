@@ -264,45 +264,11 @@ public class PlayerObjectController : NetworkBehaviour
     [Server]
     public void ServerActivetedHouse(ClassType type)
     {
-        switch (type)
-        {
-            case ClassType.Doctor:
-                Debug.Log("Doctor IsActive");
-                break;
-            case ClassType.Detective:
-                Debug.Log("Detective IsActive");
-                break;
-            case ClassType.Seer:
-                Debug.Log("Seer IsActive");
-                break;
-            case ClassType.Armored:
-                Debug.Log("Armored IsActive");
-                break;
-            case ClassType.Confessor:
-                Debug.Log("Confessor IsActive");
-                break;
-            case ClassType.Thief:
-                Debug.Log("Thief IsActive");
-                break;
-            case ClassType.Trapper:
-                Debug.Log("Trapper IsActive");
-                break;
-            case ClassType.Buffoon:
-                Debug.Log("Buffoon IsActive");
-                break;
-            case ClassType.Lookout:
-                Debug.Log("Lookout IsActive");
-                break;
-            case ClassType.Killer:
-                Debug.Log("Killer IsActive");
-                break;
-        }
         RpcActivetedHouse(type);
     }
     [ClientRpc]
     void RpcActivetedHouse(ClassType type)
     {
-        // İstemcilerde aynı mesajı göster
         switch (type)
         {
             case ClassType.Doctor:

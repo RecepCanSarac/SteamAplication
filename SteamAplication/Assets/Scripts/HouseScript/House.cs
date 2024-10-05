@@ -20,21 +20,9 @@ public class House : NetworkBehaviour, IHouseManager
     }
     public void isActiveHouse()
     {
-        if (isServer)
+        if (Enum.TryParse(PlayerObjectController.className, out ClassType type))
         {
-            if (Enum.TryParse(PlayerObjectController.className, out ClassType type))
-            {
-                PlayerObjectController.ServerActivetedHouse(type);
-                return;
-            }
-
+            PlayerObjectController.ActivetedHouse(type);
         }
-        if (Enum.TryParse(PlayerObjectController.className, out ClassType classType))
-        {
-            PlayerObjectController.CMDActivetedHouse(classType);
-        }
-
     }
-
-   
 }
