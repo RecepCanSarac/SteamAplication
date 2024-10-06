@@ -104,14 +104,12 @@ public class OutlineSelection : NetworkBehaviour
     void CmdGetClassType()
     {
         RpcGetClassType(selectedClassType);
-        selectedClassType = selection.gameObject.GetComponent<House>().type;
     }
 
     [Command]
     void CmdGetText()
     {
         RpcGetText(selectClassType);
-        selectClassTypeText.text = selection.gameObject.GetComponent<House>().type.ToString();
     }
 
     [ClientRpc]
@@ -123,7 +121,7 @@ public class OutlineSelection : NetworkBehaviour
     [ClientRpc]
     void RpcGetText(string classType)
     {
-        selectClassTypeText.text = classType;
+        selectClassType = classType;
     }
 
 }
