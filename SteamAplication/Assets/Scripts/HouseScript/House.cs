@@ -22,10 +22,7 @@ public class House : NetworkBehaviour
     {
         if (Enum.TryParse(PlayerObjectController.className, out ClassType type))
         {
-            if (PlayerObjectController.isLocalPlayer)
-            {
-                PlayerObjectController.ActivetedHouse(type);
-            }
+            PlayerObjectController.ActivetedHouse(type);
         }
     }
 
