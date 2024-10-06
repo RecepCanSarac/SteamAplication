@@ -20,6 +20,8 @@ public class OutlineSelection : NetworkBehaviour
     private RaycastHit raycastHit;
     void Update()
     {
+        if (!isClient) return; 
+        
         // Highlight
         if (highlight != null)
         {
@@ -61,10 +63,12 @@ public class OutlineSelection : NetworkBehaviour
                 selection = raycastHit.transform;
                 selection.gameObject.GetComponent<Outline>().enabled = true;
                 selection.gameObject.GetComponent<House>().isSelect = true;
+                
                 selectedClassType = selection.gameObject.GetComponent<House>().type;
                 selectClassType = selection.gameObject.GetComponent<House>().type.ToString();
                 SetClassType();
                 SetText();
+                
                 Debug.Log(selection.gameObject.GetComponent<House>().isSelect);
                 highlight = null;
             }
@@ -83,11 +87,17 @@ public class OutlineSelection : NetworkBehaviour
 
     public void SetClassType()
     {
-        CmdGetClassType(selectedClassType);
+        if (isClient)
+        {
+            CmdGetClassType(selectedClassType);
+        }
     }
     public void SetText()
     {
-        CmdGetText(selectClassType);
+        if (isClient)
+        {
+            CmdGetText(selectClassType);
+        }
     }
 
     void OnClassType(string oldValue, string newValue)
