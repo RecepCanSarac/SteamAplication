@@ -7,13 +7,13 @@ using UnityEngine.Rendering;
 
 public class House : NetworkBehaviour
 {
-    public bool isLelect { get; set; }
+    public bool isSelect { get; set; }
     public PlayerObjectController PlayerObjectController { get; set; }
 
 
     private void Update()
     {
-        if (isLelect)
+        if (isSelect)
         {
             isActiveHouse();
         }
@@ -22,7 +22,11 @@ public class House : NetworkBehaviour
     {
         if (Enum.TryParse(PlayerObjectController.className, out ClassType type))
         {
-            PlayerObjectController.ActivetedHouse(type);
+            if (PlayerObjectController.isLocalPlayer)
+            {
+                PlayerObjectController.ActivetedHouse(type);
+            }
         }
     }
+
 }

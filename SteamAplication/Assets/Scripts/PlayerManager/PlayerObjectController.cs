@@ -254,21 +254,24 @@ public class PlayerObjectController : NetworkBehaviour
 
     public void ActivetedHouse(ClassType type)
     {
+        if (!isLocalPlayer) return;
         if (isServer)
         {
             ServerActivetedHouse(type);
+            return;
         }
-        else if (isLocalPlayer)
-        {
-            CMDActivetedHouse(type);
-            Debug.Log("Client");
-        }
-
+        CMDActivetedHouse(type);
     }
+
     [Command]
     public void CMDActivetedHouse(ClassType type)
     {
-        RpcActivetedHouse(type);
+        if (!isLocalPlayer)
+        {
+            Debug.Log("Client does not have authority to call this command.");
+            return;
+        }
+        ServerActivetedHouse(type);
     }
     [Server]
     public void ServerActivetedHouse(ClassType type)

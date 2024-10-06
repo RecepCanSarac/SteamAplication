@@ -50,8 +50,8 @@ public class OutlineSelection : MonoBehaviour
                 }
                 selection = raycastHit.transform;
                 selection.gameObject.GetComponent<Outline>().enabled = true;
-                selection.gameObject.GetComponent<House>().isLelect = true;
-                Debug.Log(selection.gameObject.GetComponent<House>().isLelect);
+                selection.gameObject.GetComponent<House>().isSelect = true;
+                Debug.Log(selection.gameObject.GetComponent<House>().isSelect);
                 highlight = null;
             }
             else
@@ -59,8 +59,8 @@ public class OutlineSelection : MonoBehaviour
                 if (selection)
                 {
                     selection.gameObject.GetComponent<Outline>().enabled = false;
-                    selection.gameObject.GetComponent<House>().isLelect = false;
-                    Debug.Log(selection.gameObject.GetComponent<House>().isLelect);
+                    selection.gameObject.GetComponent<House>().isSelect = false;
+                    Debug.Log(selection.gameObject.GetComponent<House>().isSelect);
                     selection = null;
                 }
             }

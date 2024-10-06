@@ -1104,6 +1104,7 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
+  isLelect: 0
 --- !u!114 &-6315543135405311900
 MonoBehaviour:
   m_ObjectHideFlags: 0
