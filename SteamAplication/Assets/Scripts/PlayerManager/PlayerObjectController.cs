@@ -123,6 +123,7 @@ public class PlayerObjectController : NetworkBehaviour
         if (isLocalPlayer && isClient && NetworkClient.ready)
         {
             CmdPlayerNameShow();
+            classText.text = syncedClassName;
         }
     }
 
