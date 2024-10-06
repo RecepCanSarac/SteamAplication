@@ -236,7 +236,10 @@ public class PlayerObjectController : NetworkBehaviour
     [ClientRpc]
     private void RpcUpdateUI(string playerName)
     {
-        NameText.text = playerName;
+        if (isServer)
+        {
+            NameText.text = playerName;
+        }
     }
 
     [ClientRpc]
