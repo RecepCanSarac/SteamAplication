@@ -191,14 +191,11 @@ public class PlayerObjectController : NetworkBehaviour
 
     private void ClassNameUpdate(string oldValue, string newValue)
     {
-        if (isServer)
-        {
-            this.syncedClassName = newValue;
-        }
-
+        RpcUpdateClass(newValue);
+        
         if (isClient)
         {
-            RpcUpdateUI(PlayerName, newValue);
+            RpcUpdateUI(PlayerName);
         }
     }
 
@@ -219,7 +216,7 @@ public class PlayerObjectController : NetworkBehaviour
     {
         if (NetworkClient.ready)
         {
-            RpcUpdateUI(this.PlayerName, syncedClassName);
+            RpcUpdateUI(this.PlayerName);
         }
     }
 
@@ -229,11 +226,22 @@ public class PlayerObjectController : NetworkBehaviour
         this.PlayerNameUpdate(this.PlayerName, PlayerName);
     }
 
+    [Command]
+    void CmdUpdateClass()
+    {
+        RpcUpdateClass(syncedClassName);
+    }
+
     [ClientRpc]
-    private void RpcUpdateUI(string playerName, string playerClassName)
+    private void RpcUpdateUI(string playerName)
     {
         NameText.text = playerName;
-        classText.text = playerClassName;
+    }
+
+    [ClientRpc]
+    void RpcUpdateClass(string classType)
+    {
+        syncedClassName = classType;
     }
 
     public void SetHouse(Vector3 pos)
