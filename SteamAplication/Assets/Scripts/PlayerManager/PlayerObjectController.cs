@@ -9,7 +9,6 @@ public class PlayerObjectController : NetworkBehaviour
     public TextMeshProUGUI NameText;
     public TextMeshProUGUI ReadText;
     public TextMeshProUGUI classText;
-    public string className;
     public ClassType type;
 
     public GameObject house;
@@ -87,11 +86,6 @@ public class PlayerObjectController : NetworkBehaviour
             return;
         }
         CustomNetworkManager.singleton.StopClient();
-    }
-
-    [Command]
-    void CmdLeaveGame()
-    {
     }
 
     private void OnDestroy()
@@ -199,7 +193,7 @@ public class PlayerObjectController : NetworkBehaviour
     {
         if (isServer)
         {
-            this.className = newValue;
+            this.syncedClassName = newValue;
         }
 
         if (isClient)
@@ -225,7 +219,7 @@ public class PlayerObjectController : NetworkBehaviour
     {
         if (NetworkClient.ready)
         {
-            RpcUpdateUI(this.PlayerName, className);
+            RpcUpdateUI(this.PlayerName, syncedClassName);
         }
     }
 
@@ -244,7 +238,7 @@ public class PlayerObjectController : NetworkBehaviour
 
     public void SetHouse(Vector3 pos)
     {
-        className = type.ToString();
+        syncedClassName = type.ToString();
         Vector3 offsetRotate = new Vector3(-8.95f, 0f, 0f);
         GameObject houseInstance = Instantiate(house, pos, Quaternion.Euler(offsetRotate));
         houseInstance.GetComponent<House>().PlayerObjectController = this;
