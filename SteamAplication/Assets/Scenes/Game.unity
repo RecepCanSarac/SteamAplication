@@ -10941,9 +10941,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2973a9c526a7e9142b3af02288ebeb37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  syncDirection: 0
+  syncDirection: 1
   syncMode: 0
-  syncInterval: 0
+  syncInterval: 0.1
   selectedClassType: 0
   selectClassType: 
   selectClassTypeText: {fileID: 1837044016}
