@@ -7,27 +7,26 @@ using UnityEngine.UI;
 
 public class OutlineSelection : NetworkBehaviour
 {
-    [SyncVar(hook = nameof(OnClassType))]
-    public string selectedClassType;
-
     [SyncVar(hook = nameof(OnClassTypeText))]
     public string selectClassType;
-    
+
     public Text selectClassTypeText;
-    
+
     private Transform highlight;
     private Transform selection;
     private RaycastHit raycastHit;
+
     void Update()
     {
         if (!isClient) return;
-        
+
         // Highlight
         if (highlight != null)
         {
             highlight.gameObject.GetComponent<Outline>().enabled = false;
             highlight = null;
         }
+
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (!EventSystem.current.IsPointerOverGameObject() && Physics.Raycast(ray, out raycastHit))
         {
@@ -60,15 +59,14 @@ public class OutlineSelection : NetworkBehaviour
                 {
                     selection.gameObject.GetComponent<Outline>().enabled = false;
                 }
+
                 selection = raycastHit.transform;
                 selection.gameObject.GetComponent<Outline>().enabled = true;
                 selection.gameObject.GetComponent<House>().isSelect = true;
-                
-                selectedClassType = selection.gameObject.GetComponent<House>().type;
+
                 selectClassType = selection.gameObject.GetComponent<House>().type.ToString();
-                SetClassType();
                 SetText();
-                
+
                 Debug.Log(selection.gameObject.GetComponent<House>().isSelect);
                 highlight = null;
             }
@@ -85,37 +83,15 @@ public class OutlineSelection : NetworkBehaviour
         }
     }
 
-    public void SetClassType()
-    {
-        if (isClient)
-        {
-            CmdGetClassType(selectedClassType);
-        }
-    }
     public void SetText()
     {
-        if (isClient)
-        {
-            CmdGetText(selectClassType);
-        }
-    }
-
-    void OnClassType(string oldValue, string newValue)
-    {
-        RpcGetClassType(newValue);
+        CmdGetText(selectClassType);
     }
 
     void OnClassTypeText(string oldValue, string newValue)
     {
         RpcGetText(newValue);
-    }
-
-    [Command]
-    void CmdGetClassType(string classType)
-    {
-        selectedClassType = classType; 
-        
-        RpcGetClassType(classType);
+        TRpc(newValue);
     }
 
     [Command]
@@ -124,13 +100,14 @@ public class OutlineSelection : NetworkBehaviour
         selectClassType = classType;
 
         RpcGetText(classType);
+        TRpc(classType);
     }
 
-    [ClientRpc]
-    void RpcGetClassType(string classType)
+    [TargetRpc]
+    void TRpc(string classType)
     {
-        selectedClassType = classType;
-        selectClassTypeText.text = selectedClassType.ToString();
+        selectClassType = classType;
+        selectClassTypeText.text = classType;
     }
 
     [ClientRpc]
@@ -139,5 +116,4 @@ public class OutlineSelection : NetworkBehaviour
         selectClassType = classType;
         selectClassTypeText.text = classType;
     }
-
 }
