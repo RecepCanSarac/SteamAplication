@@ -1,26 +1,24 @@
 using Mirror;
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.Rendering;
 
 public class House : NetworkBehaviour
 {
     public bool isSelect { get; set; }
     public PlayerObjectController PlayerObjectController { get; set; }
 
+    public ClassType type;
 
-    private void Update()
+    private void OnMouseDown()
     {
         if (isSelect)
         {
             isActiveHouse();
         }
     }
+
     public void isActiveHouse()
     {
-        if (Enum.TryParse(PlayerObjectController.className, out ClassType type))
+        if (type != PlayerObjectController.type)
         {
             PlayerObjectController.ActivetedHouse(type);
         }

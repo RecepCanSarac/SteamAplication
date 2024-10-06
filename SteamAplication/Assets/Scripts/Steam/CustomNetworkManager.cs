@@ -113,6 +113,7 @@ public class CustomNetworkManager : NetworkManager
             playerClass.ClassTextMethod(MangmentClass[randomIndex].ClassType);*/
 
             player.className = MangmentClass[randomIndex].ClassType.ToString();
+            player.type = MangmentClass[randomIndex].ClassType;
 
             player.PlayerNameShow();
         }

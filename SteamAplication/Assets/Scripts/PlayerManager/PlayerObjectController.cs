@@ -10,6 +10,7 @@ public class PlayerObjectController : NetworkBehaviour
     public TextMeshProUGUI ReadText;
     public TextMeshProUGUI classText;
     public string className;
+    public ClassType type;
 
     public GameObject house;
 
@@ -246,6 +247,7 @@ public class PlayerObjectController : NetworkBehaviour
         Vector3 offsetRotate = new Vector3(-8.95f, 0f, 0f);
         GameObject houseInstance = Instantiate(house, pos, Quaternion.Euler(offsetRotate));
         houseInstance.GetComponent<House>().PlayerObjectController = this;
+        houseInstance.GetComponent<House>().type = type;
         Vector3 dir = houseInstance.transform.position - transform.position;
 
         dir.y = 0f;
@@ -254,25 +256,11 @@ public class PlayerObjectController : NetworkBehaviour
 
     public void ActivetedHouse(ClassType type)
     {
-        if (isServer)
-        {
-            ServerActivetedHouse(type);
-            return;
-        }
-        if (isClient)
-        {
-            CMDActivetedHouse(type);
-            return;
-        }
+        CMDActivetedHouse(type);
     }
 
     [Command]
     public void CMDActivetedHouse(ClassType type)
-    {
-        RpcActivetedHouse(type);
-    }
-    [Server]
-    public void ServerActivetedHouse(ClassType type)
     {
         RpcActivetedHouse(type);
     }

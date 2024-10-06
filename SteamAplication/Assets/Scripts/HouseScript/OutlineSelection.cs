@@ -1,10 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
+using Mirror;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
-public class OutlineSelection : MonoBehaviour
+public class OutlineSelection : NetworkBehaviour
 {
+    [SyncVar(hook = nameof(OnClassType))]
+    public ClassType selectedClassType;
+
+    [SyncVar(hook = nameof(OnClassTypeText))]
+    public string selectClassType;
+    
+    public Text selectClassTypeText;
+    
     private Transform highlight;
     private Transform selection;
     private RaycastHit raycastHit;
@@ -51,6 +61,10 @@ public class OutlineSelection : MonoBehaviour
                 selection = raycastHit.transform;
                 selection.gameObject.GetComponent<Outline>().enabled = true;
                 selection.gameObject.GetComponent<House>().isSelect = true;
+                selectedClassType = selection.gameObject.GetComponent<House>().type;
+                selectClassTypeText.text = selection.gameObject.GetComponent<House>().type.ToString();
+                SetClassType();
+                SetText();
                 Debug.Log(selection.gameObject.GetComponent<House>().isSelect);
                 highlight = null;
             }
@@ -65,6 +79,49 @@ public class OutlineSelection : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void SetClassType()
+    {
+        CmdGetClassType();
+    }
+    public void SetText()
+    {
+        CmdGetText();
+    }
+
+    void OnClassType(ClassType oldValue, ClassType newValue)
+    {
+        RpcGetClassType(newValue);
+    }
+
+    void OnClassTypeText(string oldValue, string newValue)
+    {
+        RpcGetText(newValue);
+    }
+
+    [Command]
+    void CmdGetClassType()
+    {
+        RpcGetClassType(selectedClassType);
+    }
+
+    [Command]
+    void CmdGetText()
+    {
+        RpcGetText(selectClassType);
+    }
+
+    [ClientRpc]
+    void RpcGetClassType(ClassType classType)
+    {
+        selectedClassType = classType;
+    }
+
+    [ClientRpc]
+    void RpcGetText(string classType)
+    {
+        selectClassTypeText.text = classType;
     }
 
 }
