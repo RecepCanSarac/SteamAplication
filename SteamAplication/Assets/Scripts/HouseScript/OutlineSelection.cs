@@ -91,23 +91,14 @@ public class OutlineSelection : NetworkBehaviour
     void OnClassTypeText(string oldValue, string newValue)
     {
         RpcGetText(newValue);
-        TRpc(newValue);
     }
 
-    [Command]
+    [Command(requiresAuthority = false)]
     void CmdGetText(string classType)
     {
         selectClassType = classType;
 
         RpcGetText(classType);
-        TRpc(classType);
-    }
-
-    [TargetRpc]
-    void TRpc(string classType)
-    {
-        selectClassType = classType;
-        selectClassTypeText.text = classType;
     }
 
     [ClientRpc]
