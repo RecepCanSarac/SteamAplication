@@ -193,10 +193,7 @@ public class PlayerObjectController : NetworkBehaviour
     {
         CmdUpdateClass(newValue);
         
-        if (isServer)
-        {
-            RpcUpdateUI(PlayerName);
-        }
+        RpcUpdateUI(PlayerName);
     }
 
     [Command]
@@ -214,10 +211,7 @@ public class PlayerObjectController : NetworkBehaviour
     [Command]
     private void CmdPlayerNameShow()
     {
-        if (NetworkClient.ready)
-        {
-            RpcUpdateUI(this.PlayerName);
-        }
+        RpcUpdateUI(this.PlayerName);
     }
 
     [Command]
@@ -236,10 +230,7 @@ public class PlayerObjectController : NetworkBehaviour
     [ClientRpc]
     private void RpcUpdateUI(string playerName)
     {
-        if (isServer)
-        {
-            NameText.text = playerName;
-        }
+        NameText.text = playerName;
     }
 
     [ClientRpc]
