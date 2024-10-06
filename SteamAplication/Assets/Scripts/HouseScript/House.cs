@@ -1,18 +1,24 @@
 using Mirror;
 using System;
+using UnityEngine;
 
-public class House : NetworkBehaviour
+public class House : MonoBehaviour
 {
     public bool isSelect { get; set; }
+
+    public bool isLocalPlayer = false;
     public PlayerObjectController PlayerObjectController { get; set; }
 
     public ClassType type;
 
     private void OnMouseDown()
     {
-        if (isSelect)
+        if (isLocalPlayer)
         {
-            isActiveHouse();
+            if (isSelect)
+            {
+                isActiveHouse();
+            }
         }
     }
 

@@ -248,6 +248,7 @@ public class PlayerObjectController : NetworkBehaviour
         GameObject houseInstance = Instantiate(house, pos, Quaternion.Euler(offsetRotate));
         houseInstance.GetComponent<House>().PlayerObjectController = this;
         houseInstance.GetComponent<House>().type = type;
+        houseInstance.GetComponent<House>().isLocalPlayer = isLocalPlayer;
         Vector3 dir = houseInstance.transform.position - transform.position;
 
         dir.y = 0f;
