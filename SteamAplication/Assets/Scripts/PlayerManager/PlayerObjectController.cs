@@ -230,6 +230,7 @@ public class PlayerObjectController : NetworkBehaviour
     void CmdUpdateClass(string value)
     {
         RpcUpdateClass(value);
+        classText.text = syncedClassName;
     }
 
     [ClientRpc]
@@ -242,6 +243,7 @@ public class PlayerObjectController : NetworkBehaviour
     void RpcUpdateClass(string classType)
     {
         syncedClassName = classType;
+        classText.text = syncedClassName;
     }
 
     public void SetHouse(Vector3 pos)
