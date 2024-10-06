@@ -20,7 +20,9 @@ public class OutlineSelection : NetworkBehaviour
     private RaycastHit raycastHit;
     void Update()
     {
-        if (!isClient) return; 
+        if (!isClient) return;
+
+        if (!isLocalPlayer) return;
         
         // Highlight
         if (highlight != null)
@@ -113,13 +115,21 @@ public class OutlineSelection : NetworkBehaviour
     [Command]
     void CmdGetClassType(string classType)
     {
+        if (!isServer) return;
+        
         selectedClassType = classType; 
+        
+        RpcGetClassType(classType);
     }
 
     [Command]
     void CmdGetText(string classType)
     {
+        if (!isServer) return;
+        
         selectClassType = classType;
+
+        RpcGetText(classType);
     }
 
     [ClientRpc]
