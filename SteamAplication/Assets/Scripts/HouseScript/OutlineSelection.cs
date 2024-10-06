@@ -113,8 +113,6 @@ public class OutlineSelection : NetworkBehaviour
     [Command]
     void CmdGetClassType(string classType)
     {
-        if (!isServer) return;
-        
         selectedClassType = classType; 
         
         RpcGetClassType(classType);
@@ -123,8 +121,6 @@ public class OutlineSelection : NetworkBehaviour
     [Command]
     void CmdGetText(string classType)
     {
-        if (!isServer) return;
-        
         selectClassType = classType;
 
         RpcGetText(classType);
