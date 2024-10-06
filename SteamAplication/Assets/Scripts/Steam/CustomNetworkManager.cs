@@ -112,7 +112,7 @@ public class CustomNetworkManager : NetworkManager
 
             playerClass.ClassTextMethod(MangmentClass[randomIndex].ClassType);*/
 
-            player.type = MangmentClass[randomIndex].ClassType;
+            player.syncedClassName = MangmentClass[randomIndex].ClassType.ToString();
             //player.type = MangmentClass[randomIndex].ClassType;
 
             player.PlayerNameShow();

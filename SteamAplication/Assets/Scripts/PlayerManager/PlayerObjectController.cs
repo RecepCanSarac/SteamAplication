@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using Mirror;
 using Steamworks;
@@ -9,7 +10,6 @@ public class PlayerObjectController : NetworkBehaviour
     public TextMeshProUGUI NameText;
     public TextMeshProUGUI ReadText;
     public TextMeshProUGUI classText;
-    public ClassType type;
 
     public GameObject house;
 
@@ -85,6 +85,7 @@ public class PlayerObjectController : NetworkBehaviour
             CustomNetworkManager.singleton.StopHost();
             return;
         }
+
         CustomNetworkManager.singleton.StopClient();
     }
 
@@ -245,62 +246,72 @@ public class PlayerObjectController : NetworkBehaviour
 
     public void SetHouse(Vector3 pos)
     {
-        syncedClassName = type.ToString();
         Vector3 offsetRotate = new Vector3(-8.95f, 0f, 0f);
         GameObject houseInstance = Instantiate(house, pos, Quaternion.Euler(offsetRotate));
         houseInstance.GetComponent<House>().PlayerObjectController = this;
-        houseInstance.GetComponent<House>().type = type;
+        houseInstance.GetComponent<House>().type = syncedClassName;
         Vector3 dir = houseInstance.transform.position - transform.position;
 
         dir.y = 0f;
         houseInstance.transform.rotation = Quaternion.LookRotation(new Vector3(-8.95f, dir.y, dir.z));
     }
 
-    public void ActivetedHouse(ClassType type)
+    public void ActivetedHouse(string type)
     {
         CMDActivetedHouse(type);
     }
 
     [Command]
-    public void CMDActivetedHouse(ClassType type)
+    public void CMDActivetedHouse(string type)
     {
         RpcActivetedHouse(type);
     }
+
     [ClientRpc]
-    void RpcActivetedHouse(ClassType type)
+    void RpcActivetedHouse(string type)
     {
-        switch (type)
+        if (Enum.TryParse(type, out ClassType classType))
         {
-            case ClassType.Doctor:
-                Debug.Log("Doctor IsActive (Client)");
-                break;
-            case ClassType.Detective:
-                Debug.Log("Detective IsActive (Client)");
-                break;
-            case ClassType.Seer:
-                Debug.Log("Seer IsActive (Client)");
-                break;
-            case ClassType.Armored:
-                Debug.Log("Armored IsActive (Client)");
-                break;
-            case ClassType.Confessor:
-                Debug.Log("Confessor IsActive (Client)");
-                break;
-            case ClassType.Thief:
-                Debug.Log("Thief IsActive (Client)");
-                break;
-            case ClassType.Trapper:
-                Debug.Log("Trapper IsActive (Client)");
-                break;
-            case ClassType.Buffoon:
-                Debug.Log("Buffoon IsActive (Client)");
-                break;
-            case ClassType.Lookout:
-                Debug.Log("Lookout IsActive (Client)");
-                break;
-            case ClassType.Killer:
-                Debug.Log("Killer IsActive (Client)");
-                break;
+            switch (classType)
+            {
+                case ClassType.Doctor:
+                    Debug.Log("Doctor IsActive (Client)");
+                    break;
+                case ClassType.Detective:
+                    Debug.Log("Detective IsActive (Client)");
+                    break;
+                case ClassType.Seer:
+                    Debug.Log("Seer IsActive (Client)");
+                    break;
+                case ClassType.Armored:
+                    Debug.Log("Armored IsActive (Client)");
+                    break;
+                case ClassType.Confessor:
+                    Debug.Log("Confessor IsActive (Client)");
+                    break;
+                case ClassType.Thief:
+                    Debug.Log("Thief IsActive (Client)");
+                    break;
+                case ClassType.Trapper:
+                    Debug.Log("Trapper IsActive (Client)");
+                    break;
+                case ClassType.Buffoon:
+                    Debug.Log("Buffoon IsActive (Client)");
+                    break;
+                case ClassType.Lookout:
+                    Debug.Log("Lookout IsActive (Client)");
+                    break;
+                case ClassType.Killer:
+                    Debug.Log("Killer IsActive (Client)");
+                    break;
+                default:
+                    Debug.Log("Unknown class type");
+                    break;
+            }
+        }
+        else
+        {
+            Debug.Log("Invalid class type string: " + type);
         }
     }
 }

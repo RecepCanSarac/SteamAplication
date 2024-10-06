@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class OutlineSelection : NetworkBehaviour
 {
     [SyncVar(hook = nameof(OnClassType))]
-    public ClassType selectedClassType;
+    public string selectedClassType;
 
     [SyncVar(hook = nameof(OnClassTypeText))]
     public string selectClassType;
@@ -90,7 +90,7 @@ public class OutlineSelection : NetworkBehaviour
         CmdGetText(selectClassType);
     }
 
-    void OnClassType(ClassType oldValue, ClassType newValue)
+    void OnClassType(string oldValue, string newValue)
     {
         RpcGetClassType(newValue);
     }
@@ -101,7 +101,7 @@ public class OutlineSelection : NetworkBehaviour
     }
 
     [Command]
-    void CmdGetClassType(ClassType classType)
+    void CmdGetClassType(string classType)
     {
         selectedClassType = classType; 
     }
@@ -113,7 +113,7 @@ public class OutlineSelection : NetworkBehaviour
     }
 
     [ClientRpc]
-    void RpcGetClassType(ClassType classType)
+    void RpcGetClassType(string classType)
     {
         selectedClassType = classType;
         selectClassTypeText.text = selectedClassType.ToString();

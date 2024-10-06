@@ -7,7 +7,7 @@ public class House : MonoBehaviour
     public bool isSelect { get; set; }
     public PlayerObjectController PlayerObjectController { get; set; }
 
-    public ClassType type;
+    public string type;
 
     private void OnMouseDown()
     {
@@ -19,7 +19,7 @@ public class House : MonoBehaviour
 
     public void isActiveHouse()
     {
-        if (type != PlayerObjectController.type)
+        if (type != PlayerObjectController.syncedClassName)
         {
             PlayerObjectController.ActivetedHouse(type);
         }
