@@ -13,12 +13,9 @@ public class House : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (isLocalPlayer)
+        if (isSelect)
         {
-            if (isSelect)
-            {
-                isActiveHouse();
-            }
+            isActiveHouse();
         }
     }
 
@@ -29,5 +26,4 @@ public class House : MonoBehaviour
             PlayerObjectController.ActivetedHouse(type);
         }
     }
-
 }
