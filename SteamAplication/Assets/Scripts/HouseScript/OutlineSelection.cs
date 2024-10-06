@@ -21,8 +21,6 @@ public class OutlineSelection : NetworkBehaviour
     void Update()
     {
         if (!isClient) return;
-
-        if (!isLocalPlayer) return;
         
         // Highlight
         if (highlight != null)
