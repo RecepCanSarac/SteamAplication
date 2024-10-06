@@ -193,7 +193,7 @@ public class PlayerObjectController : NetworkBehaviour
     {
         CmdUpdateClass(newValue);
         
-        if (isClient)
+        if (isServer)
         {
             RpcUpdateUI(PlayerName);
         }
