@@ -244,6 +244,7 @@ public class PlayerObjectController : NetworkBehaviour
 
     public void SetHouse(Vector3 pos)
     {
+        className = type.ToString();
         Vector3 offsetRotate = new Vector3(-8.95f, 0f, 0f);
         GameObject houseInstance = Instantiate(house, pos, Quaternion.Euler(offsetRotate));
         houseInstance.GetComponent<House>().PlayerObjectController = this;
