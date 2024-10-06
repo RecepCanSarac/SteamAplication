@@ -191,7 +191,7 @@ public class PlayerObjectController : NetworkBehaviour
 
     private void ClassNameUpdate(string oldValue, string newValue)
     {
-        RpcUpdateClass(newValue);
+        CmdUpdateClass(newValue);
         
         if (isClient)
         {
@@ -227,9 +227,9 @@ public class PlayerObjectController : NetworkBehaviour
     }
 
     [Command]
-    void CmdUpdateClass()
+    void CmdUpdateClass(string value)
     {
-        RpcUpdateClass(syncedClassName);
+        RpcUpdateClass(value);
     }
 
     [ClientRpc]
