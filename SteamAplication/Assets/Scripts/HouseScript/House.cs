@@ -5,8 +5,6 @@ using UnityEngine;
 public class House : MonoBehaviour
 {
     public bool isSelect { get; set; }
-
-    public bool isLocalPlayer = false;
     public PlayerObjectController PlayerObjectController { get; set; }
 
     public ClassType type;

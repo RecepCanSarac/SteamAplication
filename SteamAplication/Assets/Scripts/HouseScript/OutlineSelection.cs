@@ -83,11 +83,11 @@ public class OutlineSelection : NetworkBehaviour
 
     public void SetClassType()
     {
-        CmdGetClassType();
+        CmdGetClassType(selectedClassType);
     }
     public void SetText()
     {
-        CmdGetText();
+        CmdGetText(selectClassType);
     }
 
     void OnClassType(ClassType oldValue, ClassType newValue)
@@ -101,29 +101,29 @@ public class OutlineSelection : NetworkBehaviour
     }
 
     [Command]
-    void CmdGetClassType()
+    void CmdGetClassType(ClassType classType)
     {
-        RpcGetClassType(selectedClassType);
+        selectedClassType = classType; 
     }
 
     [Command]
-    void CmdGetText()
+    void CmdGetText(string classType)
     {
-        RpcGetText(selectClassType);
-        selectClassTypeText.text = selectedClassType.ToString();
+        selectClassType = classType;
     }
 
     [ClientRpc]
     void RpcGetClassType(ClassType classType)
     {
         selectedClassType = classType;
+        selectClassTypeText.text = selectedClassType.ToString();
     }
 
     [ClientRpc]
     void RpcGetText(string classType)
     {
         selectClassType = classType;
-        selectClassTypeText.text = selectedClassType.ToString();
+        selectClassTypeText.text = classType;
     }
 
 }
