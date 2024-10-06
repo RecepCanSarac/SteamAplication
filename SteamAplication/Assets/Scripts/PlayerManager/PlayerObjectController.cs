@@ -271,7 +271,7 @@ public class PlayerObjectController : NetworkBehaviour
             Debug.Log("Client does not have authority to call this command.");
             return;
         }
-        ServerActivetedHouse(type);
+        RpcActivetedHouse(type);
     }
     [Server]
     public void ServerActivetedHouse(ClassType type)
