@@ -62,7 +62,7 @@ public class OutlineSelection : NetworkBehaviour
                 selection.gameObject.GetComponent<Outline>().enabled = true;
                 selection.gameObject.GetComponent<House>().isSelect = true;
                 selectedClassType = selection.gameObject.GetComponent<House>().type;
-                selectClassTypeText.text = selection.gameObject.GetComponent<House>().type.ToString();
+                selectClassType = selection.gameObject.GetComponent<House>().type.ToString();
                 SetClassType();
                 SetText();
                 Debug.Log(selection.gameObject.GetComponent<House>().isSelect);
@@ -110,6 +110,7 @@ public class OutlineSelection : NetworkBehaviour
     void CmdGetText()
     {
         RpcGetText(selectClassType);
+        selectClassTypeText.text = selectedClassType.ToString();
     }
 
     [ClientRpc]
@@ -122,6 +123,7 @@ public class OutlineSelection : NetworkBehaviour
     void RpcGetText(string classType)
     {
         selectClassType = classType;
+        selectClassTypeText.text = selectedClassType.ToString();
     }
 
 }
