@@ -192,8 +192,11 @@ public class PlayerObjectController : NetworkBehaviour
     private void ClassNameUpdate(string oldValue, string newValue)
     {
         CmdUpdateClass(newValue);
-        
-        RpcUpdateUI(PlayerName);
+
+        if (isServer)
+        {
+            RpcUpdateUI(PlayerName);
+        }
     }
 
     [Command]
