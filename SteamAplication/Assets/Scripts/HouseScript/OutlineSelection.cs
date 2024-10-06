@@ -93,11 +93,13 @@ public class OutlineSelection : NetworkBehaviour
     void OnClassType(ClassType oldValue, ClassType newValue)
     {
         RpcGetClassType(newValue);
+        selectedClassType = selection.gameObject.GetComponent<House>().type;
     }
 
     void OnClassTypeText(string oldValue, string newValue)
     {
         RpcGetText(newValue);
+        selectClassTypeText.text = selection.gameObject.GetComponent<House>().type.ToString();
     }
 
     [Command]
