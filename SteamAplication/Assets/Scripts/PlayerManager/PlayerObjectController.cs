@@ -257,11 +257,11 @@ public class PlayerObjectController : NetworkBehaviour
         if (isServer)
         {
             ServerActivetedHouse(type);
-            return;
         }
         else if (isLocalPlayer)
         {
             CMDActivetedHouse(type);
+            Debug.Log("Client");
         }
 
     }
