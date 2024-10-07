@@ -10944,7 +10944,6 @@ MonoBehaviour:
   syncDirection: 1
   syncMode: 0
   syncInterval: 0.1
-  selectedClassType: 0
   selectClassType: 
   selectClassTypeText: {fileID: 1837044016}
 --- !u!114 &1158131275
@@ -11562,7 +11561,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1525611728
 RectTransform:
   m_ObjectHideFlags: 0

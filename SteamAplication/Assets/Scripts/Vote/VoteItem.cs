@@ -11,7 +11,6 @@ public class VoteItem : MonoBehaviour
     public RawImage PlayerIcon;
     public TextMeshProUGUI VoteCountText;
 
-    // Bu metod oy sayısını UI'da güncellemek için kullanılır
     public void UpdateCountUI(int newVoteCount)
     {
         VoteCountText.text = newVoteCount.ToString();
