@@ -31,6 +31,10 @@ public class PlayerObjectController : NetworkBehaviour
 
     public bool consolActivated = false;
 
+    public bool voting = false;
+
+    private bool isSetPlayer = false;
+
     private CustomNetworkManager Manager
     {
         get
@@ -49,7 +53,11 @@ public class PlayerObjectController : NetworkBehaviour
     [Command(requiresAuthority = false)]
     public void CmdRegisterVote(string playerNameToVoteFor)
     {
-        VoteManager.Instance.ServerHandleVote(playerNameToVoteFor);
+        if (voting == false)
+        {
+            VoteManager.Instance.ServerHandleVote(playerNameToVoteFor);
+            voting = true;
+        }
     }
 
     [Command]
@@ -109,6 +117,11 @@ public class PlayerObjectController : NetworkBehaviour
             ReadText.color = Color.green;
         }
 
+        if (SceneManager.GetActiveScene().name == "Game" && isSetPlayer == false)
+        {
+            VoteManager.Instance.instancePlayer = this;
+            isSetPlayer = true;
+        }
         // added
         PlayerNameShow();
     }

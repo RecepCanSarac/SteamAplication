@@ -15,6 +15,8 @@ public class VoteManager : NetworkBehaviour
     public GameObject VoteCardPrefab;
     public Transform VoteCardParent;
 
+    public PlayerObjectController instancePlayer;
+
     private CustomNetworkManager manager;
 
     private CustomNetworkManager Manager
@@ -67,6 +69,11 @@ public class VoteManager : NetworkBehaviour
 
             currentVoteItems.Add(voteItem);
 
+            if (instancePlayer == player)
+            {
+                VoteCard.GetComponent<Button>().interactable = false;
+                return;
+            }
             // Butona tıklama işlevi ekle
             VoteCard.GetComponent<Button>().onClick.AddListener(() => { player.CmdRegisterVote(voteItem.PlayerName); });
         }
