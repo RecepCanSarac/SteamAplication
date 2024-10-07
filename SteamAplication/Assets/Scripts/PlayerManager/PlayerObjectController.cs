@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 using Steamworks;
@@ -53,7 +54,54 @@ public class PlayerObjectController : NetworkBehaviour
     [Command(requiresAuthority = false)]
     public void CmdRegisterVote(string playerNameToVoteFor)
     {
-        VoteManager.Instance.ServerHandleVote(playerNameToVoteFor, this.PlayerName);
+        // Oy verilen kişinin adı boş ya da geçersizse işlemi durdur
+        if (string.IsNullOrEmpty(playerNameToVoteFor))
+        {
+            return;
+        }
+
+        // Oy veren kişinin daha önce kime oy verdiğini takip eden bir dictionary
+        Dictionary<string, string> playerVotes = VoteManager.Instance.playerVotes;
+
+        // Oy veren oyuncunun kim olduğu (bu, oy veren kişinin adını temsil eder)
+        string votingPlayerName = connectionToClient.identity.GetComponent<PlayerObjectController>().PlayerName;
+
+        // Oy veren oyuncu daha önce oy vermemişse
+        if (!playerVotes.ContainsKey(votingPlayerName))
+        {
+            // Oy verilen kişinin oyunu artır
+            VoteManager.Instance.ServerHandleVote(playerNameToVoteFor,votingPlayerName);
+
+            // Oy veren oyuncunun kime oy verdiğini kaydet
+            playerVotes[votingPlayerName] = playerNameToVoteFor;
+        }
+        // Oy veren oyuncu daha önce oy vermişse
+        else
+        {
+            // Oy daha önce verilen kişi
+            string previousVote = playerVotes[votingPlayerName];
+
+            // Eğer oyuncu aynı kişiye tekrar oy veriyorsa, oyunu geri çek
+            if (previousVote == playerNameToVoteFor)
+            {
+                // Oy verilen kişinin oyunu azalt
+                VoteManager.Instance.ServerHandleVoteRemove(playerNameToVoteFor,votingPlayerName);
+
+                // Oy veren kişinin oyunu temizle (oy vermemiş olarak ayarla)
+                playerVotes.Remove(votingPlayerName);
+            }
+            else
+            {
+                // Oy verilen önceki kişinin oyunu azalt
+                VoteManager.Instance.ServerHandleVoteRemove(previousVote,votingPlayerName);
+
+                // Yeni kişiye oy ver ve oyunu artır
+                VoteManager.Instance.ServerHandleVote(playerNameToVoteFor,votingPlayerName);
+
+                // Oy veren kişinin oy verdiği kişiyi güncelle
+                playerVotes[votingPlayerName] = playerNameToVoteFor;
+            }
+        }
     }
 
     [Command]

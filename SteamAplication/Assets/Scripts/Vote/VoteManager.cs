@@ -17,7 +17,7 @@ public class VoteManager : NetworkBehaviour
 
     public PlayerObjectController instancePlayer;
     
-    private Dictionary<string, string> playerVotes = new Dictionary<string, string>();
+    public Dictionary<string, string> playerVotes = new Dictionary<string, string>();
 
     private CustomNetworkManager manager;
 
