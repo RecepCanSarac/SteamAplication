@@ -84,7 +84,7 @@ public class VoteManager : NetworkBehaviour
         }
     }
 
-    [Server]
+    [Command(requiresAuthority = false)]
     public void ServerHandleVote(string playerNameToVoteFor)
     {
         foreach (var player in Manager.GamePlayers)
