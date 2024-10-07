@@ -99,7 +99,8 @@ public class VoteManager : NetworkBehaviour
                     RpcUpdateVoteCountUI();
                     break;
                 }
-                else if (playerVotes.ContainsKey(player.PlayerName) && player.voting == true)
+                
+                if (playerVotes.ContainsKey(player.PlayerName) && player.voting == true)
                 {
                     var vote = player.GetComponent<Vote>();
                     vote.voteCount--;
