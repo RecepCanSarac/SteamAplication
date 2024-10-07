@@ -57,6 +57,13 @@ public class PlayerObjectController : NetworkBehaviour
         {
             VoteManager.Instance.ServerHandleVote(playerNameToVoteFor);
             voting = true;
+            return;
+        }
+
+        if (voting == true)
+        {
+            VoteManager.Instance.ServerHandleVoteRemove(playerNameToVoteFor);
+            voting = false;
         }
     }
 

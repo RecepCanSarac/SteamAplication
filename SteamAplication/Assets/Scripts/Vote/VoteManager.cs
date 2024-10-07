@@ -94,6 +94,21 @@ public class VoteManager : NetworkBehaviour
             }
         }
     }
+    
+    [Server]
+    public void ServerHandleVoteRemove(string playerNameToVoteFor)
+    {
+        foreach (var player in Manager.GamePlayers)
+        {
+            if (player.PlayerName == playerNameToVoteFor)
+            {
+                var vote = player.GetComponent<Vote>();
+                vote.voteCount--;
+                RpcUpdateVoteCountUI();
+                break;
+            }
+        }
+    }
 
     [ClientRpc]
     public void RpcUpdateVoteCountUI()
