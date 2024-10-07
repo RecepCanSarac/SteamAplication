@@ -97,7 +97,6 @@ public class VoteManager : NetworkBehaviour
                     vote.voteCount++;
                     player.voting = true;
                     RpcUpdateVoteCountUI();
-                    break;
                 }
                 
                 if (playerVotes.ContainsKey(player.PlayerName) && player.voting == true)
@@ -105,8 +104,8 @@ public class VoteManager : NetworkBehaviour
                     var vote = player.GetComponent<Vote>();
                     vote.voteCount--;
                     player.voting = false;
+                    playerVotes.Remove(player.PlayerName);
                     RpcUpdateVoteCountUI();
-                    break;
                 }
             }
         }
