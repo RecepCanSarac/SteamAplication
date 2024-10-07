@@ -9,13 +9,14 @@ public class VoteManager : NetworkBehaviour
     public static VoteManager Instance;
 
     public List<PlayerObjectController> votePlayers = new List<PlayerObjectController>();
-    
+
     public List<VoteItem> currentVoteItems = new List<VoteItem>();
 
     public GameObject VoteCardPrefab;
     public Transform VoteCardParent;
 
     private CustomNetworkManager manager;
+
     private CustomNetworkManager Manager
     {
         get
@@ -63,17 +64,11 @@ public class VoteManager : NetworkBehaviour
 
             VoteCard.transform.SetParent(VoteCardParent);
             VoteCard.transform.localScale = Vector3.one;
-            
+
             currentVoteItems.Add(voteItem);
 
             // Butona tıklama işlevi ekle
-            VoteCard.GetComponent<Button>().onClick.AddListener(() =>
-            {
-                if (player.isLocalPlayer) // Yetki kontrolü
-                {
-                    player.CmdRegisterVote(voteItem.PlayerName);
-                }
-            });
+            VoteCard.GetComponent<Button>().onClick.AddListener(() => { player.CmdRegisterVote(voteItem.PlayerName); });
         }
     }
 
