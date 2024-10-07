@@ -12,12 +12,12 @@ public class VoteManager : NetworkBehaviour
 
     public List<VoteItem> currentVoteItems = new List<VoteItem>();
 
+    public Dictionary<string, bool> playerVotes = new Dictionary<string, bool>();
+
     public GameObject VoteCardPrefab;
     public Transform VoteCardParent;
 
     public PlayerObjectController instancePlayer;
-    
-    public Dictionary<string, string> playerVotes = new Dictionary<string, string>();
 
     private CustomNetworkManager manager;
 
@@ -83,53 +83,30 @@ public class VoteManager : NetworkBehaviour
     }
 
     [Server]
-    public void ServerHandleVote(string playerNameToVoteFor, string voterName)
-    {
-        if (playerVotes.ContainsKey(voterName))
-        {
-            string previousVote = playerVotes[voterName];
-            RemoveVote(previousVote);
-        }
-        
-        playerVotes[voterName] = playerNameToVoteFor;
-        AddVote(playerNameToVoteFor);
-        RpcUpdateVoteCountUI();
-    }
-    
-    [Server]
-    public void ServerHandleVoteRemove(string playerNameToVoteFor, string voterName)
-    {
-        if (playerVotes.ContainsKey(voterName) && playerVotes[voterName] == playerNameToVoteFor)
-        {
-            // Remove the vote
-            playerVotes.Remove(voterName);
-            RemoveVote(playerNameToVoteFor);
-            RpcUpdateVoteCountUI();
-        }
-    }
-    
-    private void AddVote(string playerName)
+    public void ServerHandleVote(string playerNameToVoteFor)
     {
         foreach (var player in Manager.GamePlayers)
         {
-            if (player.PlayerName == playerName)
+            if (player.PlayerName == playerNameToVoteFor)
             {
-                var vote = player.GetComponent<Vote>();
-                vote.voteCount++;
-                break;
-            }
-        }
-    }
-
-    private void RemoveVote(string playerName)
-    {
-        foreach (var player in Manager.GamePlayers)
-        {
-            if (player.PlayerName == playerName)
-            {
-                var vote = player.GetComponent<Vote>();
-                vote.voteCount--;
-                break;
+                if (!playerVotes.ContainsKey(player.PlayerName) && player.voting == false)
+                {
+                    playerVotes.Add(player.PlayerName,true);
+                
+                    var vote = player.GetComponent<Vote>();
+                    vote.voteCount++;
+                    player.voting = true;
+                    RpcUpdateVoteCountUI();
+                    break;
+                }
+                else if (playerVotes.ContainsKey(player.PlayerName) && player.voting == true)
+                {
+                    var vote = player.GetComponent<Vote>();
+                    vote.voteCount--;
+                    player.voting = false;
+                    RpcUpdateVoteCountUI();
+                    break;
+                }
             }
         }
     }
