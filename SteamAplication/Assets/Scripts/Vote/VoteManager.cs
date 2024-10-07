@@ -14,6 +14,8 @@ public class VoteManager : NetworkBehaviour
 
     public Dictionary<string, bool> playerVotes = new Dictionary<string, bool>();
 
+    public List<string> playerVotesNames = new List<string>();
+
     public GameObject VoteCardPrefab;
     public Transform VoteCardParent;
 
@@ -92,6 +94,7 @@ public class VoteManager : NetworkBehaviour
                 if (!playerVotes.ContainsKey(player.PlayerName) && player.voting == false)
                 {
                     playerVotes.Add(player.PlayerName,true);
+                    playerVotesNames.Add(player.PlayerName);
                 
                     var vote = player.GetComponent<Vote>();
                     vote.voteCount++;
@@ -106,6 +109,7 @@ public class VoteManager : NetworkBehaviour
                     vote.voteCount--;
                     player.voting = false;
                     playerVotes.Remove(player.PlayerName);
+                    playerVotesNames.Remove(player.PlayerName);
                     RpcUpdateVoteCountUI();
                     return;
                 }
