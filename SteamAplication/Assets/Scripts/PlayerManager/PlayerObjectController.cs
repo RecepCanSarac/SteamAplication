@@ -53,18 +53,7 @@ public class PlayerObjectController : NetworkBehaviour
     [Command(requiresAuthority = false)]
     public void CmdRegisterVote(string playerNameToVoteFor)
     {
-        if (voting == false)
-        {
-            VoteManager.Instance.ServerHandleVote(playerNameToVoteFor);
-            voting = true;
-            return;
-        }
-
-        if (voting == true)
-        {
-            VoteManager.Instance.ServerHandleVoteRemove(playerNameToVoteFor);
-            voting = false;
-        }
+        VoteManager.Instance.ServerHandleVote(playerNameToVoteFor, this.PlayerName);
     }
 
     [Command]
@@ -72,7 +61,7 @@ public class PlayerObjectController : NetworkBehaviour
     {
         if (isLocalPlayer)
         {
-            VoteManager.Instance.ServerHandleVote(playerNameToVoteFor);
+            //VoteManager.Instance.ServerHandleVote(playerNameToVoteFor);
             hasVoted = true;
         }
         else

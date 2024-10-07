@@ -16,6 +16,8 @@ public class VoteManager : NetworkBehaviour
     public Transform VoteCardParent;
 
     public PlayerObjectController instancePlayer;
+    
+    private Dictionary<string, string> playerVotes = new Dictionary<string, string>();
 
     private CustomNetworkManager manager;
 
@@ -81,30 +83,52 @@ public class VoteManager : NetworkBehaviour
     }
 
     [Server]
-    public void ServerHandleVote(string playerNameToVoteFor)
+    public void ServerHandleVote(string playerNameToVoteFor, string voterName)
+    {
+        if (playerVotes.ContainsKey(voterName))
+        {
+            string previousVote = playerVotes[voterName];
+            RemoveVote(previousVote);
+        }
+        
+        playerVotes[voterName] = playerNameToVoteFor;
+        AddVote(playerNameToVoteFor);
+        RpcUpdateVoteCountUI();
+    }
+    
+    [Server]
+    public void ServerHandleVoteRemove(string playerNameToVoteFor, string voterName)
+    {
+        if (playerVotes.ContainsKey(voterName) && playerVotes[voterName] == playerNameToVoteFor)
+        {
+            // Remove the vote
+            playerVotes.Remove(voterName);
+            RemoveVote(playerNameToVoteFor);
+            RpcUpdateVoteCountUI();
+        }
+    }
+    
+    private void AddVote(string playerName)
     {
         foreach (var player in Manager.GamePlayers)
         {
-            if (player.PlayerName == playerNameToVoteFor)
+            if (player.PlayerName == playerName)
             {
                 var vote = player.GetComponent<Vote>();
                 vote.voteCount++;
-                RpcUpdateVoteCountUI();
                 break;
             }
         }
     }
-    
-    [Server]
-    public void ServerHandleVoteRemove(string playerNameToVoteFor)
+
+    private void RemoveVote(string playerName)
     {
         foreach (var player in Manager.GamePlayers)
         {
-            if (player.PlayerName == playerNameToVoteFor)
+            if (player.PlayerName == playerName)
             {
                 var vote = player.GetComponent<Vote>();
                 vote.voteCount--;
-                RpcUpdateVoteCountUI();
                 break;
             }
         }
