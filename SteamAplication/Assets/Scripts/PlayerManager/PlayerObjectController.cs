@@ -117,10 +117,13 @@ public class PlayerObjectController : NetworkBehaviour
             ReadText.color = Color.green;
         }
 
-        if (SceneManager.GetActiveScene().name == "Game" && isSetPlayer == false)
+        if (isLocalPlayer)
         {
-            VoteManager.Instance.instancePlayer = this;
-            isSetPlayer = true;
+            if (SceneManager.GetActiveScene().name == "Game" && isSetPlayer == false)
+            {
+                VoteManager.Instance.instancePlayer = this;
+                isSetPlayer = true;
+            }
         }
         // added
         PlayerNameShow();
