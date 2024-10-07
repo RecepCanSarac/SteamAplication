@@ -72,10 +72,11 @@ public class VoteManager : NetworkBehaviour
             if (instancePlayer == player)
             {
                 VoteCard.GetComponent<Button>().interactable = false;
-                return;
             }
-            // Butona tıklama işlevi ekle
-            VoteCard.GetComponent<Button>().onClick.AddListener(() => { player.CmdRegisterVote(voteItem.PlayerName); });
+            else
+            {
+                VoteCard.GetComponent<Button>().onClick.AddListener(() => { player.CmdRegisterVote(voteItem.PlayerName); });
+            }
         }
     }
 
