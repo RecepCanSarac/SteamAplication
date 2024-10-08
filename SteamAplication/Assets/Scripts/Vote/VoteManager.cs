@@ -76,7 +76,7 @@ public class VoteManager : NetworkBehaviour
             }
             else
             {
-                VoteCard.GetComponent<Button>().onClick.AddListener(() => { player.CmdRegisterVote(voteItem.PlayerName); });
+                VoteCard.GetComponent<Button>().onClick.AddListener(() => { player.GetComponent<Vote>().CmdRegisterVote(voteItem.PlayerName); });
             }
         }
     }
@@ -88,18 +88,18 @@ public class VoteManager : NetworkBehaviour
         {
             if (player.PlayerName == playerNameToVoteFor)
             {
-                if (!playerVotes.ContainsKey(player.PlayerName) && player.voting == false)
+                if (!playerVotes.ContainsKey(player.PlayerName))
                 {
-                    playerVotes.Add(player.PlayerName,true);
+                    playerVotes.Add(player.PlayerName, true);
                     playerVotesNames.Add(player.PlayerName);
-                
+
                     var vote = player.GetComponent<Vote>();
                     vote.voteCount++;
                     player.voting = true;
                     RpcUpdateVoteCountUI();
                     return;
                 }
-                
+
                 if (playerVotes.ContainsKey(player.PlayerName) && player.voting == true)
                 {
                     var vote = player.GetComponent<Vote>();
