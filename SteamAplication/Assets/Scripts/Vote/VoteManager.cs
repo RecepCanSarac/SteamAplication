@@ -76,7 +76,7 @@ public class VoteManager : NetworkBehaviour
             }
             else
             {
-                VoteCard.GetComponent<Button>().onClick.AddListener(() => { player.CmdRegisterVote(player.PlayerName); });
+                VoteCard.GetComponent<Button>().onClick.AddListener(() => { player.CmdRegisterVote(voteItem.PlayerName); });
             }
         }
     }
@@ -90,20 +90,20 @@ public class VoteManager : NetworkBehaviour
             {
                 if (!playerVotes.ContainsKey(player.PlayerName) && player.voting == false)
                 {
-                    playerVotes.Add(player.PlayerName, true);
+                    playerVotes.Add(player.PlayerName,true);
                     playerVotesNames.Add(player.PlayerName);
-
+                
                     var vote = player.GetComponent<Vote>();
-                    vote.votesReceived++;
+                    vote.voteCount++;
                     player.voting = true;
                     RpcUpdateVoteCountUI();
                     return;
                 }
-
+                
                 if (playerVotes.ContainsKey(player.PlayerName) && player.voting == true)
                 {
                     var vote = player.GetComponent<Vote>();
-                    vote.votesReceived--;
+                    vote.voteCount--;
                     player.voting = false;
                     playerVotes.Remove(player.PlayerName);
                     playerVotesNames.Remove(player.PlayerName);
@@ -115,7 +115,7 @@ public class VoteManager : NetworkBehaviour
     }
 
     [ClientRpc]
-    void RpcUpdateVoteCountUI()
+    public void RpcUpdateVoteCountUI()
     {
         UpdateVoteCountUI();
     }
@@ -128,7 +128,7 @@ public class VoteManager : NetworkBehaviour
             {
                 if (voteItem.PlayerName == player.PlayerName)
                 {
-                    voteItem.UpdateCountUI(player.GetComponent<Vote>().votesReceived);
+                    voteItem.UpdateCountUI(player.GetComponent<Vote>().voteCount);
                 }
             }
         }
