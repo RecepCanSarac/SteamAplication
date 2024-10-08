@@ -61,6 +61,7 @@ public class VoteManager : NetworkBehaviour
             voteItem.PlayerName = player.PlayerName;
             voteItem.NameText.text = player.PlayerName;
 
+            voteItem.vote = player.GetComponent<Vote>();
             int ImageID = SteamFriends.GetLargeFriendAvatar((CSteamID)player.PlayerSteamID);
             voteItem.PlayerIcon.texture = voteItem.GetSteamImageAsTexture(ImageID);
 
@@ -75,7 +76,7 @@ public class VoteManager : NetworkBehaviour
             }
             else
             {
-                VoteCard.GetComponent<Button>().onClick.AddListener(() => { ServerHandleVote(player.GetComponent<Vote>() ,voteItem.PlayerName); });
+                VoteCard.GetComponent<Button>().onClick.AddListener(() => { ServerHandleVote(VoteCard.GetComponent<VoteItem>().vote,VoteCard.GetComponent<VoteItem>().PlayerName); });
             }
         }
     }

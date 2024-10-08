@@ -11,6 +11,7 @@ public class VoteItem : MonoBehaviour
     public RawImage PlayerIcon;
     public TextMeshProUGUI VoteCountText;
 
+    public Vote vote;
     public void UpdateCountUI(int newVoteCount)
     {
         VoteCountText.text = newVoteCount.ToString();
