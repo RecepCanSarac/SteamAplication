@@ -16,7 +16,6 @@ public class Vote : NetworkBehaviour
         VoteManager.Instance.ServerHandleVote(vote);
     }
 
-    [Command(requiresAuthority = false)]
     public void PlayerVotesUpdated(Vote vote)
     {
         string playerName = vote.GetComponent<PlayerObjectController>().PlayerName;
