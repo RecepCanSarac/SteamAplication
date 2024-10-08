@@ -72,19 +72,11 @@ public class PlayerObjectController : NetworkBehaviour
 
         CustomNetworkManager.singleton.StopClient();
     }
-
+    
     [Command(requiresAuthority = false)]
     public void CmdRegisterVote(string playerNameToVoteFor)
     {
-        if (!hasVoted)
-        {
-            hasVoted = true;
-            VoteManager.Instance.ServerHandleVote(playerNameToVoteFor, PlayerSteamID);
-        }
-        else
-        {
-            Debug.Log("Bu oyuncu zaten oy verdi.");
-        }
+        VoteManager.Instance.ServerHandleVote(playerNameToVoteFor);
     }
 
     private void OnDestroy()

@@ -82,16 +82,16 @@ public class VoteManager : NetworkBehaviour
     }
 
     [Command(requiresAuthority = false)]
-    public void ServerHandleVote(string playerNameToVoteFor, ulong voterSteamID)
+    public void ServerHandleVote(string playerNameToVoteFor)
     {
         foreach (var player in Manager.GamePlayers)
         {
             if (player.PlayerName == playerNameToVoteFor)
             {
-                if (!playerVotes.ContainsKey(voterSteamID.ToString()))
+                if (!playerVotes.ContainsKey(player.PlayerName))
                 {
-                    playerVotes.Add(voterSteamID.ToString(), true);
-                    playerVotesNames.Add(playerNameToVoteFor);
+                    playerVotes.Add(player.PlayerName, true);
+                    playerVotesNames.Add(player.PlayerName);
 
                     var vote = player.GetComponent<Vote>();
                     vote.voteCount++;
@@ -99,14 +99,20 @@ public class VoteManager : NetworkBehaviour
                     RpcUpdateVoteCountUI();
                     return;
                 }
-                else
+
+                if (playerVotes.ContainsKey(player.PlayerName) && player.voting == true)
                 {
-                    Debug.Log("Bu oyuncu zaten oy verdi.");
+                    var vote = player.GetComponent<Vote>();
+                    vote.voteCount--;
+                    player.voting = false;
+                    playerVotes.Remove(player.PlayerName);
+                    playerVotesNames.Remove(player.PlayerName);
+                    RpcUpdateVoteCountUI();
+                    return;
                 }
             }
         }
     }
-
 
     [ClientRpc]
     public void RpcUpdateVoteCountUI()
@@ -127,5 +133,4 @@ public class VoteManager : NetworkBehaviour
             }
         }
     }
-
 }
