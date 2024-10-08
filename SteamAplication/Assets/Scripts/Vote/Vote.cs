@@ -16,18 +16,19 @@ public class Vote : NetworkBehaviour
         VoteManager.Instance.ServerHandleVote(vote);
     }
 
+    [Command(requiresAuthority = false)]
     public void PlayerVotesUpdated(Vote vote)
     {
         string playerName = vote.GetComponent<PlayerObjectController>().PlayerName;
         
-        if (!playerVotes.Contains(playerName))
+        if (!vote.playerVotes.Contains(playerName))
         {
-            playerVotes.Add(playerName);
+            vote.playerVotes.Add(playerName);
             vote.votesReceived++;
         }
         else
         {
-            playerVotes.Remove(playerName);
+            vote.playerVotes.Remove(playerName);
             vote.votesReceived--;
         }
     }
