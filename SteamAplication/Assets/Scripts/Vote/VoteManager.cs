@@ -8,10 +8,9 @@ public class VoteManager : NetworkBehaviour
 {
     public static VoteManager Instance;
 
-    public List<PlayerObjectController> votePlayers = new List<PlayerObjectController>();
-
     public List<VoteItem> currentVoteItems = new List<VoteItem>();
 
+    [SyncVar]
     public Dictionary<string, List<string>> playerVotes = new Dictionary<string, List<string>>();
 
 
