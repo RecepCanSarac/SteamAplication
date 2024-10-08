@@ -72,6 +72,12 @@ public class PlayerObjectController : NetworkBehaviour
 
         CustomNetworkManager.singleton.StopClient();
     }
+    
+    [Command(requiresAuthority = false)]
+    public void CmdRegisterVote(string playerNameToVoteFor)
+    {
+        VoteManager.Instance.ServerHandleVote(playerNameToVoteFor, this.PlayerName);
+    }
 
     private void OnDestroy()
     {

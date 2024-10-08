@@ -68,8 +68,6 @@ public class VoteManager : NetworkBehaviour
             VoteCard.transform.SetParent(VoteCardParent);
             VoteCard.transform.localScale = Vector3.one;
 
-            Vote playerVote = player.GetComponent<Vote>();
-
             currentVoteItems.Add(voteItem);
 
             if (instancePlayer == player)
@@ -78,16 +76,35 @@ public class VoteManager : NetworkBehaviour
             }
             else
             {
-                VoteCard.GetComponent<Button>().onClick.AddListener(() => { playerVote.CmdRegisterVote(playerVote); });
+                VoteCard.GetComponent<Button>().onClick.AddListener(() => { player.CmdRegisterVote(player.PlayerName); });
             }
         }
     }
 
     [Command(requiresAuthority = false)]
-    public void ServerHandleVote(Vote targetPlayer)
+    public void ServerHandleVote(string playerNameToVoteFor, string voterName)
     {
-        Debug.Log(targetPlayer.GetComponent<PlayerObjectController>().PlayerName);
-        targetPlayer.PlayerVotesUpdated(targetPlayer);
+        if (!playerVotes.ContainsKey(playerNameToVoteFor))
+        {
+            playerVotes[playerNameToVoteFor] = new List<string>();
+        }
+        List<string> votesForPlayer = playerVotes[playerNameToVoteFor];
+        
+        if (votesForPlayer.Contains(voterName))
+        {
+            votesForPlayer.Remove(voterName);
+        }
+        else
+        {
+            votesForPlayer.Add(voterName);
+        }
+
+        RpcUpdateVoteCountUI();
+    }
+
+    [ClientRpc]
+    void RpcUpdateVoteCountUI()
+    {
         UpdateVoteCountUI();
     }
 

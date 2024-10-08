@@ -9,26 +9,4 @@ public class Vote : NetworkBehaviour
     private PlayerObjectController votedFor;
 
     public List<string> playerVotes;
-    
-    [Command(requiresAuthority = false)]
-    public void CmdRegisterVote(Vote vote)
-    {
-        VoteManager.Instance.ServerHandleVote(vote);
-    }
-
-    public void PlayerVotesUpdated(Vote vote)
-    {
-        string playerName = vote.GetComponent<PlayerObjectController>().PlayerName;
-        
-        if (!vote.playerVotes.Contains(playerName))
-        {
-            vote.playerVotes.Add(playerName);
-            vote.votesReceived++;
-        }
-        else
-        {
-            vote.playerVotes.Remove(playerName);
-            vote.votesReceived--;
-        }
-    }
 }
