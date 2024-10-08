@@ -51,23 +51,9 @@ public class PlayerObjectController : NetworkBehaviour
     [SyncVar] public bool hasVoted = false;
 
     [Command(requiresAuthority = false)]
-    public void CmdRegisterVote(string playerNameToVoteFor)
+    public void CmdRegisterVote(Vote vote)
     {
-        VoteManager.Instance.ServerHandleVote(playerNameToVoteFor, this.PlayerName);
-    }
-
-    [Command]
-    public void CmdGiveToVote(string playerNameToVoteFor)
-    {
-        if (isLocalPlayer)
-        {
-            VoteManager.Instance.ServerHandleVote(playerNameToVoteFor, this.PlayerName);
-            hasVoted = true;
-        }
-        else
-        {
-            Debug.LogWarning("Oy verme işlemi yetkisiz oyuncu tarafından yapıldı!");
-        }
+        VoteManager.Instance.ServerHandleVote(vote);
     }
 
     private void Start()

@@ -10,7 +10,6 @@ public class VoteManager : NetworkBehaviour
 
     public List<VoteItem> currentVoteItems = new List<VoteItem>();
 
-    [SyncVar]
     public Dictionary<string, List<string>> playerVotes = new Dictionary<string, List<string>>();
 
 
@@ -77,40 +76,15 @@ public class VoteManager : NetworkBehaviour
             }
             else
             {
-                VoteCard.GetComponent<Button>().onClick.AddListener(() => { player.CmdRegisterVote(voteItem.PlayerName); });
+                VoteCard.GetComponent<Button>().onClick.AddListener(() => { player.CmdRegisterVote(player.GetComponent<Vote>()); });
             }
         }
     }
 
     [Command(requiresAuthority = false)]
-    public void ServerHandleVote(string playerNameToVoteFor, string voterName)
+    public void ServerHandleVote(Vote targetPlayer)
     {
-        if (!playerVotes.ContainsKey(playerNameToVoteFor))
-        {
-            playerVotes[playerNameToVoteFor] = new List<string>();
-        }
-
-        List<string> votesForPlayer = playerVotes[playerNameToVoteFor];
-
-        if (votesForPlayer.Contains(voterName))
-        {
-            votesForPlayer.Remove(voterName);
-        }
-        else
-        {
-            votesForPlayer.Add(voterName);
-        }
-
-        foreach (var player in Manager.GamePlayers)
-        {
-            if (player.PlayerName == playerNameToVoteFor)
-            {
-                var vote = player.GetComponent<Vote>();
-                vote.voteCount = votesForPlayer.Count;
-                RpcUpdateVoteCountUI();
-                return;
-            }
-        }
+        Debug.Log(targetPlayer.GetComponent<PlayerObjectController>().PlayerName);
     }
 
     [ClientRpc]
@@ -127,7 +101,7 @@ public class VoteManager : NetworkBehaviour
             {
                 if (voteItem.PlayerName == player.PlayerName)
                 {
-                    voteItem.UpdateCountUI(player.GetComponent<Vote>().voteCount);
+                    voteItem.UpdateCountUI(player.GetComponent<Vote>().votesReceived);
                 }
             }
         }
