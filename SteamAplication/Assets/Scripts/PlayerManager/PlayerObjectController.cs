@@ -76,7 +76,7 @@ public class PlayerObjectController : NetworkBehaviour
     [Command(requiresAuthority = false)]
     public void CmdRegisterVote(string playerNameToVoteFor)
     {
-        VoteManager.Instance.ServerHandleVote(playerNameToVoteFor);
+        //VoteManager.Instance.ServerHandleVote(playerNameToVoteFor);
     }
 
     private void OnDestroy()

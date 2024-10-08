@@ -76,46 +76,20 @@ public class VoteManager : NetworkBehaviour
             }
             else
             {
-                VoteCard.GetComponent<Button>().onClick.AddListener(() => { player.GetComponent<Vote>().CmdRegisterVote(voteItem.PlayerName); });
+                VoteCard.GetComponent<Button>().onClick.AddListener(() => { ServerHandleVote(player.GetComponent<Vote>()); });
             }
         }
     }
 
     [Command(requiresAuthority = false)]
-    public void ServerHandleVote(string playerNameToVoteFor)
+    public void ServerHandleVote(Vote player)
     {
-        foreach (var player in Manager.GamePlayers)
-        {
-            if (player.PlayerName == playerNameToVoteFor)
-            {
-                if (!playerVotes.ContainsKey(player.PlayerName))
-                {
-                    playerVotes.Add(player.PlayerName, true);
-                    playerVotesNames.Add(player.PlayerName);
-
-                    var vote = player.GetComponent<Vote>();
-                    vote.voteCount++;
-                    player.voting = true;
-                    RpcUpdateVoteCountUI();
-                    return;
-                }
-
-                if (playerVotes.ContainsKey(player.PlayerName) && player.voting == true)
-                {
-                    var vote = player.GetComponent<Vote>();
-                    vote.voteCount--;
-                    player.voting = false;
-                    playerVotes.Remove(player.PlayerName);
-                    playerVotesNames.Remove(player.PlayerName);
-                    RpcUpdateVoteCountUI();
-                    return;
-                }
-            }
-        }
+        player.playerVotes.Add(player.GetComponent<PlayerObjectController>().PlayerName);
+        RpcUpdateVoteCountUI();
     }
 
     [ClientRpc]
-    public void RpcUpdateVoteCountUI()
+    void RpcUpdateVoteCountUI()
     {
         UpdateVoteCountUI();
     }

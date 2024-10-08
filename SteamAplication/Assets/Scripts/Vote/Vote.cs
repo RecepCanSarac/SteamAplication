@@ -4,49 +4,31 @@ using UnityEngine;
 
 public class Vote : NetworkBehaviour
 {
+    [SyncVar]public int voteCount;
+
     [SyncVar(hook = nameof(OnVoteCountUpdated))]
-    public int voteCount;
+    public List<string> playerVotes = new List<string>();
 
-    private HashSet<string> voters = new HashSet<string>();
 
-    public void SetVote(bool _vote, string _votePlayer, int _votecount)
+    public void SetPlayerVoteList(List<string> playerVoteName)
     {
-        if (isServer)
-        {
-            //votePlayer = _votePlayer;
-            voteCount = _votecount;
-        }
+        CmdVoteCount(playerVoteName);
+    }
+    void OnVoteCountUpdated(List<string> oldValue, List<string> newValue)
+    {
+        RpcVoteCount(newValue);
     }
 
-    [Command(requiresAuthority = false)]
-    public void CmdRegisterVote(string voterName)
+    [Command]
+    void CmdVoteCount(List<string> playerVoteName)
     {
-        if (!voters.Contains(voterName))
-        {
-            ServerHandleVote(voterName);
-        }
-        else
-        {
-            Debug.Log("Bu oyuncu zaten oy verdi.");
-        }
+        RpcVoteCount(playerVoteName);
     }
-
-    [Server]
-    public void ServerHandleVote(string voterName)
-    {
-        voters.Add(voterName);
-        voteCount++;
-        RpcUpdateVoteCountUI();
-    }
-
-    private void OnVoteCountUpdated(int oldValue, int newValue)
-    {
-        VoteManager.Instance.UpdateVoteCountUI();
-    }
-
+    
     [ClientRpc]
-    public void RpcUpdateVoteCountUI()
+    void RpcVoteCount(List<string> playerVoteName)
     {
-        VoteManager.Instance.UpdateVoteCountUI();
+        playerVotes = playerVoteName;
+        voteCount++;
     }
 }
