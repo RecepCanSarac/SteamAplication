@@ -76,12 +76,11 @@ public class PlayerObjectController : NetworkBehaviour
     [Command(requiresAuthority = false)]
     public void CmdRegisterVote(string playerNameToVoteFor)
     {
-        VoteManager.Instance.ServerHandleVote(playerNameToVoteFor, this.PlayerName);
+        VoteManager.Instance.ServerHandleVote(playerNameToVoteFor);
     }
 
     private void OnDestroy()
     {
-        // Oyuncu nesnesi yok edilirken yapılacak işlemler
         Debug.Log("Player object is being destroyed.");
     }
 

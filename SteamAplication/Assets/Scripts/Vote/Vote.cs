@@ -7,6 +7,4 @@ public class Vote : NetworkBehaviour
     
     [SyncVar]
     private PlayerObjectController votedFor;
-
-    public List<string> playerVotes;
 }
