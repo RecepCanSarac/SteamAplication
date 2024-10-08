@@ -68,6 +68,8 @@ public class VoteManager : NetworkBehaviour
             VoteCard.transform.SetParent(VoteCardParent);
             VoteCard.transform.localScale = Vector3.one;
 
+            Vote playerVote = player.GetComponent<Vote>();
+
             currentVoteItems.Add(voteItem);
 
             if (instancePlayer == player)
@@ -76,7 +78,7 @@ public class VoteManager : NetworkBehaviour
             }
             else
             {
-                VoteCard.GetComponent<Button>().onClick.AddListener(() => { player.CmdRegisterVote(player.GetComponent<Vote>()); });
+                VoteCard.GetComponent<Button>().onClick.AddListener(() => { playerVote.CmdRegisterVote(playerVote); });
             }
         }
     }
@@ -84,6 +86,7 @@ public class VoteManager : NetworkBehaviour
     public void ServerHandleVote(Vote targetPlayer)
     {
         Debug.Log(targetPlayer.GetComponent<PlayerObjectController>().PlayerName);
+        targetPlayer.PlayerVotesUpdated(targetPlayer);
         RpcUpdateVoteCountUI();
     }
 

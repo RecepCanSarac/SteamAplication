@@ -50,12 +50,6 @@ public class PlayerObjectController : NetworkBehaviour
 
     [SyncVar] public bool hasVoted = false;
 
-    [Command(requiresAuthority = false)]
-    public void CmdRegisterVote(Vote vote)
-    {
-        VoteManager.Instance.ServerHandleVote(vote);
-    }
-
     private void Start()
     {
         ClassGenerator.Instance.SetList();
