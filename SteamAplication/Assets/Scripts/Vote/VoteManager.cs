@@ -10,10 +10,9 @@ public class VoteManager : NetworkBehaviour
 
     public List<VoteItem> currentVoteItems = new List<VoteItem>();
 
-    public Dictionary<string, bool> playerVotes = new Dictionary<string, bool>();
-
-
     public List<string> playerVotesNames = new List<string>();
+
+    private string currentplayerName;
 
     public GameObject VoteCardPrefab;
     public Transform VoteCardParent;
@@ -76,16 +75,18 @@ public class VoteManager : NetworkBehaviour
             }
             else
             {
-                VoteCard.GetComponent<Button>().onClick.AddListener(() => { ServerHandleVote(instancePlayer.GetComponent<Vote>()); });
+                VoteCard.GetComponent<Button>().onClick.AddListener(() => { ServerHandleVote(player.GetComponent<Vote>() ,voteItem.PlayerName); });
             }
         }
     }
 
     [Command(requiresAuthority = false)]
-    public void ServerHandleVote(Vote player)
+    public void ServerHandleVote(Vote vote, string playerName)
     {
-        player.playerVotes.Add(player.GetComponent<PlayerObjectController>().PlayerName);
-        player.SetPlayerVoteList(player.playerVotes);
+        currentplayerName = playerName;
+        
+        vote.playerVotes.Add(playerName);
+        
         RpcUpdateVoteCountUI();
     }
 
