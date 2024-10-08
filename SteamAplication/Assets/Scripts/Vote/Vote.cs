@@ -20,7 +20,7 @@ public class Vote : NetworkBehaviour
     {
         string playerName = vote.GetComponent<PlayerObjectController>().PlayerName;
         
-        if (playerVotes.Contains(playerName))
+        if (!playerVotes.Contains(playerName))
         {
             playerVotes.Add(playerName);
             vote.votesReceived++;
