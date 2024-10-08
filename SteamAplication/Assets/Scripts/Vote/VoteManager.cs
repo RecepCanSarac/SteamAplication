@@ -81,13 +81,14 @@ public class VoteManager : NetworkBehaviour
         }
     }
 
-    [Command(requiresAuthority = false)]
     public void ServerHandleVote(Vote targetPlayer)
     {
         Debug.Log(targetPlayer.GetComponent<PlayerObjectController>().PlayerName);
+        RpcUpdateVoteCountUI();
     }
 
-    [ClientRpc]
+    
+    [Command(requiresAuthority = false)]
     public void RpcUpdateVoteCountUI()
     {
         UpdateVoteCountUI();
