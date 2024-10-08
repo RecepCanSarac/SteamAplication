@@ -61,7 +61,6 @@ public class VoteManager : NetworkBehaviour
             voteItem.PlayerName = player.PlayerName;
             voteItem.NameText.text = player.PlayerName;
 
-            voteItem.vote = player.GetComponent<Vote>();
             int ImageID = SteamFriends.GetLargeFriendAvatar((CSteamID)player.PlayerSteamID);
             voteItem.PlayerIcon.texture = voteItem.GetSteamImageAsTexture(ImageID);
 
@@ -76,18 +75,15 @@ public class VoteManager : NetworkBehaviour
             }
             else
             {
-                VoteCard.GetComponent<Button>().onClick.AddListener(() => { ServerHandleVote(VoteCard.GetComponent<VoteItem>().vote,VoteCard.GetComponent<VoteItem>().PlayerName); });
+                VoteCard.GetComponent<Button>().onClick.AddListener(() => { 
+                    ServerHandleVote(); });
             }
         }
     }
 
     [Command(requiresAuthority = false)]
-    public void ServerHandleVote(Vote vote, string playerName)
+    public void ServerHandleVote()
     {
-        currentplayerName = playerName;
-        
-        vote.playerVotes.Add(playerName);
-        
         RpcUpdateVoteCountUI();
     }
 

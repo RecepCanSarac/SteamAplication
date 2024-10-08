@@ -8,6 +8,7 @@ public class Vote : NetworkBehaviour
 
     [SyncVar(hook = nameof(OnVoteCountUpdated))]
     public string playerGiveVote;
+    
     public List<string> playerVotes = new List<string>();
 
     public void SetPlayerVoteList(string playerVoteName)
