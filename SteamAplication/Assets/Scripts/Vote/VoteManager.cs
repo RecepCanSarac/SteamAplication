@@ -90,16 +90,16 @@ public class VoteManager : NetworkBehaviour
             {
                 if (!playerVotes.ContainsKey(player.PlayerName) && player.voting == false)
                 {
-                    playerVotes.Add(player.PlayerName,true);
+                    playerVotes.Add(player.PlayerName, true);
                     playerVotesNames.Add(player.PlayerName);
-                
+
                     var vote = player.GetComponent<Vote>();
                     vote.votesReceived++;
                     player.voting = true;
                     RpcUpdateVoteCountUI();
                     return;
                 }
-                
+
                 if (playerVotes.ContainsKey(player.PlayerName) && player.voting == true)
                 {
                     var vote = player.GetComponent<Vote>();
@@ -111,6 +111,7 @@ public class VoteManager : NetworkBehaviour
                     return;
                 }
             }
+        }
     }
 
     [ClientRpc]
