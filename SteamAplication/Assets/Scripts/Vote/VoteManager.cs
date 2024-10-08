@@ -10,7 +10,7 @@ public class VoteManager : NetworkBehaviour
 
     public List<VoteItem> currentVoteItems = new List<VoteItem>();
 
-    public Dictionary<string, List<string>> playerVotes = new Dictionary<string, List<string>>();
+    public Dictionary<string, bool> playerVotes = new Dictionary<string, bool>();
 
 
     public List<string> playerVotesNames = new List<string>();
@@ -84,22 +84,33 @@ public class VoteManager : NetworkBehaviour
     [Command(requiresAuthority = false)]
     public void ServerHandleVote(string playerNameToVoteFor, string voterName)
     {
-        if (!playerVotes.ContainsKey(playerNameToVoteFor))
+        foreach (var player in Manager.GamePlayers)
         {
-            playerVotes[playerNameToVoteFor] = new List<string>();
-        }
-        List<string> votesForPlayer = playerVotes[playerNameToVoteFor];
-        
-        if (votesForPlayer.Contains(voterName))
-        {
-            votesForPlayer.Remove(voterName);
-        }
-        else
-        {
-            votesForPlayer.Add(voterName);
-        }
-
-        RpcUpdateVoteCountUI();
+            if (player.PlayerName == playerNameToVoteFor)
+            {
+                if (!playerVotes.ContainsKey(player.PlayerName) && player.voting == false)
+                {
+                    playerVotes.Add(player.PlayerName,true);
+                    playerVotesNames.Add(player.PlayerName);
+                
+                    var vote = player.GetComponent<Vote>();
+                    vote.votesReceived++;
+                    player.voting = true;
+                    RpcUpdateVoteCountUI();
+                    return;
+                }
+                
+                if (playerVotes.ContainsKey(player.PlayerName) && player.voting == true)
+                {
+                    var vote = player.GetComponent<Vote>();
+                    vote.votesReceived--;
+                    player.voting = false;
+                    playerVotes.Remove(player.PlayerName);
+                    playerVotesNames.Remove(player.PlayerName);
+                    RpcUpdateVoteCountUI();
+                    return;
+                }
+            }
     }
 
     [ClientRpc]
