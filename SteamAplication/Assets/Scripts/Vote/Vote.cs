@@ -15,7 +15,6 @@ public class Vote : NetworkBehaviour
 
     public void SetPlayerVoteList(string playerVoteName)
     {
-        isVote = true;
         CmdVoteCount(playerVoteName,isVote);
     }
     void OnVoteCountUpdated(string oldValue, string newValue)
@@ -36,6 +35,8 @@ public class Vote : NetworkBehaviour
         if (isHave == false)
         {
             voteCount++;
+            
+            isVote = true;
         }
         else
         {
