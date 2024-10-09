@@ -11,30 +11,35 @@ public class Vote : NetworkBehaviour
     
     public List<string> playerVotes = new List<string>();
 
+    public bool isVote = false;
+
     public void SetPlayerVoteList(string playerVoteName)
     {
-        CmdVoteCount(playerVoteName);
+        isVote = true;
+        CmdVoteCount(playerVoteName,isVote);
     }
     void OnVoteCountUpdated(string oldValue, string newValue)
     {
-        RpcVoteCount(newValue);
+        RpcVoteCount(newValue,isVote);
     }
 
     [Command(requiresAuthority = false)]
-    void CmdVoteCount(string playerVoteName)
+    void CmdVoteCount(string playerVoteName, bool isHave)
     {
-        RpcVoteCount(playerVoteName);
+        RpcVoteCount(playerVoteName,isHave);
     }
     
     [ClientRpc]
-    void RpcVoteCount(string playerVoteName)
+    void RpcVoteCount(string playerVoteName, bool isHave)
     {
         playerVotes.Add(playerVoteName);
-        voteCount++;
-    }
-
-    public void SetList(PlayerObjectController playerObjectController)
-    {
-        playerVotes.Add(playerObjectController.PlayerName);
+        if (isHave == false)
+        {
+            voteCount++;
+        }
+        else
+        {
+            voteCount--;
+        }
     }
 }

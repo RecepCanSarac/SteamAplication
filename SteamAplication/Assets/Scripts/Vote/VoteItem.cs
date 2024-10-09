@@ -18,8 +18,18 @@ public class VoteItem : MonoBehaviour
     public void GetPlayerName()
     {
         Debug.Log(PlayerName);
-        string name = GameObject.Find("LocalGamePlayer").GetComponent<PlayerObjectController>().PlayerName;
-        PlayerObjectController.GetComponent<Vote>().SetPlayerVoteList(name);
+        PlayerObjectController player = GameObject.Find("LocalGamePlayer").GetComponent<PlayerObjectController>();
+        
+        Vote playerVote = PlayerObjectController.GetComponent<Vote>();
+        
+        if (!playerVote.playerVotes.Contains(player.PlayerName) && playerVote.isVote == false)
+        {
+            playerVote.SetPlayerVoteList(player.PlayerName);
+        }
+        else
+        {
+            playerVote.isVote = false;
+        }
     }
 
     public Texture2D GetSteamImageAsTexture(int ImageID)
