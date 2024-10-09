@@ -45,7 +45,7 @@ public class VoteItem : NetworkBehaviour
         RpcTargetValue(newValue);
     }
 
-    [Command]
+    [Command(requiresAuthority = false)]
     void CmdSetValue(bool isValue)
     {
         RpcTargetValue(isValue);
