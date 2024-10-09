@@ -76,14 +76,16 @@ public class VoteManager : NetworkBehaviour
             else
             {
                 VoteCard.GetComponent<Button>().onClick.AddListener(() => { 
-                    ServerHandleVote(); });
+                    ServerHandleVote(voteItem.PlayerObjectController.PlayerName,voteItem.PlayerObjectController.GetComponent<Vote>()); });
             }
         }
     }
 
     [Command(requiresAuthority = false)]
-    public void ServerHandleVote()
+    public void ServerHandleVote(string name, Vote vote)
     {
+        Debug.Log(name);
+        vote.SetPlayerVoteList(name);
         RpcUpdateVoteCountUI();
     }
 

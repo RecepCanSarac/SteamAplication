@@ -15,6 +15,11 @@ public class VoteItem : MonoBehaviour
         VoteCountText.text = newVoteCount.ToString();
     }
 
+    public void GetPlayerName()
+    {
+        Debug.Log(PlayerName);
+    }
+
     public Texture2D GetSteamImageAsTexture(int ImageID)
     {
         Texture2D texture = null;
