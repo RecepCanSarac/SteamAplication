@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class VoteItem : MonoBehaviour
+public class VoteItem : NetworkBehaviour
 {
     public PlayerObjectController PlayerObjectController;
     public string PlayerName;
