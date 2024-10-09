@@ -75,8 +75,7 @@ public class VoteManager : NetworkBehaviour
             }
             else
             {
-                VoteCard.GetComponent<Button>().onClick.AddListener(() => { 
-                    ServerHandleVote(); });
+                VoteCard.GetComponent<Button>().onClick.AddListener(() => { ServerHandleVote(); });
             }
         }
     }

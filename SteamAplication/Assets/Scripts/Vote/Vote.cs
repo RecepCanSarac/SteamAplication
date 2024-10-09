@@ -9,58 +9,41 @@ public class Vote : NetworkBehaviour
     [SyncVar(hook = nameof(OnVoteCountUpdated))]
     public string playerGiveVote;
 
-    public List<string> playerVotes = new List<string>();
-    
-    public string currentVote;
+    public List<PlayerObjectController> playerVotes = new List<PlayerObjectController>();
 
     public bool isAddedList;
 
-    public void SetPlayerVoteList(string playerVoteName)
+    public bool isUseVote;
+
+    public void SetPlayerVoteList(PlayerObjectController playerVoteName, bool isAdded)
     {
-        if (currentVote == playerVoteName)
-        {
-            CmdVoteCount(playerVoteName, false);
-            currentVote = null;
-        }
-        else
-        {
-            if (currentVote != null)
-            {
-                CmdVoteCount(currentVote, false);
-            }
-            
-            CmdVoteCount(playerVoteName, true);
-            currentVote = playerVoteName;
-        }
+        isAddedList = isAdded;
+        CmdVoteCount(playerVoteName, isAdded);
     }
 
-    void OnVoteCountUpdated(string oldValue, string newValue)
+    void OnVoteCountUpdated(PlayerObjectController oldValue, PlayerObjectController newValue)
     {
         RpcVoteCount(newValue, isAddedList);
     }
 
     [Command(requiresAuthority = false)]
-    void CmdVoteCount(string playerVoteName, bool isAdded)
+    void CmdVoteCount(PlayerObjectController playerVoteName, bool isAdded)
     {
         RpcVoteCount(playerVoteName, isAdded);
     }
 
     [ClientRpc]
-    void RpcVoteCount(string playerVoteName, bool isAdded)
+    void RpcVoteCount(PlayerObjectController playerVoteName, bool isAdded)
     {
         if (isAdded)
         {
-            if (!playerVotes.Contains(playerVoteName))
-            {
-                playerVotes.Add(playerVoteName);
-            }
+            playerVotes.Add(playerVoteName);
+            isAdded = true;
         }
         else
         {
-            if (playerVotes.Contains(playerVoteName))
-            {
-                playerVotes.Remove(playerVoteName);
-            }
+            playerVotes.Remove(playerVoteName);
+            isAdded = false;
         }
 
         voteCount = playerVotes.Count;

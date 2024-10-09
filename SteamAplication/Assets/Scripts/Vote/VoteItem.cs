@@ -11,6 +11,7 @@ public class VoteItem : NetworkBehaviour
     public TextMeshProUGUI NameText;
     public RawImage PlayerIcon;
     public TextMeshProUGUI VoteCountText;
+
     public void UpdateCountUI(int newVoteCount)
     {
         VoteCountText.text = newVoteCount.ToString();
@@ -20,10 +21,21 @@ public class VoteItem : NetworkBehaviour
     {
         Debug.Log(PlayerName);
         PlayerObjectController player = GameObject.Find("LocalGamePlayer").GetComponent<PlayerObjectController>();
-        
+
         Vote playerVote = PlayerObjectController.GetComponent<Vote>();
-        
-        playerVote.SetPlayerVoteList(player.PlayerName);
+        if (playerVote.isUseVote == false)
+        {
+            if (!playerVote.playerVotes.Contains(player))
+            {
+                playerVote.SetPlayerVoteList(player, true);
+                playerVote.isUseVote = true;
+            }
+        }
+        else
+        {
+            playerVote.SetPlayerVoteList(player, false);
+            playerVote.isUseVote = false;
+        }
     }
 
     public Texture2D GetSteamImageAsTexture(int ImageID)
