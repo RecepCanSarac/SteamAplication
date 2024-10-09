@@ -108,7 +108,7 @@ public class VoteManager : NetworkBehaviour
     }
 
     [Command(requiresAuthority = false)]
-    public void DetectedToEneny()
+    public void DetectedToEnemy()
     {
         RpcDetectedEnemy();
     }
