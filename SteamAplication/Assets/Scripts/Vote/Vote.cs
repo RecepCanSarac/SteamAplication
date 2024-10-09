@@ -12,35 +12,34 @@ public class Vote : NetworkBehaviour
     public List<string> playerVotes = new List<string>();
 
     public bool isVote = false;
+    public bool isAddedList;
 
-    public void SetPlayerVoteList(string playerVoteName)
+    public void SetPlayerVoteList(string playerVoteName,bool isAdded)
     {
-        CmdVoteCount(playerVoteName,isVote);
+        isAddedList = isAdded;
+        CmdVoteCount(playerVoteName, isAdded);
     }
     void OnVoteCountUpdated(string oldValue, string newValue)
     {
-        RpcVoteCount(newValue,isVote);
+        RpcVoteCount(newValue,isAddedList);
     }
 
     [Command(requiresAuthority = false)]
-    void CmdVoteCount(string playerVoteName, bool isHave)
+    void CmdVoteCount(string playerVoteName, bool isAdded)
     {
-        RpcVoteCount(playerVoteName,isHave);
+        RpcVoteCount(playerVoteName,isAdded);
     }
     
     [ClientRpc]
-    void RpcVoteCount(string playerVoteName, bool isHave)
+    void RpcVoteCount(string playerVoteName, bool isAdded)
     {
-        playerVotes.Add(playerVoteName);
-        if (isHave == false)
+        if (isAdded)
         {
-            voteCount++;
-            
-            isVote = true;
+            playerVotes.Add(playerVoteName);
         }
         else
         {
-            voteCount--;
+            playerVotes.Remove(playerVoteName);
         }
     }
 }
