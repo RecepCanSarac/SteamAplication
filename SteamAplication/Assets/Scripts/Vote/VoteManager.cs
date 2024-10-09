@@ -110,6 +110,11 @@ public class VoteManager : NetworkBehaviour
     [Command(requiresAuthority = false)]
     public void DetectedToEneny()
     {
+        RpcDetectedEnemy();
+    }
+    [ClientRpc]
+    public void RpcDetectedEnemy()
+    {
         List<int> numbers = new List<int>();
 
         if (numbers.Count <= manager.GamePlayers.Count)
