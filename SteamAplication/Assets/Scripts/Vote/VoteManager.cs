@@ -1,6 +1,7 @@
 using Mirror;
 using Steamworks;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -103,6 +104,29 @@ public class VoteManager : NetworkBehaviour
                     voteItem.UpdateCountUI(player.GetComponent<Vote>().voteCount);
                 }
             }
+        }
+    }
+
+    public void DetectedToEneny()
+    {
+        List<int> numbers = new List<int>();
+
+        if (numbers.Count <= manager.GamePlayers.Count)
+        {
+            foreach (var player in manager.GamePlayers)
+            {
+                numbers.Add(player.GetComponent<Vote>().playerVotes.Count);
+            }
+        }
+
+        int maxVotes = numbers.Max();
+
+        var playerWithMaxVotes = manager.GamePlayers
+            .FirstOrDefault(player => player.GetComponent<Vote>().playerVotes.Count == maxVotes);
+
+        if (playerWithMaxVotes != null)
+        {
+            Debug.Log($"En çok oya sahip oyuncu: {playerWithMaxVotes.name} - Oy sayısı: {maxVotes}");
         }
     }
 }
