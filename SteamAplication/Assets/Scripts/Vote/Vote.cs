@@ -13,17 +13,12 @@ public class Vote : NetworkBehaviour
     
     public bool isAddedList;
 
+    public bool isVoteUse = false;
+
     public void SetPlayerVoteList(string playerVoteName,bool isAdded)
     {
-        if (isAddedList == false)
-        {
-            CmdVoteCount(playerVoteName, isAdded);
-        }
-        else
-        {
-            Debug.Log("oy kullandın");
-        }
         isAddedList = isAdded;
+        CmdVoteCount(playerVoteName, isAdded);
     }
     void OnVoteCountUpdated(string oldValue, string newValue)
     {
@@ -39,17 +34,22 @@ public class Vote : NetworkBehaviour
     [ClientRpc]
     void RpcVoteCount(string playerVoteName, bool isAdded)
     {
-        if (isAdded)
+        if(isVoteUse == false)
         {
-            playerVotes.Add(playerVoteName);
-            isAdded = true;
+            if (isAdded)
+            {
+                playerVotes.Add(playerVoteName);
+                isAdded = true;
+                isVoteUse = true;
+            }
         }
         else
         {
             playerVotes.Remove(playerVoteName);
             isAdded = false;
+            isVoteUse = false;
         }
-
+        
         voteCount = playerVotes.Count;
     }
 }
