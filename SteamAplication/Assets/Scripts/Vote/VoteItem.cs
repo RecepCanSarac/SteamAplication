@@ -27,13 +27,13 @@ public class VoteItem : NetworkBehaviour
         if (!playerVote.playerVotes.Contains(player))
         {
             playerVote.SetPlayerVoteList(player, true);
-            playerVote.isUseVote = true;
+            player.GetComponent<Vote>().isUseVote = true;
         }
 
         else
         {
             playerVote.SetPlayerVoteList(player, false);
-            playerVote.isUseVote = false;
+            player.GetComponent<Vote>().isUseVote = false;
         }
     }
 
