@@ -20,7 +20,7 @@ public class Vote : NetworkBehaviour
         RpcVoteCount(newValue);
     }
 
-    [Command]
+    [Command(requiresAuthority = false)]
     void CmdVoteCount(string playerVoteName)
     {
         RpcVoteCount(playerVoteName);
