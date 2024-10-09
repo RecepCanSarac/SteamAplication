@@ -35,6 +35,7 @@ public class Vote : NetworkBehaviour
     [ClientRpc]
     void RpcVoteCount(PlayerObjectController playerVoteName, bool isAdded)
     {
+        
         if (isAdded)
         {
             playerVotes.Add(playerVoteName);
