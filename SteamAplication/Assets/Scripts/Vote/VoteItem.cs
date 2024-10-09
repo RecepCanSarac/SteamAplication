@@ -18,6 +18,7 @@ public class VoteItem : MonoBehaviour
     public void GetPlayerName()
     {
         Debug.Log(PlayerName);
+        PlayerObjectController.GetComponent<Vote>().SetPlayerVoteList(PlayerName);
     }
 
     public Texture2D GetSteamImageAsTexture(int ImageID)
