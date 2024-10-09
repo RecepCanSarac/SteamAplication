@@ -37,12 +37,14 @@ public class Vote : NetworkBehaviour
         {
             playerVotes.Add(playerVoteName);
             voteCount++;
+            isVote = true;
             isAdded = true;
         }
         else
         {
             playerVotes.Remove(playerVoteName);
             voteCount--;
+            isVote = false;
             isAdded = false;
         }
     }
