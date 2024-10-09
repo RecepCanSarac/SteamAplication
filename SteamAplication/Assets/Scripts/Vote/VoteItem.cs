@@ -24,15 +24,11 @@ public class VoteItem : MonoBehaviour
         
         if (!playerVote.playerVotes.Contains(player.PlayerName) && playerVote.isVote == false)
         {
-            playerVote.isVote = true;
-            playerVote.voteCount++;
             playerVote.SetPlayerVoteList(player.PlayerName,true);
             
         }
         else
         {
-            playerVote.isVote = false;
-            playerVote.voteCount--;
             playerVote.SetPlayerVoteList(player.PlayerName,false);
         }
     }
