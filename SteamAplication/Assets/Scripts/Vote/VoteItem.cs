@@ -22,7 +22,7 @@ public class VoteItem : MonoBehaviour
         
         Vote playerVote = PlayerObjectController.GetComponent<Vote>();
         
-        if (!playerVote.playerVotes.Contains(player.PlayerName) && playerVote.isVote == false)
+        if (!playerVote.playerVotes.Contains(player.PlayerName) && playerVote.isAddedList == false)
         {
             playerVote.SetPlayerVoteList(player.PlayerName,true);
             

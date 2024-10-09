@@ -10,8 +10,7 @@ public class Vote : NetworkBehaviour
     public string playerGiveVote;
     
     public List<string> playerVotes = new List<string>();
-
-    public bool isVote = false;
+    
     public bool isAddedList;
 
     public void SetPlayerVoteList(string playerVoteName,bool isAdded)
@@ -37,14 +36,12 @@ public class Vote : NetworkBehaviour
         {
             playerVotes.Add(playerVoteName);
             voteCount++;
-            isVote = true;
             isAdded = true;
         }
         else
         {
             playerVotes.Remove(playerVoteName);
             voteCount--;
-            isVote = false;
             isAdded = false;
         }
     }
