@@ -23,14 +23,7 @@ public class VoteItem : NetworkBehaviour
         
         Vote playerVote = PlayerObjectController.GetComponent<Vote>();
         
-        if (!playerVote.playerVotes.Contains(player.PlayerName))
-        {
-            playerVote.SetPlayerVoteList(player.PlayerName,true);
-        }
-        else
-        {
-            playerVote.SetPlayerVoteList(player.PlayerName,false);
-        }
+        playerVote.SetPlayerVoteList(player.PlayerName);
     }
 
     public Texture2D GetSteamImageAsTexture(int ImageID)

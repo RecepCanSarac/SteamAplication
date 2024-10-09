@@ -4,52 +4,65 @@ using UnityEngine;
 
 public class Vote : NetworkBehaviour
 {
-    [SyncVar]public int voteCount;
+    [SyncVar] public int voteCount;
 
     [SyncVar(hook = nameof(OnVoteCountUpdated))]
     public string playerGiveVote;
-    
+
     public List<string> playerVotes = new List<string>();
     
+    public string currentVote;
+
     public bool isAddedList;
 
-    public bool isVoteUse = false;
-
-    public void SetPlayerVoteList(string playerVoteName,bool isAdded)
+    public void SetPlayerVoteList(string playerVoteName)
     {
-        isAddedList = isAdded;
-        CmdVoteCount(playerVoteName, isAdded);
+        if (currentVote == playerVoteName)
+        {
+            CmdVoteCount(playerVoteName, false);
+            currentVote = null;
+        }
+        else
+        {
+            if (currentVote != null)
+            {
+                CmdVoteCount(currentVote, false);
+            }
+            
+            CmdVoteCount(playerVoteName, true);
+            currentVote = playerVoteName;
+        }
     }
+
     void OnVoteCountUpdated(string oldValue, string newValue)
     {
-        RpcVoteCount(newValue,isAddedList);
+        RpcVoteCount(newValue, isAddedList);
     }
 
     [Command(requiresAuthority = false)]
     void CmdVoteCount(string playerVoteName, bool isAdded)
     {
-        RpcVoteCount(playerVoteName,isAdded);
+        RpcVoteCount(playerVoteName, isAdded);
     }
-    
+
     [ClientRpc]
     void RpcVoteCount(string playerVoteName, bool isAdded)
     {
-        if(isVoteUse == false)
+        if (isAdded)
         {
-            if (isAdded)
+            if (!playerVotes.Contains(playerVoteName))
             {
                 playerVotes.Add(playerVoteName);
-                isAdded = true;
-                isVoteUse = true;
             }
         }
         else
         {
-            playerVotes.Remove(playerVoteName);
-            isAdded = false;
-            isVoteUse = false;
+            if (playerVotes.Contains(playerVoteName))
+            {
+                playerVotes.Remove(playerVoteName);
+            }
         }
-        
+
         voteCount = playerVotes.Count;
     }
 }
