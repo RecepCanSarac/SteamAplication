@@ -7,7 +7,7 @@ public class Vote : NetworkBehaviour
     [SyncVar] public int voteCount;
 
     [SyncVar(hook = nameof(OnVoteCountUpdated))]
-    public string playerGiveVote;
+    public PlayerObjectController playerGiveVote;
 
     public List<PlayerObjectController> playerVotes = new List<PlayerObjectController>();
 
