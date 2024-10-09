@@ -32,4 +32,9 @@ public class Vote : NetworkBehaviour
         playerVotes.Add(playerVoteName);
         voteCount++;
     }
+
+    public void SetList(PlayerObjectController playerObjectController)
+    {
+        playerVotes.Add(playerObjectController.PlayerName);
+    }
 }
