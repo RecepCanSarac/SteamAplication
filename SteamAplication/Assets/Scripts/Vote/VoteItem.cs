@@ -10,6 +10,8 @@ public class VoteItem : MonoBehaviour
     public TextMeshProUGUI NameText;
     public RawImage PlayerIcon;
     public TextMeshProUGUI VoteCountText;
+
+    public bool isVote;
     public void UpdateCountUI(int newVoteCount)
     {
         VoteCountText.text = newVoteCount.ToString();
@@ -22,13 +24,14 @@ public class VoteItem : MonoBehaviour
         
         Vote playerVote = PlayerObjectController.GetComponent<Vote>();
         
-        if (!playerVote.playerVotes.Contains(player.PlayerName) && playerVote.isAddedList == false)
+        if (!playerVote.playerVotes.Contains(player.PlayerName) && isVote == false)
         {
             playerVote.SetPlayerVoteList(player.PlayerName,true);
-            
+            isVote = true;
         }
         else
         {
+            isVote = false;
             playerVote.SetPlayerVoteList(player.PlayerName,false);
         }
     }
