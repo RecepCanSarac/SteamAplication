@@ -16,7 +16,14 @@ public class Vote : NetworkBehaviour
     public void SetPlayerVoteList(string playerVoteName,bool isAdded)
     {
         isAddedList = isAdded;
-        CmdVoteCount(playerVoteName, isAdded);
+        if (isAddedList == false)
+        {
+            CmdVoteCount(playerVoteName, isAdded);
+        }
+        else
+        {
+            Debug.Log("oy kullandın");
+        }
     }
     void OnVoteCountUpdated(string oldValue, string newValue)
     {

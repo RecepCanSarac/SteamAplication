@@ -11,9 +11,6 @@ public class VoteItem : NetworkBehaviour
     public TextMeshProUGUI NameText;
     public RawImage PlayerIcon;
     public TextMeshProUGUI VoteCountText;
-
-    [SyncVar (hook = nameof(OnChangeValue))]
-    public bool isVote;
     public void UpdateCountUI(int newVoteCount)
     {
         VoteCountText.text = newVoteCount.ToString();
@@ -26,35 +23,14 @@ public class VoteItem : NetworkBehaviour
         
         Vote playerVote = PlayerObjectController.GetComponent<Vote>();
         
-        if (!playerVote.playerVotes.Contains(player.PlayerName) && isVote == false)
+        if (!playerVote.playerVotes.Contains(player.PlayerName))
         {
-            isVote = true;
             playerVote.SetPlayerVoteList(player.PlayerName,true);
-            CmdSetValue(isVote);
         }
         else
         {
-            isVote = false;
             playerVote.SetPlayerVoteList(player.PlayerName,false);
-            CmdSetValue(isVote);
         }
-    }
-
-    void OnChangeValue(bool oldValue, bool newValue)
-    {
-        RpcTargetValue(newValue);
-    }
-
-    [Command(requiresAuthority = false)]
-    void CmdSetValue(bool isValue)
-    {
-        RpcTargetValue(isValue);
-    }
-
-    [ClientRpc]
-    void RpcTargetValue(bool isValue)
-    {
-        Debug.Log(isValue);
     }
 
     public Texture2D GetSteamImageAsTexture(int ImageID)
