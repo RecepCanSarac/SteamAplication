@@ -12,6 +12,7 @@ public class VoteItem : NetworkBehaviour
     public RawImage PlayerIcon;
     public TextMeshProUGUI VoteCountText;
     public Vote playerVote;
+
     public void UpdateCountUI(int newVoteCount)
     {
         VoteCountText.text = newVoteCount.ToString();
@@ -24,7 +25,7 @@ public class VoteItem : NetworkBehaviour
 
         playerVote = PlayerObjectController.GetComponent<Vote>();
 
-        if (!playerVote.playerVotes.Contains(player))
+        if (!playerVote.playerVotes.Contains(player) && player.GetComponent<Vote>().isUseVote == false)
         {
             playerVote.SetPlayerVoteList(player, true);
             player.GetComponent<Vote>().isUseVote = true;
