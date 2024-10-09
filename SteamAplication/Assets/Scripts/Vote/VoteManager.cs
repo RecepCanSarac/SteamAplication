@@ -107,6 +107,7 @@ public class VoteManager : NetworkBehaviour
         }
     }
 
+    [Command(requiresAuthority = false)]
     public void DetectedToEneny()
     {
         List<int> numbers = new List<int>();
