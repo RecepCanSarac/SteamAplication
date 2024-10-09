@@ -30,7 +30,10 @@ public class VoteItem : NetworkBehaviour
             playerVote.SetPlayerVoteList(player, true);
             player.GetComponent<Vote>().isUseVote = true;
         }
-
+        else if(!playerVote.playerVotes.Contains(player) &&  player.GetComponent<Vote>().isUseVote == true)
+        {
+           Debug.Log("Zaten oy kullandın");
+        }
         else
         {
             playerVote.SetPlayerVoteList(player, false);
