@@ -1,3 +1,4 @@
+using Mirror;
 using Steamworks;
 using TMPro;
 using UnityEngine;
@@ -11,6 +12,7 @@ public class VoteItem : MonoBehaviour
     public RawImage PlayerIcon;
     public TextMeshProUGUI VoteCountText;
 
+    [SyncVar (hook = nameof(OnChangeValue))]
     public bool isVote;
     public void UpdateCountUI(int newVoteCount)
     {
@@ -26,14 +28,33 @@ public class VoteItem : MonoBehaviour
         
         if (!playerVote.playerVotes.Contains(player.PlayerName) && isVote == false)
         {
-            playerVote.SetPlayerVoteList(player.PlayerName,true);
             isVote = true;
+            playerVote.SetPlayerVoteList(player.PlayerName,true);
+            CmdSetValue(isVote);
         }
         else
         {
             isVote = false;
             playerVote.SetPlayerVoteList(player.PlayerName,false);
+            CmdSetValue(isVote);
         }
+    }
+
+    void OnChangeValue(bool oldValue, bool newValue)
+    {
+        RpcTargetValue(newValue);
+    }
+
+    [Command]
+    void CmdSetValue(bool isValue)
+    {
+        RpcTargetValue(isValue);
+    }
+
+    [ClientRpc]
+    void RpcTargetValue(bool isValue)
+    {
+        Debug.Log(isValue);
     }
 
     public Texture2D GetSteamImageAsTexture(int ImageID)
