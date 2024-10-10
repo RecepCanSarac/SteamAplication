@@ -1102,7 +1102,6 @@ MonoBehaviour:
   NameText: {fileID: 6238308037538679177}
   ReadText: {fileID: 4302901152369056329}
   classText: {fileID: 8215277387173407463}
-  className: 
   house: {fileID: 7025001029638354048, guid: a7cf4ca5624781043a855e795fbe5b53, type: 3}
   ConnectionID: 0
   PlayerIdNumber: 0
@@ -1111,6 +1110,7 @@ MonoBehaviour:
   Ready: 0
   syncedClassName: 
   consolActivated: 0
+  voting: 0
   hasVoted: 0
 --- !u!114 &5928905197194942545
 MonoBehaviour:
@@ -1128,6 +1128,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0
   cameraHolder: {fileID: 4230404239732311174}
+  Camera: {fileID: 5691376881454869380}
   senX: 400
   senY: 400
   oriantattion: {fileID: 1831015242549422001}
@@ -1263,8 +1264,11 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
-  votePlayer: 
   voteCount: 0
+  playerGiveVote: {fileID: 0}
+  playerVotes: []
+  isAddedList: 0
+  isUseVote: 0
 --- !u!114 &4053964203894143397
 MonoBehaviour:
   m_ObjectHideFlags: 0

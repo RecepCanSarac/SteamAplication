@@ -19,6 +19,10 @@ public class GameTimeline : NetworkBehaviour
     
     public List<string> classes = new List<string>();
 
+    public int startTime = 30;
+
+    public bool startGame = false;
+
     private float time = 10;
 
     #region Singleton
@@ -40,23 +44,7 @@ public class GameTimeline : NetworkBehaviour
 
     #endregion
 
-    private void Update()
-    {
-        Round();
-    }
-
-    void Round()
-    {
-        time -= Time.deltaTime;
-        timeText.text = time.ToString("00");
-
-        if (time <= 0)
-        {
-            time = 10;
-        }
-    }
-
-    private void Start()
+    void Start()
     {
         if (isServer)
         {
@@ -70,34 +58,60 @@ public class GameTimeline : NetworkBehaviour
             }
         }
         
-        // Listenin güncellenmesi istemcilerde tetiklenir
         playerClasses.Callback += OnPlayerClassListUpdated;
     }
 
-    private void OnPlayerClassListUpdated(SyncList<string>.Operation op, int index, string oldItem, string newItem)
+    void Update()
     {
-        // Bu metod tüm istemcilerde tetiklenir ve güncellemeyi sağlar
+        Round();
+    }
+
+    void SetPlayerCamera()
+    {
+        gameCamera.SetActive(false);
+    }
+
+    void Round()
+    {
+        time -= Time.deltaTime;
+        timeText.text = time.ToString("00");
+
+        if (time <= startTime && startGame == false)
+        {
+            startGame = true;
+            SetPlayerCamera();
+            time = 10;
+        }
+
+        if (startGame == true && time <= 0)
+        {
+            time = 10;
+        }
+
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            gameCamera.SetActive(true);
+        }
+    }
+
+    void OnPlayerClassListUpdated(SyncList<string>.Operation op, int index, string oldItem, string newItem)
+    {
         UpdatePlayerClassesUI();
     }
 
-    // UI'yi güncelleyen metod
-    private void UpdatePlayerClassesUI()
+    void UpdatePlayerClassesUI()
     {
-        // playerClasses listesine göre UI güncellemesi yapılabilir
-        // Örneğin: messageText.text = string.Join(", ", playerClasses);
     }
 
     List<string> SortByEnumOrder(List<string> inputList)
     {
-        // Enum değerlerini al ve sıralı bir string dizisine çevir
         var enumOrder = Enum.GetValues(typeof(ClassType))
             .Cast<ClassType>()
             .Select(e => e.ToString())
             .ToList();
 
-        // String listesini enum sırasına göre sırala
         return inputList
-            .OrderBy(item => enumOrder.IndexOf(item)) // Enum sırasına göre sırala
+            .OrderBy(item => enumOrder.IndexOf(item))
             .ToList();
     }
 

@@ -6,6 +6,7 @@ using Steamworks;
 public class CameraController : NetworkBehaviour
 {
     public GameObject cameraHolder;
+    public Camera Camera;
     public float senX, senY;
     public Transform oriantattion;
     public GameObject playerModel;
