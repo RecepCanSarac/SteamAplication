@@ -4,38 +4,30 @@ using RenderSettings = UnityEngine.RenderSettings;
 
 public class DayTime : MonoBehaviour
 {
-    [Header("Skybox Materials")]
-    [Space]
-    public Material morningMaterial;
+    [Header("Skybox Materials")] [Space] public Material morningMaterial;
     public Material nightMaterial;
-    [Space]
 
-    [Header("Sun Settings")]
-    [Space]
+    [Space] [Header("Sun Settings")] [Space]
     public Light sun;
-    public float transitionSpeed = 1.0f;
-    [Space]
 
-    [Header("Sun Rotation")]
-    [Space]
+    public float transitionSpeed = 1.0f;
+
+    [Space] [Header("Sun Rotation")] [Space]
     public Vector3 dayRotation = new Vector3(50, 0, 0);
+
     public Vector3 nightRotation = new Vector3(-50, 0, 0);
 
     private bool isNight = false;
     private bool isTransitioning = false;
 
-    void Update()
+    public void HandleInput(bool isMorning)
     {
-        HandleInput();
-    }
-
-    void HandleInput()
-    {
-        if (Input.GetKey(KeyCode.Space) && !isNight && !isTransitioning)
+        if (isMorning == false)
         {
             StartTransitionToNight();
         }
-        else if (!Input.GetKey(KeyCode.Space) && isNight && !isTransitioning)
+        
+        if (isMorning == true)
         {
             StartTransitionToDay();
         }
@@ -51,7 +43,8 @@ public class DayTime : MonoBehaviour
         StartCoroutine(TransitionTime(morningMaterial, 1f, dayRotation, () => isNight = false));
     }
 
-    IEnumerator TransitionTime(Material targetSkybox, float targetIntensity, Vector3 targetRotation, System.Action onComplete)
+    IEnumerator TransitionTime(Material targetSkybox, float targetIntensity, Vector3 targetRotation,
+        System.Action onComplete)
     {
         isTransitioning = true;
 

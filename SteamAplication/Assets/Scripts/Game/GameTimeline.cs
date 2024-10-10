@@ -25,6 +25,8 @@ public class GameTimeline : NetworkBehaviour
 
     private float time = 10;
 
+    private DayTime _dayTime;
+
     #region Singleton
 
     private CustomNetworkManager manager;
@@ -46,6 +48,10 @@ public class GameTimeline : NetworkBehaviour
 
     void Start()
     {
+        _dayTime = GetComponent<DayTime>();
+        
+        SetPlayerCamera(false);
+        
         time = startTime;
         
         if (isServer)
@@ -68,9 +74,11 @@ public class GameTimeline : NetworkBehaviour
         Round();
     }
 
-    void SetPlayerCamera()
+    void SetPlayerCamera(bool isActive)
     {
-        gameCamera.SetActive(false);
+        gameCamera.SetActive(isActive);
+        
+        _dayTime.HandleInput(!isActive);
     }
 
     void Round()
@@ -80,7 +88,7 @@ public class GameTimeline : NetworkBehaviour
 
         if (time <= 0 && startGame == false)
         {
-            SetPlayerCamera();
+            SetPlayerCamera(true);
             time = 10;
             startGame = true;
         }
@@ -92,7 +100,7 @@ public class GameTimeline : NetworkBehaviour
 
         if (Input.GetKeyDown(KeyCode.C))
         {
-            gameCamera.SetActive(true);
+            
         }
     }
 
@@ -113,6 +121,7 @@ public class GameTimeline : NetworkBehaviour
             .ToList();
 
         return inputList
+            .Where(item => enumOrder.Contains(item))
             .OrderBy(item => enumOrder.IndexOf(item))
             .ToList();
     }
