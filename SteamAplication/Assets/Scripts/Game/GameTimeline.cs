@@ -14,7 +14,7 @@ public class GameTimeline : NetworkBehaviour
     public TextMeshProUGUI roundText;
 
     public GameObject gameCamera;
-    
+
     [SyncVar(hook = nameof(OnUpdatedList))]
     public List<string> playerClasses;
 
@@ -57,11 +57,10 @@ public class GameTimeline : NetworkBehaviour
 
     private void Start()
     {
-        PlayerObjectController player = GameObject.Find("LocalGamePlayer").GetComponent<PlayerObjectController>();
-        if (player.isLocalPlayer == true)
-        {
-            CmdSetList(playerClasses);
-        }
+        playerClasses = GetClassTypeList();
+        List<string> shortedList = SortByEnumOrder(playerClasses);
+        playerClasses = shortedList;
+        CmdSetList(playerClasses);
     }
 
     void OnUpdatedList(List<string> oldValue, List<string> newValue)
@@ -78,9 +77,7 @@ public class GameTimeline : NetworkBehaviour
     [ClientRpc]
     void RpcTargetList(List<string> newValue)
     {
-        newValue = GetClassTypeList();
-        List<string> shortedList = SortByEnumOrder(newValue);
-        newValue = shortedList;
+        playerClasses = newValue;
     }
 
     List<string> SortByEnumOrder(List<string> inputList)
@@ -95,7 +92,7 @@ public class GameTimeline : NetworkBehaviour
             .OrderBy(item => enumOrder.IndexOf(item))
             .ToList();
     }
-    
+
     List<string> GetClassTypeList()
     {
         foreach (var player in Manager.GamePlayers)
@@ -106,4 +103,3 @@ public class GameTimeline : NetworkBehaviour
         return playerClasses;
     }
 }
-
