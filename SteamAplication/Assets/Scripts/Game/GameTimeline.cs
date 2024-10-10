@@ -57,7 +57,11 @@ public class GameTimeline : NetworkBehaviour
 
     private void Start()
     {
-        CmdSetList(playerClasses);
+        PlayerObjectController player = GameObject.Find("LocalGamePlayer").GetComponent<PlayerObjectController>();
+        if (player.isLocalPlayer == true)
+        {
+            CmdSetList(playerClasses);
+        }
     }
 
     void OnUpdatedList(List<string> oldValue, List<string> newValue)
@@ -71,7 +75,7 @@ public class GameTimeline : NetworkBehaviour
         RpcTargetList(newValue);
     }
 
-    [Server]
+    [ClientRpc]
     void RpcTargetList(List<string> newValue)
     {
         newValue = GetClassTypeList();
