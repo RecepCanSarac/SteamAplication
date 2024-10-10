@@ -16,6 +16,8 @@ public class GameTimeline : NetworkBehaviour
 
     public SyncList<PlayerObjectController> players = new SyncList<PlayerObjectController>();
 
+    public int playerİndex;
+
     public int startTime = 5;
     public bool startGame = false;
     private float time = 10;
@@ -96,6 +98,21 @@ public class GameTimeline : NetworkBehaviour
         if (startGame == true && time <= 0)
         {
             time = 10;
+            HandlePlayerMission();
+        }
+    }
+
+    void HandlePlayerMission()
+    {
+        foreach (var player in Manager.GamePlayers)
+        {
+            player.mineHouse.isActivePlayer = false;
+        }
+
+        if (playerİndex >= players.Count)
+        {
+            players[playerİndex].mineHouse.isActivePlayer = true;
+            playerİndex++;
         }
     }
 
