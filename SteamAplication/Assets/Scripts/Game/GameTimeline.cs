@@ -71,7 +71,7 @@ public class GameTimeline : NetworkBehaviour
         RpcTargetList(newValue);
     }
 
-    [ClientRpc]
+    [Server]
     void RpcTargetList(List<string> newValue)
     {
         newValue = GetClassTypeList();
