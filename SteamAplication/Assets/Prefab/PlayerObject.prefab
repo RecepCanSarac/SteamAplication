@@ -1042,6 +1042,7 @@ GameObject:
   - component: {fileID: -1243883032286450148}
   - component: {fileID: 2683643035559663142}
   - component: {fileID: -602028724065143713}
+  - component: {fileID: 4930779810083053756}
   - component: {fileID: 4053964203894143397}
   m_Layer: 0
   m_Name: PlayerObject
@@ -1269,6 +1270,18 @@ MonoBehaviour:
   playerVotes: []
   isAddedList: 0
   isUseVote: 0
+--- !u!114 &4930779810083053756
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1695200303275747137}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55c88918f8db4b543a755418ac901d4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &4053964203894143397
 MonoBehaviour:
   m_ObjectHideFlags: 0

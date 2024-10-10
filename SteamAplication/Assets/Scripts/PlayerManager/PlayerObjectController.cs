@@ -35,6 +35,8 @@ public class PlayerObjectController : NetworkBehaviour
 
     private bool isSetPlayer = false;
 
+    public House mineHouse;
+
     private CustomNetworkManager Manager
     {
         get
@@ -250,7 +252,7 @@ public class PlayerObjectController : NetworkBehaviour
         houseInstance.GetComponent<House>().PlayerObjectController = this;
         houseInstance.GetComponent<House>().type = syncedClassName;
         Vector3 dir = houseInstance.transform.position - transform.position;
-
+        mineHouse = houseInstance.GetComponent<House>();
         dir.y = 0f;
         houseInstance.transform.rotation = Quaternion.LookRotation(new Vector3(-8.95f, dir.y, dir.z));
     }

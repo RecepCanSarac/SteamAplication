@@ -9,6 +9,8 @@ public class House : MonoBehaviour
 
     public string type;
 
+    public bool isActivePlayer = false;
+
     private void OnMouseDown()
     {
         if (isSelect)

@@ -8,24 +8,20 @@ using UnityEngine;
 public class GameTimeline : NetworkBehaviour
 {
     public TextMeshProUGUI timeText;
-
     public TextMeshProUGUI messageText;
-
     public TextMeshProUGUI roundText;
-
     public GameObject gameCamera;
 
     public SyncList<string> playerClasses = new SyncList<string>();
-    
+    public List<PlayerObjectController> playerObjList = new List<PlayerObjectController>();
     public List<string> classes = new List<string>();
 
     public int startTime = 5;
-
     public bool startGame = false;
-
     private float time = 10;
 
     private DayTime _dayTime;
+    public int orderNumber = 0;
 
     #region Singleton
 
@@ -49,24 +45,28 @@ public class GameTimeline : NetworkBehaviour
     void Start()
     {
         _dayTime = GetComponent<DayTime>();
-        
+
         SetPlayerCamera(false);
-        
+
         time = startTime;
-        
+
         if (isServer)
         {
             playerClasses.Clear();
             var classList = GetClassTypeList();
-            var sortedList = SortByEnumOrder(classList);
-            foreach (var playerClass in sortedList)
+            SortPlayersAndClasses(classList, out var sortedPlayerObjList);
+
+            foreach (var playerClass in classList)
             {
                 playerClasses.Add(playerClass);
                 classes.Add(playerClass);
             }
+
+            playerObjList = sortedPlayerObjList;
         }
-        
+
         playerClasses.Callback += OnPlayerClassListUpdated;
+        orderNumber = playerClasses.Count;
     }
 
     void Update()
@@ -77,7 +77,6 @@ public class GameTimeline : NetworkBehaviour
     void SetPlayerCamera(bool isActive)
     {
         gameCamera.SetActive(isActive);
-        
         _dayTime.HandleInput(!isActive);
     }
 
@@ -86,21 +85,17 @@ public class GameTimeline : NetworkBehaviour
         time -= Time.deltaTime;
         timeText.text = time.ToString("00");
 
-        if (time <= 0 && startGame == false)
+        if (time <= 0 && !startGame)
         {
             SetPlayerCamera(true);
             time = 10;
             startGame = true;
         }
 
-        if (startGame == true && time <= 0)
+        if (startGame && time <= 0 && orderNumber >= 0)
         {
             time = 10;
-        }
-
-        if (Input.GetKeyDown(KeyCode.C))
-        {
-            
+            orderNumber--;
         }
     }
 
@@ -111,21 +106,28 @@ public class GameTimeline : NetworkBehaviour
 
     void UpdatePlayerClassesUI()
     {
+        // Sınıflar UI'ye güncellenecek
     }
 
-    List<string> SortByEnumOrder(List<string> inputList)
+   
+    void SortPlayersAndClasses( List<string> sortedClassList, out List<PlayerObjectController> sortedPlayerObjList)
     {
         var enumOrder = Enum.GetValues(typeof(ClassType))
             .Cast<ClassType>()
             .Select(e => e.ToString())
             .ToList();
 
-        return inputList
-            .Where(item => enumOrder.Contains(item))
-            .OrderBy(item => enumOrder.IndexOf(item))
+        var combinedList = playerObjList
+            .Where(player => enumOrder.Contains(player.syncedClassName)) 
+            .OrderBy(player => enumOrder.IndexOf(player.syncedClassName)) 
             .ToList();
-    }
 
+        sortedClassList = combinedList
+            .Select(player => player.syncedClassName)
+            .ToList();
+
+        sortedPlayerObjList = combinedList;
+    }
     List<string> GetClassTypeList()
     {
         List<string> classTypeList = new List<string>();
