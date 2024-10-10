@@ -13,9 +13,10 @@ public class GameTimeline : NetworkBehaviour
     public GameObject gameCamera;
 
     public SyncList<string> playerClasses = new SyncList<string>();
-    public List<PlayerObjectController> playerObjList = new List<PlayerObjectController>();
+    public SyncList<PlayerObjectController> playerObjList = new SyncList<PlayerObjectController>();
     public List<string> classes = new List<string>();
 
+    public List<PlayerObjectController> obj = new List<PlayerObjectController>();
     public int startTime = 5;
     public bool startGame = false;
     private float time = 10;
@@ -64,8 +65,9 @@ public class GameTimeline : NetworkBehaviour
                 playerClasses.Add(playerClass);
                 classes.Add(playerClass);
             }
-
-            playerObjList = sortedPlayerObjList; // Oyuncu nesneleri sıralanmış olarak atanıyor
+            
+            obj = sortedPlayerObjList; 
+            playerObjListAdd(obj);
         }
 
         playerClasses.Callback += OnPlayerClassListUpdated;
@@ -83,6 +85,13 @@ public class GameTimeline : NetworkBehaviour
         _dayTime.HandleInput(!isActive);
     }
 
+    void playerObjListAdd(List<PlayerObjectController> obj)
+    {
+        foreach (var player in obj)
+        {
+            playerObjList.Add(player);
+        }
+    }
     void Round()
     {
         time -= Time.deltaTime;
