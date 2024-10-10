@@ -89,14 +89,15 @@ public class GameTimeline : NetworkBehaviour
 
     List<string> SortByEnumOrder(List<string> inputList)
     {
+        // Enum değerlerini al ve sıralı bir string dizisine çevir
         var enumOrder = Enum.GetValues(typeof(ClassType))
             .Cast<ClassType>()
             .Select(e => e.ToString())
             .ToList();
 
+        // String listesini enum sırasına göre sırala
         return inputList
-            .Where(item => enumOrder.Contains(item))
-            .OrderBy(item => enumOrder.IndexOf(item))
+            .OrderBy(item => enumOrder.IndexOf(item)) // Enum sırasına göre sırala
             .ToList();
     }
 
