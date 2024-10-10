@@ -126,24 +126,12 @@ public class GameTimeline : NetworkBehaviour
             .ToList();
 
         var result = players
-            .Where(player => enumOrder.Contains(player.syncedClassName))
+            .Where(player => enumOrder.Contains(player.syncedClassName) && !int.TryParse(player.syncedClassName, out _)) 
             .OrderBy(player => enumOrder.IndexOf(player.syncedClassName))
             .Select(player => new Tuple<string, PlayerObjectController>(player.syncedClassName, player))
             .ToList();
 
         return result;
-    }
-
-    List<string> GetClassTypeList()
-    {
-        List<string> classTypeList = new List<string>();
-
-        foreach (var player in Manager.GamePlayers)
-        {
-            classTypeList.Add(player.syncedClassName);
-        }
-
-        return classTypeList;
     }
 
     List<PlayerObjectController> GetPlayerList()
