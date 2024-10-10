@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 27224a308119c5943b9ed2653a78b830, type: 3}
-  m_Name: Thief
+  m_Name: Detective Angle Fish
   m_EditorClassIdentifier: 
-  ClassType: 5
-  ClassName: Thief
+  ClassType: 1
+  ClassName: Detective Angle Fish
