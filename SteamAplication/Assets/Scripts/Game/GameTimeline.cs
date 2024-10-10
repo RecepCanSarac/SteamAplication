@@ -109,7 +109,7 @@ public class GameTimeline : NetworkBehaviour
             player.mineHouse.isActivePlayer = false;
         }
 
-        if (playerİndex >= players.Count)
+        if (playerİndex <= players.Count)
         {
             players[playerİndex].mineHouse.isActivePlayer = true;
             playerİndex++;
