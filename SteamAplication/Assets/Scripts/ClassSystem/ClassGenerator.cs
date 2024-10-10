@@ -6,16 +6,14 @@ using Mirror;
 
 public enum ClassType
 {
-    Doctor,
-    Detective,
-    Seer,
-    Armored,
-    Confessor,
-    Thief,
-    Trapper,
-    Buffoon,
-    Lookout,
-    Killer
+    trapperStarFish, //1
+    detectiveAnglerFish, //2
+    ConfessorOctopus, //3
+    ArmoredCrab, // 4
+    healerShrimp, //5
+    ThiefMorayEel, //6
+    SerialKillerSeaMonster, //7
+    KillerShark //8
 }
 
 public class ClassGenerator : NetworkBehaviour

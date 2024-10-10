@@ -273,38 +273,32 @@ public class PlayerObjectController : NetworkBehaviour
         {
             switch (classType)
             {
-                case ClassType.Doctor:
-                    Debug.Log("Doctor IsActive (Client)");
+                case ClassType.trapperStarFish:
+                    Debug.Log("Rol trapperStarFish");
                     break;
-                case ClassType.Detective:
-                    Debug.Log("Detective IsActive (Client)");
+                case ClassType.detectiveAnglerFish:
+                    Debug.Log("Rol detectiveAnglerFish");
                     break;
-                case ClassType.Seer:
-                    Debug.Log("Seer IsActive (Client)");
+                case ClassType.ConfessorOctopus:
+                    Debug.Log("Rol ConfessorOctopus");
                     break;
-                case ClassType.Armored:
-                    Debug.Log("Armored IsActive (Client)");
+                case ClassType.ArmoredCrab:
+                    Debug.Log("Rol ArmoredCrab");
                     break;
-                case ClassType.Confessor:
-                    Debug.Log("Confessor IsActive (Client)");
+                case ClassType.healerShrimp:
+                    Debug.Log("Rol healerShrimp");
                     break;
-                case ClassType.Thief:
-                    Debug.Log("Thief IsActive (Client)");
+                case ClassType.ThiefMorayEel:
+                    Debug.Log("Rol ThiefMorayEel");
                     break;
-                case ClassType.Trapper:
-                    Debug.Log("Trapper IsActive (Client)");
+                case ClassType.SerialKillerSeaMonster:
+                    Debug.Log("Rol SerialKillerSeaMonster");
                     break;
-                case ClassType.Buffoon:
-                    Debug.Log("Buffoon IsActive (Client)");
-                    break;
-                case ClassType.Lookout:
-                    Debug.Log("Lookout IsActive (Client)");
-                    break;
-                case ClassType.Killer:
-                    Debug.Log("Killer IsActive (Client)");
+                case ClassType.KillerShark:
+                    Debug.Log("Rol KillerShark");
                     break;
                 default:
-                    Debug.Log("Unknown class type");
+                    Debug.Log("Rol yok");
                     break;
             }
         }
