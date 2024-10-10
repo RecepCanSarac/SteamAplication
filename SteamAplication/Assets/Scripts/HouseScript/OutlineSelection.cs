@@ -18,6 +18,11 @@ public class OutlineSelection : NetworkBehaviour
 
     void Update()
     {
+        if (Camera.main.gameObject.activeSelf == false)
+        {
+            return;
+        }
+        
         if (!isClient) return;
 
         // Highlight
