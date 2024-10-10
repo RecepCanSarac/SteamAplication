@@ -54,22 +54,14 @@ public class GameTimeline : NetworkBehaviour
             playerClasses.Clear();
             players.Clear();
 
-            var classList = GetClassTypeList();
-
             var playerList = GetPlayerList();
             
-            var sortedPlayers = SortPlayerObject(playerList); 
+            var sortedPlayersWithClasses = SortPlayerAndClass(playerList);
 
-            var sortedList = SortByEnumOrder(classList);
-
-            foreach (var player in sortedPlayers)
+            foreach (var pair in sortedPlayersWithClasses)
             {
-                players.Add(player);
-            }
-
-            foreach (var playerClass in sortedList)
-            {
-                playerClasses.Add(playerClass);
+                playerClasses.Add(pair.Item1);
+                players.Add(pair.Item2);
             }
         }
 
@@ -126,30 +118,20 @@ public class GameTimeline : NetworkBehaviour
     {
         //update Player list
     }
-    List<string> SortByEnumOrder(List<string> inputList)
+    List<Tuple<string, PlayerObjectController>> SortPlayerAndClass(List<PlayerObjectController> players)
     {
         var enumOrder = Enum.GetValues(typeof(ClassType))
             .Cast<ClassType>()
             .Select(e => e.ToString())
             .ToList();
 
-        return inputList
-            .Where(item => enumOrder.Contains(item))
-            .OrderBy(item => enumOrder.IndexOf(item))
-            .ToList();
-    }
-
-    List<PlayerObjectController> SortPlayerObject(List<PlayerObjectController> inputList)
-    {
-        var enumOrder = Enum.GetValues(typeof(ClassType))
-            .Cast<ClassType>()
-            .Select(e => e.ToString())
-            .ToList();
-
-        return inputList
+        var result = players
             .Where(player => enumOrder.Contains(player.syncedClassName))
             .OrderBy(player => enumOrder.IndexOf(player.syncedClassName))
+            .Select(player => new Tuple<string, PlayerObjectController>(player.syncedClassName, player))
             .ToList();
+
+        return result;
     }
 
     List<string> GetClassTypeList()
@@ -163,16 +145,16 @@ public class GameTimeline : NetworkBehaviour
 
         return classTypeList;
     }
-    
+
     List<PlayerObjectController> GetPlayerList()
     {
-        List<PlayerObjectController> classTypeList = new List<PlayerObjectController>();
+        List<PlayerObjectController> playerList = new List<PlayerObjectController>();
 
         foreach (var player in Manager.GamePlayers)
         {
-            classTypeList.Add(player);
+            playerList.Add(player);
         }
 
-        return classTypeList;
+        return playerList;
     }
 }
