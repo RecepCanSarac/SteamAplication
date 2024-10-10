@@ -53,7 +53,10 @@ public class GameTimeline : NetworkBehaviour
         if (isServer)
         {
             playerClasses.Clear();
+
+            // Hem sınıf listesini hem de oyuncu nesnelerini getiriyoruz
             var classList = GetClassTypeList();
+
             SortPlayersAndClasses(classList, out var sortedPlayerObjList);
 
             foreach (var playerClass in classList)
@@ -62,7 +65,7 @@ public class GameTimeline : NetworkBehaviour
                 classes.Add(playerClass);
             }
 
-            playerObjList = sortedPlayerObjList;
+            playerObjList = sortedPlayerObjList; // Oyuncu nesneleri sıralanmış olarak atanıyor
         }
 
         playerClasses.Callback += OnPlayerClassListUpdated;
@@ -109,8 +112,8 @@ public class GameTimeline : NetworkBehaviour
         // Sınıflar UI'ye güncellenecek
     }
 
-   
-    void SortPlayersAndClasses( List<string> sortedClassList, out List<PlayerObjectController> sortedPlayerObjList)
+    // Sıralama işlemi: hem sınıf listesini hem de oyuncu objelerini sıralar
+    void SortPlayersAndClasses(List<string> sortedClassList, out List<PlayerObjectController> sortedPlayerObjList)
     {
         var enumOrder = Enum.GetValues(typeof(ClassType))
             .Cast<ClassType>()
@@ -118,8 +121,8 @@ public class GameTimeline : NetworkBehaviour
             .ToList();
 
         var combinedList = playerObjList
-            .Where(player => enumOrder.Contains(player.syncedClassName)) 
-            .OrderBy(player => enumOrder.IndexOf(player.syncedClassName)) 
+            .Where(player => enumOrder.Contains(player.syncedClassName))
+            .OrderBy(player => enumOrder.IndexOf(player.syncedClassName))
             .ToList();
 
         sortedClassList = combinedList
@@ -128,12 +131,16 @@ public class GameTimeline : NetworkBehaviour
 
         sortedPlayerObjList = combinedList;
     }
+
+    // Hem sınıf isimlerini hem de playerObjList'i doldurur
     List<string> GetClassTypeList()
     {
         List<string> classTypeList = new List<string>();
+
         foreach (var player in Manager.GamePlayers)
         {
             classTypeList.Add(player.syncedClassName);
+            playerObjList.Add(player); // Oyuncu nesnelerini listeye ekliyoruz
         }
 
         return classTypeList;
