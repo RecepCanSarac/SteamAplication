@@ -19,7 +19,7 @@ public class GameTimeline : NetworkBehaviour
     
     public List<string> classes = new List<string>();
 
-    public int startTime = 30;
+    public int startTime = 5;
 
     public bool startGame = false;
 
@@ -78,11 +78,11 @@ public class GameTimeline : NetworkBehaviour
         time -= Time.deltaTime;
         timeText.text = time.ToString("00");
 
-        if (time >= startTime && startGame == false)
+        if (time >= 0 && startGame == false)
         {
-            startGame = true;
             SetPlayerCamera();
             time = 10;
+            startGame = true;
         }
 
         if (startGame == true && time <= 0)
