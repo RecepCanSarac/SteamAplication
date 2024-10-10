@@ -12731,8 +12731,10 @@ MonoBehaviour:
   timeText: {fileID: 35189697}
   messageText: {fileID: 0}
   roundText: {fileID: 0}
-  gameCamera: {fileID: 0}
-  playerClasses: []
+  gameCamera: {fileID: 1560570603}
+  classes: []
+  startTime: 30
+  startGame: 0
 --- !u!4 &1930064399
 Transform:
   m_ObjectHideFlags: 0
