@@ -65,9 +65,7 @@ public class GameTimeline : NetworkBehaviour
                 playerClasses.Add(playerClass);
                 classes.Add(playerClass);
             }
-            
-            obj = sortedPlayerObjList; 
-            playerObjListAdd(obj);
+            playerObjListAdd(sortedPlayerObjList);
         }
 
         playerClasses.Callback += OnPlayerClassListUpdated;
