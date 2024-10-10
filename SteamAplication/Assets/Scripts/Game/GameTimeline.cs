@@ -5,7 +5,7 @@ using Mirror;
 using TMPro;
 using UnityEngine;
 
-public class GameTimeline : MonoBehaviour
+public class GameTimeline : NetworkBehaviour
 {
     public TextMeshProUGUI timeText;
 
@@ -14,7 +14,8 @@ public class GameTimeline : MonoBehaviour
     public TextMeshProUGUI roundText;
 
     public GameObject gameCamera;
-
+    
+    [SyncVar(hook = nameof(OnUpdatedList))]
     public List<string> playerClasses;
 
     private float time = 10;
@@ -56,12 +57,29 @@ public class GameTimeline : MonoBehaviour
 
     private void Start()
     {
-        playerClasses = GetClassTypeList();
-        List<string> shortedList = SortByEnumOrder(playerClasses);
-        playerClasses = shortedList;
+        CmdSetList(playerClasses);
     }
 
-    public List<string> SortByEnumOrder(List<string> inputList)
+    void OnUpdatedList(List<string> oldValue, List<string> newValue)
+    {
+        RpcTargetList(newValue);
+    }
+
+    [Command(requiresAuthority = false)]
+    void CmdSetList(List<string> newValue)
+    {
+        RpcTargetList(newValue);
+    }
+
+    [ClientRpc]
+    void RpcTargetList(List<string> newValue)
+    {
+        newValue = GetClassTypeList();
+        List<string> shortedList = SortByEnumOrder(newValue);
+        newValue = shortedList;
+    }
+
+    List<string> SortByEnumOrder(List<string> inputList)
     {
         var enumOrder = Enum.GetValues(typeof(ClassType))
             .Cast<ClassType>()
@@ -74,7 +92,7 @@ public class GameTimeline : MonoBehaviour
             .ToList();
     }
     
-    public List<string> GetClassTypeList()
+    List<string> GetClassTypeList()
     {
         foreach (var player in Manager.GamePlayers)
         {
