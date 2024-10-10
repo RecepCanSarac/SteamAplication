@@ -15,8 +15,7 @@ public class GameTimeline : NetworkBehaviour
 
     public GameObject gameCamera;
 
-    [SyncVar(hook = nameof(OnUpdatedList))]
-    public List<string> playerClasses;
+    public SyncList<string> playerClasses = new SyncList<string>();
 
     private float time = 10;
 
@@ -57,27 +56,32 @@ public class GameTimeline : NetworkBehaviour
 
     private void Start()
     {
-        playerClasses = GetClassTypeList();
-        List<string> shortedList = SortByEnumOrder(playerClasses);
-        playerClasses = shortedList;
-        CmdSetList(playerClasses);
+        if (isServer)
+        {
+            playerClasses.Clear();
+            var classList = GetClassTypeList();
+            var sortedList = SortByEnumOrder(classList);
+            foreach (var playerClass in sortedList)
+            {
+                playerClasses.Add(playerClass);
+            }
+        }
+        
+        // Listenin güncellenmesi istemcilerde tetiklenir
+        playerClasses.Callback += OnPlayerClassListUpdated;
     }
 
-    void OnUpdatedList(List<string> oldValue, List<string> newValue)
+    private void OnPlayerClassListUpdated(SyncList<string>.Operation op, int index, string oldItem, string newItem)
     {
-        RpcTargetList(newValue);
+        // Bu metod tüm istemcilerde tetiklenir ve güncellemeyi sağlar
+        UpdatePlayerClassesUI();
     }
 
-    [Command(requiresAuthority = false)]
-    void CmdSetList(List<string> newValue)
+    // UI'yi güncelleyen metod
+    private void UpdatePlayerClassesUI()
     {
-        RpcTargetList(newValue);
-    }
-
-    [ClientRpc]
-    void RpcTargetList(List<string> newValue)
-    {
-        playerClasses = newValue;
+        // playerClasses listesine göre UI güncellemesi yapılabilir
+        // Örneğin: messageText.text = string.Join(", ", playerClasses);
     }
 
     List<string> SortByEnumOrder(List<string> inputList)
@@ -95,11 +99,12 @@ public class GameTimeline : NetworkBehaviour
 
     List<string> GetClassTypeList()
     {
+        List<string> classTypeList = new List<string>();
         foreach (var player in Manager.GamePlayers)
         {
-            playerClasses.Add(player.syncedClassName);
+            classTypeList.Add(player.syncedClassName);
         }
 
-        return playerClasses;
+        return classTypeList;
     }
 }
