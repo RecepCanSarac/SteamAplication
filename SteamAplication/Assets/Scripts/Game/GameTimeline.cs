@@ -46,6 +46,8 @@ public class GameTimeline : NetworkBehaviour
 
     void Start()
     {
+        time = startTime;
+        
         if (isServer)
         {
             playerClasses.Clear();
@@ -57,8 +59,6 @@ public class GameTimeline : NetworkBehaviour
                 classes.Add(playerClass);
             }
         }
-
-        time = startTime;
         
         playerClasses.Callback += OnPlayerClassListUpdated;
     }
@@ -78,7 +78,7 @@ public class GameTimeline : NetworkBehaviour
         time -= Time.deltaTime;
         timeText.text = time.ToString("00");
 
-        if (time >= 0 && startGame == false)
+        if (time <= 0 && startGame == false)
         {
             SetPlayerCamera();
             time = 10;

@@ -12733,7 +12733,7 @@ MonoBehaviour:
   roundText: {fileID: 0}
   gameCamera: {fileID: 1560570603}
   classes: []
-  startTime: 30
+  startTime: 5
   startGame: 0
 --- !u!4 &1930064399
 Transform:
