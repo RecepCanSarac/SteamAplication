@@ -16,6 +16,8 @@ public class GameTimeline : NetworkBehaviour
     public GameObject gameCamera;
 
     public SyncList<string> playerClasses = new SyncList<string>();
+    
+    public List<string> classes = new List<string>();
 
     private float time = 10;
 
@@ -64,6 +66,7 @@ public class GameTimeline : NetworkBehaviour
             foreach (var playerClass in sortedList)
             {
                 playerClasses.Add(playerClass);
+                classes.Add(playerClass);
             }
         }
         
