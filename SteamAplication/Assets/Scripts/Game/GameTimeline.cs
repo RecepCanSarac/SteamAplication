@@ -13,8 +13,8 @@ public class GameTimeline : NetworkBehaviour
     public GameObject gameCamera;
 
     public SyncList<string> playerClasses = new SyncList<string>();
-    
-    public List<string> classes = new List<string>();
+
+    public SyncList<PlayerObjectController> players = new SyncList<PlayerObjectController>();
 
     public int startTime = 5;
     public bool startGame = false;
@@ -44,24 +44,37 @@ public class GameTimeline : NetworkBehaviour
     void Start()
     {
         _dayTime = GetComponent<DayTime>();
-        
+
         SetPlayerCamera(false);
-        
+
         time = startTime;
-        
+
         if (isServer)
         {
             playerClasses.Clear();
+            players.Clear();
+
             var classList = GetClassTypeList();
+
+            var playerList = GetPlayerList();
+            
+            var sortedPlayers = SortPlayerObject(playerList); 
+
             var sortedList = SortByEnumOrder(classList);
+
+            foreach (var player in sortedPlayers)
+            {
+                players.Add(player);
+            }
+
             foreach (var playerClass in sortedList)
             {
                 playerClasses.Add(playerClass);
-                classes.Add(playerClass);
             }
         }
-        
+
         playerClasses.Callback += OnPlayerClassListUpdated;
+        players.Callback += OnPlayerListUpdated;
     }
 
     void Update()
@@ -72,7 +85,7 @@ public class GameTimeline : NetworkBehaviour
     void SetPlayerCamera(bool isActive)
     {
         gameCamera.SetActive(isActive);
-        
+
         _dayTime.HandleInput(!isActive);
     }
 
@@ -92,10 +105,6 @@ public class GameTimeline : NetworkBehaviour
         {
             time = 10;
         }
-        if (Input.GetKeyDown(KeyCode.C))
-        {
-            
-        }
     }
 
     void OnPlayerClassListUpdated(SyncList<string>.Operation op, int index, string oldItem, string newItem)
@@ -103,10 +112,20 @@ public class GameTimeline : NetworkBehaviour
         UpdatePlayerClassesUI();
     }
 
-    void UpdatePlayerClassesUI()
+    void OnPlayerListUpdated(SyncList<PlayerObjectController>.Operation op, int index, PlayerObjectController oldItem, PlayerObjectController newItem)
     {
+        UpdatePlayerList();
     }
 
+    void UpdatePlayerClassesUI()
+    {
+        //Update string list
+    }
+
+    void UpdatePlayerList()
+    {
+        //update Player list
+    }
     List<string> SortByEnumOrder(List<string> inputList)
     {
         var enumOrder = Enum.GetValues(typeof(ClassType))
@@ -120,12 +139,38 @@ public class GameTimeline : NetworkBehaviour
             .ToList();
     }
 
+    List<PlayerObjectController> SortPlayerObject(List<PlayerObjectController> inputList)
+    {
+        var enumOrder = Enum.GetValues(typeof(ClassType))
+            .Cast<ClassType>()
+            .Select(e => e.ToString())
+            .ToList();
+
+        return inputList
+            .Where(player => enumOrder.Contains(player.syncedClassName))
+            .OrderBy(player => enumOrder.IndexOf(player.syncedClassName))
+            .ToList();
+    }
+
     List<string> GetClassTypeList()
     {
         List<string> classTypeList = new List<string>();
+
         foreach (var player in Manager.GamePlayers)
         {
             classTypeList.Add(player.syncedClassName);
+        }
+
+        return classTypeList;
+    }
+    
+    List<PlayerObjectController> GetPlayerList()
+    {
+        List<PlayerObjectController> classTypeList = new List<PlayerObjectController>();
+
+        foreach (var player in Manager.GamePlayers)
+        {
+            classTypeList.Add(player);
         }
 
         return classTypeList;
