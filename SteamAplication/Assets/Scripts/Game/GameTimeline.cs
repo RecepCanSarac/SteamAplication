@@ -13,16 +13,14 @@ public class GameTimeline : NetworkBehaviour
     public GameObject gameCamera;
 
     public SyncList<string> playerClasses = new SyncList<string>();
-    public SyncList<PlayerObjectController> playerObjList = new SyncList<PlayerObjectController>();
+    
     public List<string> classes = new List<string>();
 
-    public List<PlayerObjectController> obj = new List<PlayerObjectController>();
     public int startTime = 5;
     public bool startGame = false;
     private float time = 10;
 
     private DayTime _dayTime;
-    public int orderNumber = 0;
 
     #region Singleton
 
@@ -46,30 +44,24 @@ public class GameTimeline : NetworkBehaviour
     void Start()
     {
         _dayTime = GetComponent<DayTime>();
-
+        
         SetPlayerCamera(false);
-
+        
         time = startTime;
-
+        
         if (isServer)
         {
             playerClasses.Clear();
-
-            // Hem sınıf listesini hem de oyuncu nesnelerini getiriyoruz
             var classList = GetClassTypeList();
-
-            SortPlayersAndClasses(classList, out var sortedPlayerObjList);
-
-            foreach (var playerClass in classList)
+            var sortedList = SortByEnumOrder(classList);
+            foreach (var playerClass in sortedList)
             {
                 playerClasses.Add(playerClass);
                 classes.Add(playerClass);
             }
-            playerObjListAdd(sortedPlayerObjList);
         }
-
+        
         playerClasses.Callback += OnPlayerClassListUpdated;
-        orderNumber = playerClasses.Count;
     }
 
     void Update()
@@ -80,32 +72,29 @@ public class GameTimeline : NetworkBehaviour
     void SetPlayerCamera(bool isActive)
     {
         gameCamera.SetActive(isActive);
+        
         _dayTime.HandleInput(!isActive);
     }
 
-    void playerObjListAdd(List<PlayerObjectController> obj)
-    {
-        foreach (var player in obj)
-        {
-            playerObjList.Add(player);
-        }
-    }
     void Round()
     {
         time -= Time.deltaTime;
         timeText.text = time.ToString("00");
 
-        if (time <= 0 && !startGame)
+        if (time <= 0 && startGame == false)
         {
             SetPlayerCamera(true);
             time = 10;
             startGame = true;
         }
 
-        if (startGame && time <= 0 && orderNumber >= 0)
+        if (startGame == true && time <= 0)
         {
             time = 10;
-            orderNumber--;
+        }
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            
         }
     }
 
@@ -116,38 +105,27 @@ public class GameTimeline : NetworkBehaviour
 
     void UpdatePlayerClassesUI()
     {
-        // Sınıflar UI'ye güncellenecek
     }
 
-    // Sıralama işlemi: hem sınıf listesini hem de oyuncu objelerini sıralar
-    void SortPlayersAndClasses(List<string> sortedClassList, out List<PlayerObjectController> sortedPlayerObjList)
+    List<string> SortByEnumOrder(List<string> inputList)
     {
         var enumOrder = Enum.GetValues(typeof(ClassType))
             .Cast<ClassType>()
             .Select(e => e.ToString())
             .ToList();
 
-        var combinedList = playerObjList
-            .Where(player => enumOrder.Contains(player.syncedClassName))
-            .OrderBy(player => enumOrder.IndexOf(player.syncedClassName))
+        return inputList
+            .Where(item => enumOrder.Contains(item))
+            .OrderBy(item => enumOrder.IndexOf(item))
             .ToList();
-
-        sortedClassList = combinedList
-            .Select(player => player.syncedClassName)
-            .ToList();
-
-        sortedPlayerObjList = combinedList;
     }
 
-    // Hem sınıf isimlerini hem de playerObjList'i doldurur
     List<string> GetClassTypeList()
     {
         List<string> classTypeList = new List<string>();
-
         foreach (var player in Manager.GamePlayers)
         {
             classTypeList.Add(player.syncedClassName);
-            playerObjList.Add(player); // Oyuncu nesnelerini listeye ekliyoruz
         }
 
         return classTypeList;
